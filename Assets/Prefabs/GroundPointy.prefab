@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 590984661723474764}
   - component: {fileID: 675940646655328776}
-  - component: {fileID: 7578473280109172529}
+  - component: {fileID: 5579514548200418235}
   m_Layer: 0
   m_Name: GroundPointy
   m_TagString: Untagged
@@ -74,21 +74,21 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 456217289
+  m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 041d19c8b893bfa46b3df1e67e0ac7bf, type: 3}
+  m_Sprite: {fileID: 21300000, guid: f0bacdac9b8f3f84cbc7c26e958a5c84, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.8828125, y: 1}
+  m_Size: {x: 1, y: 1}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!60 &7578473280109172529
+--- !u!60 &5579514548200418235
 PolygonCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,17 +127,19 @@ PolygonCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
     oldSize: {x: 1, y: 1}
-    newSize: {x: 0.8828125, y: 1}
+    newSize: {x: 1, y: 1}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: -0.43359375, y: 0.25}
-      - {x: -0.43359375, y: -0.25}
-      - {x: 0, y: -0.5}
-      - {x: 0.43359375, y: -0.25}
-      - {x: 0.43359375, y: 0.25}
-      - {x: 0, y: 0.5}
+    - - {x: 0.234375, y: -0.15625}
+      - {x: 0.234375, y: 0.15625}
+      - {x: 0.015625, y: 0.265625}
+      - {x: -0.015625, y: 0.265625}
+      - {x: -0.234375, y: 0.15625}
+      - {x: -0.234375, y: -0.15625}
+      - {x: -0.015625, y: -0.265625}
+      - {x: 0.015625, y: -0.265625}
   m_UseDelaunayMesh: 0
