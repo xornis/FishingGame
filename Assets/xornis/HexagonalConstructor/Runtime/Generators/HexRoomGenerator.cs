@@ -77,8 +77,6 @@ namespace HexDungeon
         [SerializeField, Tooltip("Works only in Play Mode")] private float stepDelay = 0.1f;
         #endregion Generator Debug
 
-        public readonly HashSet<HexCoord> generated = new HashSet<HexCoord>();
-
         private void Start()
         {
             if (debugMode)
@@ -116,10 +114,7 @@ namespace HexDungeon
             HexCoord startHex = new HexCoord(startAxial.x, startAxial.y);
 
             foreach (var hex in generator.Generate(startHex))
-            {
-                if (!generated.Add(hex)) continue;
                 SpawnHex(layout, hex);
-            }
         }
 
         private IEnumerator DebugGenerate()

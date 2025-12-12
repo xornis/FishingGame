@@ -4,8 +4,6 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [SerializeField] private HexRoomGenerator generator;
-
     private PlayerInput playerInput;
     private InputAction action;
     private HexLayout hexLayout;
@@ -35,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
         HexCoord clickedPos = hexLayout.WorldToHex(worldPos);
         HexCoord currentPos = hexLayout.WorldToHex(transform.position);
 
-        if (currentPos.Distance(clickedPos) != 1 || !generator.generated.Contains(clickedPos)) return;
+        if (currentPos.Distance(clickedPos) != 1) return;
 
         Vector3 targetWorldPos = hexLayout.HexToWorld(clickedPos);
         targetWorldPos.z = transform.position.z;
