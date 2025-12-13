@@ -4,15 +4,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private IslandManager shaper;
+
     private PlayerInput playerInput;
     private InputAction action;
-    private HexLayout hexLayout;
 
     private void Awake()
     {
         playerInput = GetComponent<PlayerInput>();
         action = playerInput.actions["Attack"];
-        hexLayout = new HexLayout(HexOrientation.PointyTop, 1);
     }
 
     private void OnEnable()
@@ -27,15 +27,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnClick(InputAction.CallbackContext ctx)
     {
+        var layout = shaper.Layout;
+
         Vector3 screenPos = Mouse.current.position.ReadValue();
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, -Camera.main.transform.position.z));
 
-        HexCoord clickedPos = hexLayout.WorldToHex(worldPos);
-        HexCoord currentPos = hexLayout.WorldToHex(transform.position);
+        HexCoord clickedPos = layout.WorldToHex(worldPos);
+        HexCoord currentPos = layout.WorldToHex(transform.position);
 
         if (currentPos.Distance(clickedPos) != 1) return;
+        if (!shaper.tiles.Contains(clickedPos)) return;
 
-        Vector3 targetWorldPos = hexLayout.HexToWorld(clickedPos);
+        Vector3 targetWorldPos = shaper.Layout.HexToWorld(clickedPos);
         targetWorldPos.z = transform.position.z;
         transform.position = targetWorldPos;
 
