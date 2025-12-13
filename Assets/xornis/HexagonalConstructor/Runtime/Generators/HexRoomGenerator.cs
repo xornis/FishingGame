@@ -142,6 +142,15 @@ namespace HexDungeon
             instance.transform.localScale = Vector3.one * hexScale;
         }
 
+        public IEnumerable<HexCoord> GenerateCoords(out HexLayout layout)
+        {
+            if (useSeed) UnityEngine.Random.InitState(seed);
+
+            layout = new HexLayout(hexOrientation, hexRadius);
+            var start = new HexCoord(startAxial.x, startAxial.y);
+
+            return CreateGenerator().Generate(start);
+        }
 
 
 #if UNITY_EDITOR
