@@ -509,7 +509,7 @@ MonoBehaviour:
   mode: 1
   startAxial: {x: 0, y: 0}
   randomAlgorithm: 1
-  roomCount: 25
+  roomCount: 50
   useSeed: 0
   seed: 0
   shape: 0

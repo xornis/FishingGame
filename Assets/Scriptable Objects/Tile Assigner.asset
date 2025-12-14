@@ -14,3 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundTile: {fileID: 11400000, guid: aa18f5512fd5694489233f8fb89654a5, type: 2}
   fishingPoolTile: {fileID: 11400000, guid: d06bf9d165bb4af43b07c762a1f13b8e, type: 2}
+  rockTile: {fileID: 11400000, guid: 6932b098d29738b4eb3448f75c970da8, type: 2}
+  fishingPoolChance: 0.25
+  rockChance: 0.5

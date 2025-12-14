@@ -21,14 +21,19 @@ public class IslandManager : MonoBehaviour
         var coordSet = new HashSet<HexCoord>(coords);
 
         foreach (var coord in coordSet)
-        {
-            var tile = tileAssigner.GetTileFor(coord, coordSet);
-            tileByCoord[coord] = tile;
+            tileByCoord[coord] = tileAssigner.GetTileFor(coord, coordSet);
 
-            var worldPos = generator.transform.TransformPoint(layout.HexToWorld(coord));
-            var go = Instantiate(tile.prefab, worldPos, Quaternion.identity, transform);
-            go.transform.localScale = Vector3.one * hexScale;
-        }
+        foreach (var coord in coordSet)
+            tileByCoord[coord] = tileAssigner.TryUpgradeToRock(coord, tileByCoord);
+
+        foreach (var coord in coordSet)
+            Spawn(coord, tileByCoord[coord]);
     }
 
+    private void Spawn(HexCoord coord, TileData tile)
+    {
+        var worldPos = generator.transform.TransformPoint(Layout.HexToWorld(coord));
+        var go = Instantiate(tile.prefab, worldPos, Quaternion.identity, transform);
+        go.transform.localScale = Vector3.one * HexScale;
+    }
 }

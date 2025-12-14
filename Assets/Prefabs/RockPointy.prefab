@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 675940646655328776}
   - component: {fileID: 5579514548200418235}
   m_Layer: 0
-  m_Name: GroundPointy
+  m_Name: RockPointy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayerID: 456217289
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 60437dec70556054f8e83460162aa7bd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: b4ff30272aa83e448a11ae3e0887ed99, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -126,7 +126,7 @@ PolygonCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 2, y: 2}
+    oldSize: {x: 1, y: 1}
     newSize: {x: 2, y: 2}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
