@@ -21,10 +21,10 @@ public class IslandManager : MonoBehaviour
         var coordSet = new HashSet<HexCoord>(coords);
 
         foreach (var coord in coordSet)
-            tileByCoord[coord] = tileAssigner.GetTileFor(coord, coordSet);
+            tileByCoord[coord] = tileAssigner.AssignBaseTile(coord, coordSet);
 
         foreach (var coord in coordSet)
-            tileByCoord[coord] = tileAssigner.TryUpgradeToRock(coord, tileByCoord);
+            tileByCoord[coord] = tileAssigner.ApplyRock(coord, tileByCoord);
 
         foreach (var coord in coordSet)
             Spawn(coord, tileByCoord[coord]);

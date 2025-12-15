@@ -6,23 +6,23 @@ using UnityEngine;
 public class TileAssigner : ScriptableObject
 {
     public TileData groundTile;
-    public TileData fishingPoolTile;
+    public TileData fishTile;
     public TileData rockTile;
     public TileData sandTile;
 
-    [Range(0f, 1f)] public float fishingPoolChance = 0.25f;
+    [Range(0f, 1f)] public float fishTileChance = 0.25f;
     [Range(0f, 1f)] public float rockChance = 0.4f;
 
-    public TileData GetTileFor(HexCoord coord, HashSet<HexCoord> allCoords)
+    public TileData AssignBaseTile(HexCoord coord, HashSet<HexCoord> allCoords)
     {
-        return IsOnEdge(coord, allCoords)
-            ? (Random.value < fishingPoolChance ? fishingPoolTile : sandTile)
-            : groundTile;
+        if (IsOnEdge(coord, allCoords))
+            return Random.value < fishTileChance ? fishTile : sandTile;
+        return groundTile;
     }
 
-    public TileData TryUpgradeToRock(HexCoord coord, Dictionary<HexCoord, TileData> tiles)
+    public TileData ApplyRock(HexCoord coord, Dictionary<HexCoord, TileData> tiles)
     {
-        if (!IsEligibleForRock(coord, tiles)) return tiles[coord];
+        if (!EligibleForRock(coord, tiles)) return tiles[coord];
         if (Random.value < rockChance) return rockTile;
         return tiles[coord];
     }
@@ -35,16 +35,16 @@ public class TileAssigner : ScriptableObject
         return false;
     }
 
-    private bool IsEligibleForRock(HexCoord coord, Dictionary<HexCoord, TileData> tilesByCoord)
+    private bool EligibleForRock(HexCoord coord, Dictionary<HexCoord, TileData> tilesByCoord)
     {
-        if (tilesByCoord[coord] == fishingPoolTile) return false;
+        if (tilesByCoord[coord] == fishTile) return false;
 
         foreach (var dir in HexDirectionExtensions.hexDirections)
             if (!tilesByCoord.ContainsKey(coord.Neighbor(dir)))
                 return false;
 
         foreach (var dir in HexDirectionExtensions.hexDirections)
-            if (tilesByCoord.TryGetValue(coord.Neighbor(dir), out var neighborTile) && neighborTile == fishingPoolTile)
+            if (tilesByCoord.TryGetValue(coord.Neighbor(dir), out var neighborTile) && neighborTile == fishTile)
                 return false;
 
         return true;
