@@ -8,8 +8,20 @@ namespace HexDungeon
 
     public static class HexDirectionExtensions
     {
+        public static HexDirection[] hexDirections =
+        {
+            HexDirection.NorthEast,
+            HexDirection.East,
+            HexDirection.SouthEast,
+            HexDirection.SouthWest,
+            HexDirection.West,
+            HexDirection.NorthWest
+        };
+
         public static HexDirection Opposite(this HexDirection dir) => (HexDirection)(((int)dir + 3) % 6); 
         public static HexDirection Next(this HexDirection dir) => (HexDirection)(((int)dir + 1) % 6);
         public static HexDirection Previous(this HexDirection dir) => (HexDirection)(((int)dir - 1) % 6);
+
+        public static HexDirection Random(this HexDirection dir) => (HexDirection)UnityEngine.Random.Range(0, hexDirections.Length);
     }
 }

@@ -142,11 +142,12 @@ namespace HexDungeon
             instance.transform.localScale = Vector3.one * hexScale;
         }
 
-        public IEnumerable<HexCoord> GenerateCoords(out HexLayout layout)
+        public IEnumerable<HexCoord> GetCoords(out HexLayout layout, out float hexScale)
         {
             if (useSeed) UnityEngine.Random.InitState(seed);
 
             layout = new HexLayout(hexOrientation, hexRadius);
+            hexScale = this.hexScale;
             var start = new HexCoord(startAxial.x, startAxial.y);
 
             return CreateGenerator().Generate(start);

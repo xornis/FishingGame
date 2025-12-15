@@ -4,19 +4,36 @@ using UnityEngine;
 
 public class IslandManager : MonoBehaviour
 {
-    private HexRoomGenerator generator;
+    [SerializeField] private HexRoomGenerator generator;
+    [SerializeField] private TileAssigner tileAssigner;
 
     public HexLayout Layout { get; private set; }
-    public HashSet<HexCoord> tiles = new HashSet<HexCoord>();
+    public float HexScale { get; private set; }
+    public readonly Dictionary<HexCoord, TileData> tileByCoord = new();
 
-    private void Awake()
+    private void Start()
     {
-        generator = GetComponent<HexRoomGenerator>();
+        var coords = generator.GetCoords(out var layout, out var hexScale);
 
-        var coords = generator.GenerateCoords(out var layout);
         Layout = layout;
+        HexScale = hexScale;
 
-        foreach (var coord in coords)
-            tiles.Add(coord);
+        var coordSet = new HashSet<HexCoord>(coords);
+
+        foreach (var coord in coordSet)
+            tileByCoord[coord] = tileAssigner.AssignBaseTile(coord, coordSet);
+
+        foreach (var coord in coordSet)
+            tileByCoord[coord] = tileAssigner.ApplyRock(coord, tileByCoord);
+
+        foreach (var coord in coordSet)
+            Spawn(coord, tileByCoord[coord]);
+    }
+
+    private void Spawn(HexCoord coord, TileData tile)
+    {
+        var worldPos = generator.transform.TransformPoint(Layout.HexToWorld(coord));
+        var go = Instantiate(tile.prefab, worldPos, Quaternion.identity, transform);
+        go.transform.localScale = Vector3.one * HexScale;
     }
 }

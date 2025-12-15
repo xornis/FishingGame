@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 590984661723474764}
   - component: {fileID: 675940646655328776}
   m_Layer: 0
-  m_Name: GroundPointy
+  m_Name: FishPointy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76,7 +76,7 @@ SpriteRenderer:
   m_SortingLayerID: 456217289
   m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 60437dec70556054f8e83460162aa7bd, type: 3}
+  m_Sprite: {fileID: 21300000, guid: ee7e824515caac445bf5e16cf4593aee, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
