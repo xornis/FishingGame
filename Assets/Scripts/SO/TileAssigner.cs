@@ -8,6 +8,7 @@ public class TileAssigner : ScriptableObject
     public TileData groundTile;
     public TileData fishingPoolTile;
     public TileData rockTile;
+    public TileData sandTile;
 
     [Range(0f, 1f)] public float fishingPoolChance = 0.25f;
     [Range(0f, 1f)] public float rockChance = 0.4f;
@@ -15,7 +16,7 @@ public class TileAssigner : ScriptableObject
     public TileData GetTileFor(HexCoord coord, HashSet<HexCoord> allCoords)
     {
         return IsOnEdge(coord, allCoords)
-            ? (Random.value < fishingPoolChance ? fishingPoolTile : groundTile)
+            ? (Random.value < fishingPoolChance ? fishingPoolTile : sandTile)
             : groundTile;
     }
 
