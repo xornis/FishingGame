@@ -486,6 +486,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   catchChance: 0.2
+  baseWaitingForFishInSeconds: 2
+  animationStrength: 1.25
   manager: {fileID: 1253531103}
 --- !u!1 &1253531100
 GameObject:

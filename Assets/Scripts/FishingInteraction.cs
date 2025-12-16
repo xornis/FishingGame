@@ -41,10 +41,12 @@ public class FishingInteraction : MonoBehaviour
         HexCoord clickedPos = layout.WorldToHex(worldPos);
         HexCoord currentPos = layout.WorldToHex(transform.position);
 
-        TryCatch(clickedPos, currentPos);
+        RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
+
+        TryCatch(clickedPos, currentPos, hit.transform);
     }
 
-    private void TryCatch(in HexCoord clickedPos, in HexCoord currentPos)
+    private void TryCatch(in HexCoord clickedPos, in HexCoord currentPos, Transform hitTransform)
     {
         if (currentPos.Distance(clickedPos) != 1) return;
         if (!manager.tileByCoord.TryGetValue(clickedPos, out var tile)) return;
@@ -52,21 +54,44 @@ public class FishingInteraction : MonoBehaviour
         if (tile.fishable && canFish)
         {
             canFish = false;
-            StartCoroutine(WaitForFishAndCatch());
+            StartCoroutine(WaitForFishAndCatch(hitTransform));
         }
     }
 
-    private IEnumerator WaitForFishAndCatch()
+    private IEnumerator WaitForFishAndCatch(Transform hitTransform)
     {
-        print("1...");
-        yield return new WaitForSeconds(baseWaitingForFishInSeconds/3);
-        print("2...");
-        yield return new WaitForSeconds(baseWaitingForFishInSeconds/3);
         print("3...");
-        yield return new WaitForSeconds(baseWaitingForFishInSeconds/3);
+        yield return StartCoroutine(AnimateScalePing(hitTransform, baseWaitingForFishInSeconds/4, 1.1f));
+        print("2...");
+        yield return StartCoroutine(AnimateScalePing(hitTransform, baseWaitingForFishInSeconds/4, 1.1f));
+        print("1...");
+        yield return StartCoroutine(AnimateScalePing(hitTransform, baseWaitingForFishInSeconds/4, 1.1f));
 
-        Debug.Log((Random.value < catchChance) ? "Caught!" : "Got Away..");
+        string message = Random.value < catchChance ? "Caught!" : "Got Away..";
+        if (Random.value < catchChance)
+            yield return StartCoroutine(AnimateScalePing(hitTransform, baseWaitingForFishInSeconds/4, 1.4f));
+        else
+            yield return StartCoroutine(AnimateScalePing(hitTransform, baseWaitingForFishInSeconds/6, 0.8f));
+        Debug.Log(message);
 
         canFish = true;
+    }
+
+    private IEnumerator AnimateScalePing(Transform targetTransform, float duration, float animationStrength)
+    {
+        float timer = 0f;
+        Vector3 originalScale = targetTransform.localScale;
+        Vector3 targetScale = originalScale * animationStrength;
+        targetTransform.localScale = originalScale;
+
+        while (timer < duration)
+        {
+            float t = Mathf.PingPong(timer / duration * 2f, 1f);
+            targetTransform.localScale = Vector3.Lerp(originalScale, targetScale, t);
+
+            timer += Time.deltaTime;
+            yield return null;
+        }
+        targetTransform.localScale = originalScale;
     }
 }
