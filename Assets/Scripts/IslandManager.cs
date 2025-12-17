@@ -9,7 +9,7 @@ public class IslandManager : MonoBehaviour
 
     public HexLayout Layout { get; private set; }
     public float HexScale { get; private set; }
-    public readonly Dictionary<HexCoord, TileData> tileByCoord = new();
+    public readonly Dictionary<HexCoord, TileInstance> tileByCoord = new();
 
     private void Start()
     {
@@ -21,19 +21,53 @@ public class IslandManager : MonoBehaviour
         var coordSet = new HashSet<HexCoord>(coords);
 
         foreach (var coord in coordSet)
-            tileByCoord[coord] = tileAssigner.AssignBaseTile(coord, coordSet);
+            tileByCoord[coord] = new TileInstance { coord = coord };
 
         foreach (var coord in coordSet)
-            tileByCoord[coord] = tileAssigner.ApplyRock(coord, tileByCoord);
+            tileByCoord[coord].data = tileAssigner.AssignBaseTile(coord, coordSet);
 
         foreach (var coord in coordSet)
+            tileByCoord[coord].data = tileAssigner.ApplyRock(coord, tileByCoord);
+
+        foreach (var coord in coordSet)
+        {
+            ComputeFishTileQuality(coord, tileByCoord[coord]);
             Spawn(coord, tileByCoord[coord]);
+        }
     }
 
-    private void Spawn(HexCoord coord, TileData tile)
+    private void Spawn(HexCoord coord, TileInstance tile)
     {
         var worldPos = generator.transform.TransformPoint(Layout.HexToWorld(coord));
-        var go = Instantiate(tile.prefab, worldPos, Quaternion.identity, transform);
+        var go = Instantiate(tile.data.prefab, worldPos, Quaternion.identity, transform);
         go.transform.localScale = Vector3.one * HexScale;
+
+        SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
+    }
+
+    private void ComputeFishTileQuality(HexCoord coord, TileInstance tile)
+    {
+        if (!tile.data.fishable) return;
+
+        int count = 0;
+
+        foreach (var dir in HexDirectionExtensions.hexDirections)
+            if (tileByCoord.TryGetValue(coord.Neighbor(dir), out var neighborTile) && neighborTile.data.fishable)
+                count++;
+
+        if (count == 0) tile.fishQuality = FishTileQuality.Poor;
+        else if (count == 1) tile.fishQuality = FishTileQuality.Normal;
+        else tile.fishQuality = FishTileQuality.Rich;
+    }
+
+    private void SetFishTileColor(SpriteRenderer sr, TileInstance tile)
+    {
+        sr.color = tile.fishQuality switch
+        {
+            FishTileQuality.Poor => new Color(0.95f, 0.95f, 0.9f),
+            FishTileQuality.Normal => new Color(0.9f, 0.95f, 1f),
+            FishTileQuality.Rich => new Color(0.8f, 0.9f, 1f),
+            _ => Color.white
+        };
     }
 }

@@ -20,11 +20,11 @@ public class TileAssigner : ScriptableObject
         return groundTile;
     }
 
-    public TileData ApplyRock(HexCoord coord, Dictionary<HexCoord, TileData> tiles)
+    public TileData ApplyRock(HexCoord coord, Dictionary<HexCoord, TileInstance> tiles)
     {
-        if (!EligibleForRock(coord, tiles)) return tiles[coord];
+        if (!EligibleForRock(coord, tiles)) return tiles[coord].data;
         if (Random.value < rockChance) return rockTile;
-        return tiles[coord];
+        return tiles[coord].data;
     }
 
     private bool IsOnEdge(HexCoord coord, HashSet<HexCoord> allCoords)
@@ -35,16 +35,16 @@ public class TileAssigner : ScriptableObject
         return false;
     }
 
-    private bool EligibleForRock(HexCoord coord, Dictionary<HexCoord, TileData> tilesByCoord)
+    private bool EligibleForRock(HexCoord coord, Dictionary<HexCoord, TileInstance> tilesByCoord)
     {
-        if (tilesByCoord[coord] == fishTile) return false;
+        if (tilesByCoord[coord].data == fishTile) return false;
 
         foreach (var dir in HexDirectionExtensions.hexDirections)
             if (!tilesByCoord.ContainsKey(coord.Neighbor(dir)))
                 return false;
 
         foreach (var dir in HexDirectionExtensions.hexDirections)
-            if (tilesByCoord.TryGetValue(coord.Neighbor(dir), out var neighborTile) && neighborTile == fishTile)
+            if (tilesByCoord.TryGetValue(coord.Neighbor(dir), out var neighborTile) && neighborTile.data == fishTile)
                 return false;
 
         return true;
