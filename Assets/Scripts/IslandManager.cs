@@ -42,7 +42,7 @@ public class IslandManager : MonoBehaviour
         var go = Instantiate(tile.data.prefab, worldPos, Quaternion.identity, transform);
         go.transform.localScale = Vector3.one * HexScale;
 
-        SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
+        if (tile.data.fishable) SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
     }
 
     private void ComputeFishTileQuality(HexCoord coord, TileInstance tile)
