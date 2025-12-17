@@ -37,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (currentPos.Distance(clickedPos) != 1) return;
         if (!manager.tileByCoord.TryGetValue(clickedPos, out var tile)) return;
-        if (!tile.walkable) return;
+        if (!tile.data.walkable) return;
 
         Vector3 targetWorldPos = manager.Layout.HexToWorld(clickedPos);
         targetWorldPos.z = transform.position.z;
