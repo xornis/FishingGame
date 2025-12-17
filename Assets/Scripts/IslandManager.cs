@@ -31,7 +31,7 @@ public class IslandManager : MonoBehaviour
 
         foreach (var coord in coordSet)
         {
-            ComputeFishQuality(coord, tileByCoord[coord]);
+            ComputeFishTileQuality(coord, tileByCoord[coord]);
             Spawn(coord, tileByCoord[coord]);
         }
     }
@@ -41,9 +41,11 @@ public class IslandManager : MonoBehaviour
         var worldPos = generator.transform.TransformPoint(Layout.HexToWorld(coord));
         var go = Instantiate(tile.data.prefab, worldPos, Quaternion.identity, transform);
         go.transform.localScale = Vector3.one * HexScale;
+
+        SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
     }
 
-    private void ComputeFishQuality(HexCoord coord, TileInstance tile)
+    private void ComputeFishTileQuality(HexCoord coord, TileInstance tile)
     {
         if (!tile.data.fishable) return;
 
@@ -56,5 +58,16 @@ public class IslandManager : MonoBehaviour
         if (count == 0) tile.fishQuality = FishTileQuality.Poor;
         else if (count == 1) tile.fishQuality = FishTileQuality.Normal;
         else tile.fishQuality = FishTileQuality.Rich;
+    }
+
+    private void SetFishTileColor(SpriteRenderer sr, TileInstance tile)
+    {
+        sr.color = tile.fishQuality switch
+        {
+            FishTileQuality.Poor => new Color(0.95f, 0.95f, 0.9f),
+            FishTileQuality.Normal => new Color(0.9f, 0.95f, 1f),
+            FishTileQuality.Rich => new Color(0.8f, 0.9f, 1f),
+            _ => Color.white
+        };
     }
 }
