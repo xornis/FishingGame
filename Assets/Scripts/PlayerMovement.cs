@@ -1,10 +1,15 @@
 using HexDungeon;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private IslandManager manager;
+    [SerializeField, Range(0f, 0.5f)] private float moveDuration = 0.25f;
+
+    private bool isMoving;
+    private HexCoord? queuedStep;
 
     private PlayerInput playerInput;
     private InputAction action;
@@ -39,11 +44,37 @@ public class PlayerMovement : MonoBehaviour
         if (!manager.tileByCoord.TryGetValue(clickedPos, out var tile)) return;
         if (!tile.data.walkable) return;
 
-        Vector3 targetWorldPos = manager.Layout.HexToWorld(clickedPos);
-        targetWorldPos.z = transform.position.z;
-        transform.position = targetWorldPos;
+        if (isMoving) { queuedStep = clickedPos; return; }
+        if (queuedStep.HasValue && queuedStep.Value.Equals(clickedPos)) return;
 
-        Vector3 cameraPos = new Vector3(transform.position.x, transform.position.y, Camera.main.transform.position.z);
-        Camera.main.transform.position = cameraPos;
+        StartCoroutine(MoveTo(clickedPos));
+    }
+
+    private IEnumerator MoveTo(HexCoord target)
+    {
+        isMoving = true;
+
+        Vector3 start = transform.position;
+        Vector3 end = manager.Layout.HexToWorld(target);
+        end.z = start.z;
+
+        float timer = 0f;
+        float duration = moveDuration;
+
+        while (timer < duration)
+        {
+            timer += Time.deltaTime;
+            transform.position = Vector3.Lerp(start, end, timer / duration);
+            yield return null;
+        }
+
+        transform.position = end;
+        isMoving = false;
+
+        if (queuedStep.HasValue)
+        {
+            StartCoroutine(MoveTo(queuedStep.Value));
+            queuedStep = null;
+        }
     }
 }
