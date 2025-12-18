@@ -7,6 +7,8 @@ public class IslandManager : MonoBehaviour
     [SerializeField] private HexRoomGenerator generator;
     [SerializeField] private TileAssigner tileAssigner;
 
+    public event System.Action OnIslandReady;
+
     public HexLayout Layout { get; private set; }
     public float HexScale { get; private set; }
     public readonly Dictionary<HexCoord, TileInstance> tileByCoord = new();
@@ -32,16 +34,19 @@ public class IslandManager : MonoBehaviour
         foreach (var coord in coordSet)
         {
             ComputeFishTileQuality(coord, tileByCoord[coord]);
-            Spawn(coord, tileByCoord[coord]);
+            SpawnTile(coord, tileByCoord[coord]);
         }
+
+        OnIslandReady?.Invoke();
     }
 
-    private void Spawn(HexCoord coord, TileInstance tile)
+    private void SpawnTile(HexCoord coord, TileInstance tile)
     {
         var worldPos = generator.transform.TransformPoint(Layout.HexToWorld(coord));
         var go = Instantiate(tile.data.prefab, worldPos, Quaternion.identity, transform);
         go.transform.localScale = Vector3.one * HexScale;
 
+        tile.view = go.GetComponent<TileView>();
         if (tile.data.fishable) SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
     }
 

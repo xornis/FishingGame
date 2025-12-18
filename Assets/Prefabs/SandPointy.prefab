@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 590984661723474764}
   - component: {fileID: 675940646655328776}
   - component: {fileID: -4309786398268125077}
+  - component: {fileID: 9130533012064356419}
   m_Layer: 0
   m_Name: SandPointy
   m_TagString: Untagged
@@ -143,3 +144,15 @@ PolygonCollider2D:
       - {x: -0.015625, y: -0.25}
       - {x: 0.015625, y: -0.25}
   m_UseDelaunayMesh: 0
+--- !u!114 &9130533012064356419
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5268574295593296186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a93f5b961dc518448598f4262f49bc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

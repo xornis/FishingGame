@@ -22,13 +22,17 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
+        manager.OnIslandReady += OnIslandReady;
         action.performed += OnClick;
     }
 
     private void OnDisable()
     {
+        manager.OnIslandReady -= OnIslandReady;
         action.performed -= OnClick;
     }
+
+    private void OnIslandReady() => ShowAvailableMoves();
 
     private void OnClick(InputAction.CallbackContext ctx)
     {
@@ -71,10 +75,36 @@ public class PlayerMovement : MonoBehaviour
         transform.position = end;
         isMoving = false;
 
+        ShowAvailableMoves();
+
         if (queuedStep.HasValue)
         {
-            StartCoroutine(MoveTo(queuedStep.Value));
+            var next = queuedStep.Value;
             queuedStep = null;
+            StartCoroutine(MoveTo(next));
         }
+    }
+
+    private void ShowAvailableMoves()
+    {
+        HexCoord current = manager.Layout.WorldToHex(transform.position);
+        ClearAvailableMoves();
+
+        foreach (var dir in HexDirectionExtensions.hexDirections)
+        {
+            HexCoord neighbor = current.Neighbor(dir);
+            if (manager.tileByCoord.TryGetValue(neighbor, out var tile) && tile.data.walkable)
+                if (tile.view != null)
+                    tile.view.HighlightTiles(true);
+        }
+    }
+
+    private void ClearAvailableMoves()
+    { 
+        foreach (var tile in manager.tileByCoord.Values)
+        {
+            if (tile.view != null)
+                tile.view.HighlightTiles(false);
+        }    
     }
 }
