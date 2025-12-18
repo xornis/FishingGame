@@ -7,4 +7,5 @@ public class TileInstance
     public HexCoord coord;
     public TileData data;
     public FishTileQuality fishQuality;
+    public TileView view;
 }
