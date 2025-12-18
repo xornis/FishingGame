@@ -75,4 +75,15 @@ public class IslandManager : MonoBehaviour
             _ => Color.white
         };
     }
+
+    public HexCoord GetRandomWalkableCoord()
+    {
+        var walkableTiles = new List<HexCoord>();
+
+        foreach (var tile in tileByCoord)
+            if (tile.Value.data.walkable)
+                walkableTiles.Add(tile.Key);
+
+        return walkableTiles[Random.Range(0, walkableTiles.Count)];
+    }
 }

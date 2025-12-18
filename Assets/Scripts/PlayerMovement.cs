@@ -32,16 +32,20 @@ public class PlayerMovement : MonoBehaviour
         action.performed -= OnClick;
     }
 
-    private void OnIslandReady() => ShowAvailableMoves();
+    private void OnIslandReady()
+    {
+        SpawnPlayer();
+        ShowAvailableMoves();
+    }
 
     private void OnClick(InputAction.CallbackContext ctx)
     {
         var layout = manager.Layout;
         
-        Vector3 screenPos = Mouse.current.position.ReadValue();
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, -Camera.main.transform.position.z));
+        Vector3 screenMousePos = Mouse.current.position.ReadValue();
+        Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(screenMousePos.x, screenMousePos.y, -Camera.main.transform.position.z));
 
-        HexCoord clickedPos = layout.WorldToHex(worldPos);
+        HexCoord clickedPos = layout.WorldToHex(worldMousePos);
         HexCoord currentPos = layout.WorldToHex(transform.position);
 
         if (currentPos.Distance(clickedPos) != 1) return;
@@ -106,5 +110,14 @@ public class PlayerMovement : MonoBehaviour
             if (tile.view != null)
                 tile.view.HighlightTiles(false);
         }    
+    }
+
+    private void SpawnPlayer()
+    {
+        HexCoord randomCoord = manager.GetRandomWalkableCoord();
+        Vector3 worldCoordPos = manager.Layout.HexToWorld(randomCoord);
+        worldCoordPos.z = transform.position.z;
+
+        transform.position = worldCoordPos;
     }
 }

@@ -64,11 +64,9 @@ public class FishingInteraction : MonoBehaviour
         float waitTime = baseWaitingForFishInSeconds * GetTimeMultiplier(tile.fishQuality);
 
         print("3...");
-        yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/4, 1.1f));
+        yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/3, 1.1f));
         print("2...");
-        yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/4, 1.1f));
-        print("1...");
-        yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/4, 1.1f));
+        yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/3, 1.1f));
 
         bool isCaught = Random.value < chance;
         string message = isCaught ? "Caught!" : "Got Away..";
