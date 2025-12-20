@@ -1,5 +1,6 @@
 using HexDungeon;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,9 +9,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private IslandManager manager;
     [SerializeField, Range(0f, 0.5f)] private float moveDuration = 0.25f;
 
-    private bool canMove = true;
+    public bool CanMove { get; private set; } = true;
     private bool isMoving;
     private HexCoord? queuedStep;
+    private readonly List<TileView> highlightedTiles = new List<TileView>();
 
     public event System.Action OnStepFinished;
 
@@ -43,22 +45,39 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnClick(InputAction.CallbackContext ctx)
     {
+        if (!TryGetClickedNeighbor(out HexCoord target)) return;
+        TryMove(target);
+    }
+
+    private bool TryGetClickedNeighbor(out HexCoord target)
+    {
+        target = default;
+
         var layout = manager.Layout;
-        
+
         Vector3 screenMousePos = Mouse.current.position.ReadValue();
         Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(screenMousePos.x, screenMousePos.y, -Camera.main.transform.position.z));
 
         HexCoord clickedPos = layout.WorldToHex(worldMousePos);
         HexCoord currentPos = layout.WorldToHex(transform.position);
 
-        if (currentPos.Distance(clickedPos) != 1) return;
-        if (!manager.tileByCoord.TryGetValue(clickedPos, out var tile)) return;
-        if (!tile.data.walkable) return;
+        if (currentPos.Distance(clickedPos) != 1) return false;
+        if (!manager.tileByCoord.TryGetValue(clickedPos, out var tile)) return false;
+        if (!tile.data.walkable) return false;
 
-        if (isMoving) { queuedStep = clickedPos; return; }
-        if (queuedStep.HasValue && queuedStep.Value.Equals(clickedPos)) return;
+        target = clickedPos;
+        return true;
+    }
 
-        if (canMove) StartCoroutine(MoveTo(clickedPos));
+    private void TryMove(HexCoord target)
+    {
+        if (!CanMove) return;
+
+        if (isMoving) { queuedStep = target; return; }
+
+        if (queuedStep.HasValue && queuedStep.Value.Equals(target)) return;
+
+        StartCoroutine(MoveTo(target));
     }
 
     private IEnumerator MoveTo(HexCoord target)
@@ -82,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
         transform.position = end;
         isMoving = false;
 
-        ActionsOnStepFinished();
+        AfterStep();
 
         if (queuedStep.HasValue)
         {
@@ -99,19 +118,22 @@ public class PlayerMovement : MonoBehaviour
         foreach (var dir in HexDirectionExtensions.hexDirections)
         {
             HexCoord neighbor = current.Neighbor(dir);
-            if (manager.tileByCoord.TryGetValue(neighbor, out var tile) && tile.data.walkable)
-                if (tile.view != null)
-                    tile.view.HighlightTiles(true);
+            if (manager.tileByCoord.TryGetValue(neighbor, out var tile)
+                && tile.data.walkable
+                && tile.view != null)
+            {
+                tile.view.HighlightTiles(true);
+                highlightedTiles.Add(tile.view);
+            }
         }
     }
 
     private void ClearAvailableMoves()
     { 
-        foreach (var tile in manager.tileByCoord.Values)
-        {
-            if (tile.view != null)
-                tile.view.HighlightTiles(false);
-        }    
+        foreach (var tile in highlightedTiles)
+            tile.HighlightTiles(false);
+
+        highlightedTiles.Clear();
     }
 
     private void SpawnPlayer()
@@ -123,12 +145,12 @@ public class PlayerMovement : MonoBehaviour
         transform.position = worldCoordPos;
     }
 
-    private void ActionsOnStepFinished()
+    private void AfterStep()
     {
         OnStepFinished?.Invoke();
         ClearAvailableMoves();
-        if (canMove) ShowAvailableMoves();
+        if (CanMove) ShowAvailableMoves();
     }
 
-    public void SetMovePermission(bool state) => canMove = state;
+    public void SetMovePermission(bool state) => CanMove = state;
 }
