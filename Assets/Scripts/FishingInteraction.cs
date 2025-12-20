@@ -12,6 +12,8 @@ public class FishingInteraction : MonoBehaviour
 
     public bool CanFish { get; private set; } = true;
 
+    public event System.Action OnFishCaught;
+
     private PlayerInput playerInput;
     private InputAction action;
 
@@ -72,7 +74,10 @@ public class FishingInteraction : MonoBehaviour
         string message = isCaught ? "Caught!" : "Got Away..";
         
         if (isCaught)
+        {
+            OnFishCaught?.Invoke();
             yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/4, 1.4f));
+        }
         else
             yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/6, 0.8f));
 
