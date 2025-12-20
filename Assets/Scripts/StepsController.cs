@@ -4,9 +4,9 @@ using UnityEngine;
 public class StepsController : MonoBehaviour
 {
     [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private float maxSteps = 10;
+    [SerializeField] private int maxSteps = 10;
 
-    private float stepsLeft;
+    private int stepsLeft;
 
     private TextMeshProUGUI stepsText;
 
@@ -37,7 +37,11 @@ public class StepsController : MonoBehaviour
         stepsLeft = Mathf.Clamp(stepsLeft, 0, maxSteps);
 
         UpdateText();
-        if (stepsLeft == 0) Debug.Log("No steps left");
+        if (stepsLeft == 0)
+        {
+            playerMovement.SetMovePermission(false);
+            Debug.Log("No steps left");
+        }
     }
 
     private void UpdateText()

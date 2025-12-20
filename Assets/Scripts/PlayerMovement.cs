@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private IslandManager manager;
     [SerializeField, Range(0f, 0.5f)] private float moveDuration = 0.25f;
 
+    private bool canMove = true;
     private bool isMoving;
     private HexCoord? queuedStep;
 
@@ -57,7 +58,7 @@ public class PlayerMovement : MonoBehaviour
         if (isMoving) { queuedStep = clickedPos; return; }
         if (queuedStep.HasValue && queuedStep.Value.Equals(clickedPos)) return;
 
-        StartCoroutine(MoveTo(clickedPos));
+        if (canMove) StartCoroutine(MoveTo(clickedPos));
     }
 
     private IEnumerator MoveTo(HexCoord target)
@@ -81,8 +82,7 @@ public class PlayerMovement : MonoBehaviour
         transform.position = end;
         isMoving = false;
 
-        OnStepFinished?.Invoke();
-        ShowAvailableMoves();
+        ActionsOnStepFinished();
 
         if (queuedStep.HasValue)
         {
@@ -95,7 +95,6 @@ public class PlayerMovement : MonoBehaviour
     private void ShowAvailableMoves()
     {
         HexCoord current = manager.Layout.WorldToHex(transform.position);
-        ClearAvailableMoves();
 
         foreach (var dir in HexDirectionExtensions.hexDirections)
         {
@@ -123,4 +122,13 @@ public class PlayerMovement : MonoBehaviour
 
         transform.position = worldCoordPos;
     }
+
+    private void ActionsOnStepFinished()
+    {
+        OnStepFinished?.Invoke();
+        ClearAvailableMoves();
+        if (canMove) ShowAvailableMoves();
+    }
+
+    public void SetMovePermission(bool state) => canMove = state;
 }
