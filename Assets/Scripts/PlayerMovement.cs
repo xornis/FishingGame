@@ -11,6 +11,8 @@ public class PlayerMovement : MonoBehaviour
     private bool isMoving;
     private HexCoord? queuedStep;
 
+    public event System.Action OnStepFinished;
+
     private PlayerInput playerInput;
     private InputAction action;
 
@@ -79,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
         transform.position = end;
         isMoving = false;
 
+        OnStepFinished?.Invoke();
         ShowAvailableMoves();
 
         if (queuedStep.HasValue)
