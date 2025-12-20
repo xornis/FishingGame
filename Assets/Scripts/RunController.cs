@@ -38,7 +38,7 @@ public class RunController : MonoBehaviour
         AddStepsWalked(1);
         SubstractSteps(1);
 
-        if (StepsLeft == 0)
+        if (StepsLeft <= 0)
         {
             playerMovement.SetMovePermission(false);
             fishingInteraction.SetFishingPermission(false);
