@@ -10,10 +10,10 @@ public class FishingInteraction : MonoBehaviour
 
     [SerializeField] private IslandManager manager;
 
+    public bool CanFish { get; private set; } = true;
+
     private PlayerInput playerInput;
     private InputAction action;
-
-    private bool canFish = true;
 
     private void Awake()
     {
@@ -51,9 +51,9 @@ public class FishingInteraction : MonoBehaviour
         if (currentPos.Distance(clickedPos) != 1) return;
         if (!manager.tileByCoord.TryGetValue(clickedPos, out var tile)) return;
 
-        if (tile.data.fishable && canFish)
+        if (tile.data.fishable && CanFish)
         {
-            canFish = false;
+            CanFish = false;
             StartCoroutine(WaitForFishAndCatch(tile, hitTransform));
         }
     }
@@ -78,7 +78,7 @@ public class FishingInteraction : MonoBehaviour
 
         Debug.Log(message);
 
-        canFish = true;
+        CanFish = true;
     }
 
     private IEnumerator AnimateScalePing(Transform targetTransform, float duration, float animationStrength)
@@ -120,4 +120,6 @@ public class FishingInteraction : MonoBehaviour
             _ => 1f
         };
     }
+
+    public void SetFishingPermission(bool state) => CanFish = state;
 }
