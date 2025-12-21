@@ -5,29 +5,34 @@ using UnityEngine;
 public class UIController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI stepsText;
+    [SerializeField] private TextMeshProUGUI fishTriesText;
     [SerializeField] private GameObject endRunPanel;
     [SerializeField] private TextMeshProUGUI fishCaughtText;
     [SerializeField] private TextMeshProUGUI stepsWalkedText;
 
     [SerializeField] private RunController runController;
     [SerializeField] private PlayerMovement playerMovement;
+    [SerializeField] private FishingInteraction fishingInteraction;
 
     private void Start()
     {
         ToggleGameObject(endRunPanel, false);
         UpdateStepsText();
+        UpdateFishTriesText();
     }
 
     private void OnEnable()
     {
         runController.OnRunEnded += OnRunEnded;
         playerMovement.OnStepFinished += UpdateStepsText;
+        fishingInteraction.OnFishTry += UpdateFishTriesText;
     }
 
     private void OnDisable()
     {
         runController.OnRunEnded -= OnRunEnded;
         playerMovement.OnStepFinished -= UpdateStepsText;
+        fishingInteraction.OnFishTry -= UpdateFishTriesText;
     }
 
     private void OnRunEnded()
@@ -40,6 +45,7 @@ public class UIController : MonoBehaviour
     }
 
     private void UpdateStepsText() => stepsText.text = $"{runController.StepsLeft}/{runController.MaxSteps}";
+    private void UpdateFishTriesText() => fishTriesText.text = $"{runController.FishTriesLeft}/{runController.MaxFishTries}";
     private void ToggleGameObject(GameObject gameObject, bool state) => gameObject.SetActive(state);
     private void SetStepsWalkedText() => stepsWalkedText.text = $"Steps Walked: {runController.StepsWalked}";
     private void SetFishCaughtText() => fishCaughtText.text = $"Fish Caught: {runController.FishCaught}";

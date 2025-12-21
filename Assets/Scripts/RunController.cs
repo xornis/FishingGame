@@ -10,6 +10,9 @@ public class RunController : MonoBehaviour
     public int MaxSteps { get; private set; } = 10;
     public int StepsLeft { get; private set; }
 
+    public int MaxFishTries { get; private set; } = 5;
+    public int FishTriesLeft { get; private set; }
+
     public int StepsWalked { get; private set; } = 0;
     public int FishCaught { get; private set; } = 0;
 
@@ -19,18 +22,23 @@ public class RunController : MonoBehaviour
     {
         playerMovement.OnStepFinished += OnStepFinished;
         fishingInteraction.OnFishCaught += OnFishCaught;
+        fishingInteraction.OnFishTry += OnFishTry;
     }
 
     private void OnDisable()
     {
         playerMovement.OnStepFinished -= OnStepFinished;
         fishingInteraction.OnFishCaught -= OnFishCaught;
+        fishingInteraction.OnFishTry -= OnFishTry;
     }
 
     private void Start()
     {
         StepsLeft = MaxSteps;
         StepsLeft = Mathf.Clamp(StepsLeft, 0, MaxSteps);
+
+        FishTriesLeft = MaxFishTries;
+        FishTriesLeft = Mathf.Clamp(FishTriesLeft, 0, MaxFishTries);
     }
 
     private void OnStepFinished()
@@ -41,9 +49,31 @@ public class RunController : MonoBehaviour
         if (StepsLeft <= 0)
         {
             playerMovement.SetMovePermission(false);
-            fishingInteraction.SetFishingPermission(false);
-            
             Debug.Log("No steps left");
+        }
+
+        CheckEndRun();
+    }
+
+    private void OnFishTry()
+    {
+        SubstractFishTries(1);
+
+        if (FishTriesLeft <= 0)
+        {
+            fishingInteraction.SetFishingPermission(false);
+            Debug.Log("No fish tries left");
+        }
+
+        CheckEndRun();
+    }
+
+    private void CheckEndRun()
+    {
+        if (StepsLeft <= 0 && FishTriesLeft <= 0)
+        {
+            fishingInteraction.SetFishingPermission(false);
+            playerMovement.SetMovePermission(false);
 
             OnRunEnded?.Invoke();
         }
@@ -52,6 +82,8 @@ public class RunController : MonoBehaviour
     private void OnFishCaught() => AddFishCaught(1);
 
     public void SubstractSteps(int amount) => StepsLeft -= amount;
+
+    public void SubstractFishTries(int amount) => FishTriesLeft -= amount;
 
     public void AddFishCaught(int amount) => FishCaught += amount;
     public void AddStepsWalked(int amount) => StepsWalked += amount;
