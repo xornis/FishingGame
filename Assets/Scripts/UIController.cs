@@ -5,8 +5,9 @@ using UnityEngine;
 public class UIController : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI stepsText;
-    [SerializeField] private TextMeshProUGUI fishTriesText;
+    [SerializeField] private TextMeshProUGUI fishText;
     [SerializeField] private GameObject endRunPanel;
+    [SerializeField] private TextMeshProUGUI fishTriesText;
     [SerializeField] private TextMeshProUGUI fishCaughtText;
     [SerializeField] private TextMeshProUGUI stepsWalkedText;
 
@@ -42,13 +43,15 @@ public class UIController : MonoBehaviour
         StartCoroutine(ScalePingAnimation(endRunPanel.transform, 2f, 1.1f));
         SetStepsWalkedText();
         SetFishCaughtText();
+        SetFishTriesText();
     }
 
     private void UpdateStepsText() => stepsText.text = $"{runController.StepsLeft}/{runController.MaxSteps}";
-    private void UpdateFishTriesText() => fishTriesText.text = $"{runController.FishTriesLeft}/{runController.MaxFishTries}";
+    private void UpdateFishTriesText() => fishText.text = $"{runController.FishTriesLeft}/{runController.MaxFishTries}";
     private void ToggleGameObject(GameObject gameObject, bool state) => gameObject.SetActive(state);
     private void SetStepsWalkedText() => stepsWalkedText.text = $"Steps Walked: {runController.StepsWalked}";
     private void SetFishCaughtText() => fishCaughtText.text = $"Fish Caught: {runController.FishCaught}";
+    private void SetFishTriesText() => fishTriesText.text = $"Fishing Tries: {runController.FishTries}";
 
     private IEnumerator ScalePingAnimation(Transform targetTransform, float duration, float animationStrength)
     {

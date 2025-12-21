@@ -13,8 +13,9 @@ public class RunController : MonoBehaviour
     public int MaxFishTries { get; private set; } = 5;
     public int FishTriesLeft { get; private set; }
 
-    public int StepsWalked { get; private set; } = 0;
+    public int FishTries { get; private set; } = 0;
     public int FishCaught { get; private set; } = 0;
+    public int StepsWalked { get; private set; } = 0;
 
     public event System.Action OnRunEnded;
 
@@ -57,6 +58,7 @@ public class RunController : MonoBehaviour
 
     private void OnFishTry()
     {
+        AddFishTries(1);
         SubstractFishTries(1);
 
         if (FishTriesLeft <= 0)
@@ -85,8 +87,9 @@ public class RunController : MonoBehaviour
 
     public void SubstractFishTries(int amount) => FishTriesLeft -= amount;
 
-    public void AddFishCaught(int amount) => FishCaught += amount;
     public void AddStepsWalked(int amount) => StepsWalked += amount;
+    public void AddFishCaught(int amount) => FishCaught += amount;
+    public void AddFishTries(int amount) => FishTries += amount;
 
     public void RestartRun() => SceneManager.LoadScene(0);
 }
