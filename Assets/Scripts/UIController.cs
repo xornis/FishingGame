@@ -7,6 +7,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI stepsText;
     [SerializeField] private TextMeshProUGUI fishText;
     [SerializeField] private GameObject endRunPanel;
+    [SerializeField] private GameObject endRunResultPanel;
     [SerializeField] private TextMeshProUGUI fishTriesText;
     [SerializeField] private TextMeshProUGUI fishCaughtText;
     [SerializeField] private TextMeshProUGUI stepsWalkedText;
@@ -40,7 +41,7 @@ public class UIController : MonoBehaviour
     {
         ToggleGameObject(endRunPanel, true);
         StartCoroutine(FadeAnimation(endRunPanel, 2f));
-        StartCoroutine(ScalePingAnimation(endRunPanel.transform, 2f, 1.1f));
+        StartCoroutine(ScalePingAnimation(endRunResultPanel.transform, 2f, 1.1f));
         SetStepsWalkedText();
         SetFishCaughtText();
         SetFishTriesText();

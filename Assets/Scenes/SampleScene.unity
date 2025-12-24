@@ -947,6 +947,7 @@ MonoBehaviour:
   UIController: {fileID: 1298899553}
   playerMovement: {fileID: 1076604562}
   fishingInteraction: {fileID: 1076604566}
+  islandManager: {fileID: 1253531103}
 --- !u!4 &775456355
 Transform:
   m_ObjectHideFlags: 0
@@ -1675,6 +1676,7 @@ MonoBehaviour:
   stepsText: {fileID: 1338846189}
   fishText: {fileID: 1474444516}
   endRunPanel: {fileID: 1728529800}
+  endRunResultPanel: {fileID: 797810602}
   fishTriesText: {fileID: 277655243}
   fishCaughtText: {fileID: 1048835413}
   stepsWalkedText: {fileID: 225492491}

@@ -1,3 +1,4 @@
+using HexDungeon;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -6,6 +7,7 @@ public class RunController : MonoBehaviour
     [SerializeField] private UIController UIController;
     [SerializeField] private PlayerMovement playerMovement;
     [SerializeField] private FishingInteraction fishingInteraction;
+    [SerializeField] private IslandManager islandManager;
 
     public int MaxSteps { get; private set; } = 10;
     public int StepsLeft { get; private set; }
@@ -72,13 +74,32 @@ public class RunController : MonoBehaviour
 
     private void CheckEndRun()
     {
-        if (StepsLeft <= 0 && FishTriesLeft <= 0)
+        if (FishTriesLeft <= 0)
         {
             fishingInteraction.SetFishingPermission(false);
             playerMovement.SetMovePermission(false);
 
             OnRunEnded?.Invoke();
         }
+        if (StepsLeft <= 0 && !HasReachableFishTile()) OnRunEnded?.Invoke();
+    }
+
+    private bool HasReachableFishTile()
+    {
+        HexCoord playerPos = islandManager.Layout.WorldToHex(playerMovement.transform.position);
+
+        foreach (var dir in HexDirectionExtensions.hexDirections)
+        {
+            HexCoord neighbor = playerPos.Neighbor(dir);
+
+            if (!islandManager.tileByCoord.TryGetValue(neighbor, out var tile))
+                continue;
+
+            if (tile.data.fishable)
+                return true;
+        }
+
+        return false;
     }
 
     private void OnFishCaught() => AddFishCaught(1);
