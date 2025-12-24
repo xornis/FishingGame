@@ -76,14 +76,14 @@ public class IslandManager : MonoBehaviour
         };
     }
 
-    public HexCoord GetRandomWalkableCoord()
+    public HexCoord GetRandomGroundTileCoord()
     {
-        var walkableTiles = new List<HexCoord>();
+        var groundTiles = new List<HexCoord>();
 
         foreach (var tile in tileByCoord)
-            if (tile.Value.data.walkable)
-                walkableTiles.Add(tile.Key);
+            if (tile.Value.data.tileType == TileData.TileType.Ground)
+                groundTiles.Add(tile.Key);
 
-        return walkableTiles[Random.Range(0, walkableTiles.Count)];
+        return groundTiles[Random.Range(0, groundTiles.Count)];
     }
 }

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Fish Tile
   m_EditorClassIdentifier: 
   prefab: {fileID: 5268574295593296186, guid: a6625749c0d9f3a4799f2e6ca4f0b16b, type: 3}
+  tileType: 1
   walkable: 0
   fishable: 1
