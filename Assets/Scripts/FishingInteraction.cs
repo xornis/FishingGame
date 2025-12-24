@@ -10,10 +10,14 @@ public class FishingInteraction : MonoBehaviour
 
     [SerializeField] private IslandManager manager;
 
+    public bool CanFish { get; private set; } = true;
+    private bool isFishing;
+
+    public event System.Action OnFishCaught;
+    public event System.Action OnFishTry;
+
     private PlayerInput playerInput;
     private InputAction action;
-
-    private bool canFish = true;
 
     private void Awake()
     {
@@ -33,6 +37,16 @@ public class FishingInteraction : MonoBehaviour
 
     private void OnClick(InputAction.CallbackContext ctx)
     {
+        if (!TryGetClickedFishTile(out HexCoord target, out TileInstance tile, out Transform hitTransform)) return;
+        TryCatch(target, tile, hitTransform);
+    }
+
+    private bool TryGetClickedFishTile(out HexCoord target, out TileInstance tile, out Transform hitTransform)
+    {
+        target = default;
+        tile = default;
+        hitTransform = default;
+
         var layout = manager.Layout;
 
         Vector3 screenPos = Mouse.current.position.ReadValue();
@@ -43,23 +57,27 @@ public class FishingInteraction : MonoBehaviour
 
         RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
 
-        TryCatch(clickedPos, currentPos, hit.transform);
+        if (currentPos.Distance(clickedPos) != 1) return false;
+        if (!manager.tileByCoord.TryGetValue(clickedPos, out var clickedTile)) return false;
+        if (!clickedTile.data.fishable) return false;
+
+        target = clickedPos;
+        tile = clickedTile;
+        hitTransform = hit.transform;
+        return true;
     }
 
-    private void TryCatch(in HexCoord clickedPos, in HexCoord currentPos, Transform hitTransform)
+    private void TryCatch(in HexCoord clickedPos, in TileInstance tile, in Transform hitTransform)
     {
-        if (currentPos.Distance(clickedPos) != 1) return;
-        if (!manager.tileByCoord.TryGetValue(clickedPos, out var tile)) return;
-
-        if (tile.data.fishable && canFish)
-        {
-            canFish = false;
-            StartCoroutine(WaitForFishAndCatch(tile, hitTransform));
-        }
+        if (!CanFish) return;
+        if (isFishing) return;
+        StartCoroutine(WaitForFishAndCatch(tile, hitTransform));
     }
 
     private IEnumerator WaitForFishAndCatch(TileInstance tile, Transform hitTransform)
     {
+        CanFish = false;
+
         float chance = baseCatchChance * GetChanceMultiplier(tile.fishQuality);
         float waitTime = baseWaitingForFishInSeconds * GetTimeMultiplier(tile.fishQuality);
 
@@ -70,15 +88,20 @@ public class FishingInteraction : MonoBehaviour
 
         bool isCaught = Random.value < chance;
         string message = isCaught ? "Caught!" : "Got Away..";
+
+        OnFishTry?.Invoke();
         
         if (isCaught)
+        {
+            OnFishCaught?.Invoke();
             yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/4, 1.4f));
+        }
         else
             yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/6, 0.8f));
 
         Debug.Log(message);
 
-        canFish = true;
+        CanFish = true;
     }
 
     private IEnumerator AnimateScalePing(Transform targetTransform, float duration, float animationStrength)
@@ -119,5 +142,11 @@ public class FishingInteraction : MonoBehaviour
             FishTileQuality.Rich => 0.8f,
             _ => 1f
         };
+    }
+
+    public void SetFishingPermission(bool state)
+    {
+        CanFish = state;
+        isFishing = !state;
     }
 }
