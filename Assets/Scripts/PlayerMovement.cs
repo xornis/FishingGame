@@ -152,5 +152,6 @@ public class PlayerMovement : MonoBehaviour
         if (CanMove) ShowAvailableMoves();
     }
 
+    public void ClearQueuedStep() => queuedStep = null;
     public void SetMovePermission(bool state) => CanMove = state;
 }
