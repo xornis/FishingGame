@@ -138,7 +138,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void SpawnPlayer()
     {
-        HexCoord randomCoord = manager.GetRandomWalkableCoord();
+        HexCoord randomCoord = manager.GetRandomGroundTileCoord();
         Vector3 worldCoordPos = manager.Layout.HexToWorld(randomCoord);
         worldCoordPos.z = transform.position.z;
 
@@ -152,5 +152,6 @@ public class PlayerMovement : MonoBehaviour
         if (CanMove) ShowAvailableMoves();
     }
 
+    public void ClearQueuedStep() => queuedStep = null;
     public void SetMovePermission(bool state) => CanMove = state;
 }

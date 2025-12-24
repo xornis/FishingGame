@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Rock Tile
   m_EditorClassIdentifier: 
   prefab: {fileID: 5268574295593296186, guid: 735943812067f6c4784fe48bbd0429b1, type: 3}
+  tileType: 2
   walkable: 0
   fishable: 0

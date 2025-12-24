@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: Sand Tile
   m_EditorClassIdentifier: 
   prefab: {fileID: 5268574295593296186, guid: ab571a6b325fe7445b296cba7940cf02, type: 3}
+  tileType: 3
   walkable: 1
   fishable: 0
