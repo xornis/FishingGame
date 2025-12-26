@@ -53,9 +53,6 @@ public class RunController : MonoBehaviour
 
         if (StepsLeft <= 0)
             playerMovement.SetMovePermission(false);
-        
-        if (StepsLeft <= 1) 
-            playerMovement.ClearQueuedStep();
 
         CheckEndRun();
     }

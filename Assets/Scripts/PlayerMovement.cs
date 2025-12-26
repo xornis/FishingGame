@@ -10,8 +10,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField, Range(0f, 0.5f)] private float baseMoveDuration = 0.25f;
 
     public bool CanMove { get; private set; } = true;
-    private bool isMoving;
-    private HexCoord? queuedStep;
     private readonly List<TileView> highlightedTiles = new List<TileView>();
 
     public event System.Action<TileInstance> OnStepFinished;
@@ -73,10 +71,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!CanMove) return;
 
-        if (isMoving) { queuedStep = target; return; }
-
-        if (queuedStep.HasValue && queuedStep.Value.Equals(target)) return;
-
         StartCoroutine(MoveTo(target));
     }
 
@@ -87,12 +81,10 @@ public class PlayerMovement : MonoBehaviour
         StartMove();
         yield return AnimateMoveTo(target, tile);
         EndMove(tile);
-
-        TryContinueQueuedStep(tile);
     }
 
-    private void StartMove() => isMoving = true;
-    private void EndMove(TileInstance tile) { isMoving = false; AfterStep(tile); }
+    private void StartMove() => CanMove = false;
+    private void EndMove(TileInstance tile) { CanMove = true; AfterStep(tile); }
 
     private IEnumerator AnimateMoveTo(HexCoord target, TileInstance tile)
     {
@@ -111,15 +103,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         transform.position = end;
-    }
-
-    private void TryContinueQueuedStep(TileInstance tile)
-    {
-        if (!queuedStep.HasValue) return;
-
-        var next = queuedStep.Value;
-        queuedStep = null;
-        StartCoroutine(MoveTo(next));
     }
 
     private void ShowAvailableMoves()
@@ -163,6 +146,5 @@ public class PlayerMovement : MonoBehaviour
         if (CanMove) ShowAvailableMoves();
     }
 
-    public void ClearQueuedStep() => queuedStep = null;
     public void SetMovePermission(bool state) => CanMove = state;
 }
