@@ -1,0 +1,76 @@
+using HexDungeon;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "Tile Generation Rules", menuName = "Scriptable Objects/Tile Generation Rules")]
+public class TileGenerationRules : ScriptableObject
+{
+    public TileData groundTile;
+    public TileData fishTile;
+    public TileData rockTile;
+    public TileData sandTile;
+
+    [Range(0f, 1f)] public float fishTileChanceInOuterLayer = 0.25f;
+    [Range(0f, 1f)] public float sandTileChanceInInnerLayer = 0.5f;
+    [Range(0f, 1f)] public float rockChance = 0.4f;
+
+    public TileData GetBaseTile(HexCoord coord, HashSet<HexCoord> allCoords)
+    {
+        if (IsOuterEdgeLayer(coord, allCoords))
+            return GetOuterEdgeTile(coord);
+
+        if (IsInnerEdgeLayer(coord, allCoords))
+            return GetInnerEdgeTile(coord);
+
+        return groundTile;
+    }
+
+    private TileData GetOuterEdgeTile(HexCoord coord) => Random.value < fishTileChanceInOuterLayer ? fishTile : sandTile;
+    private TileData GetInnerEdgeTile(HexCoord coord) => Random.value < sandTileChanceInInnerLayer ? sandTile : groundTile;
+
+    public TileData ApplyRock(HexCoord coord, Dictionary<HexCoord, TileInstance> tiles)
+    {
+        if (!EligibleForRock(coord, tiles)) return tiles[coord].data;
+        if (Random.value < rockChance) return rockTile;
+        return tiles[coord].data;
+    }
+
+    private bool IsOuterEdgeLayer(HexCoord coord, HashSet<HexCoord> allCoords)
+    {
+        foreach (var dir in HexDirectionExtensions.hexDirections)
+            if (!allCoords.Contains(coord.Neighbor(dir)))
+                return true;
+        return false;
+    }
+
+    private bool IsInnerEdgeLayer(HexCoord coord, HashSet<HexCoord> allCoords)
+    {
+        if (IsOuterEdgeLayer(coord, allCoords)) return true;
+
+        foreach (var dir in HexDirectionExtensions.hexDirections)
+        {
+            var neighbor = coord.Neighbor(dir);
+
+            if (allCoords.Contains(neighbor) && IsOuterEdgeLayer(neighbor, allCoords))
+                return true;
+        }
+
+        return false;
+    }
+
+    private bool EligibleForRock(HexCoord coord, Dictionary<HexCoord, TileInstance> tilesByCoord)
+    {
+        if (tilesByCoord[coord].data.tileType == TileData.TileType.Fish
+            || tilesByCoord[coord].data.tileType == TileData.TileType.Sand) return false;
+
+        foreach (var dir in HexDirectionExtensions.hexDirections)
+            if (!tilesByCoord.ContainsKey(coord.Neighbor(dir)))
+                return false;
+
+        foreach (var dir in HexDirectionExtensions.hexDirections)
+            if (tilesByCoord.TryGetValue(coord.Neighbor(dir), out var neighborTile) && neighborTile.data == fishTile)
+                return false;
+
+        return true;
+    }
+}

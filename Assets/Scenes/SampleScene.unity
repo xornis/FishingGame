@@ -1555,7 +1555,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generator: {fileID: 1253531101}
-  tileAssigner: {fileID: 11400000, guid: db6552e818959dc4ab53170e285f26dc, type: 2}
+  tileGenerationRules: {fileID: 11400000, guid: db6552e818959dc4ab53170e285f26dc, type: 2}
 --- !u!1 &1298899548
 GameObject:
   m_ObjectHideFlags: 0

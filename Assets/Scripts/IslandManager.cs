@@ -5,7 +5,7 @@ using UnityEngine;
 public class IslandManager : MonoBehaviour
 {
     [SerializeField] private HexRoomGenerator generator;
-    [SerializeField] private TileAssigner tileAssigner;
+    [SerializeField] private TileGenerationRules tileGenerationRules;
 
     public event System.Action OnIslandReady;
 
@@ -26,10 +26,10 @@ public class IslandManager : MonoBehaviour
             tileByCoord[coord] = new TileInstance { coord = coord };
 
         foreach (var coord in coordSet)
-            tileByCoord[coord].data = tileAssigner.AssignBaseTile(coord, coordSet);
+            tileByCoord[coord].data = tileGenerationRules.GetBaseTile(coord, coordSet);
 
         foreach (var coord in coordSet)
-            tileByCoord[coord].data = tileAssigner.ApplyRock(coord, tileByCoord);
+            tileByCoord[coord].data = tileGenerationRules.ApplyRock(coord, tileByCoord);
 
         foreach (var coord in coordSet)
         {
