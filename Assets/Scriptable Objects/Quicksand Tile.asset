@@ -17,5 +17,4 @@ MonoBehaviour:
   walkable: 1
   fishable: 0
   stepCost: 2
-  startMoveDurationMultiplier: 0.9
-  endMoveDurationMultiplier: 0.65
+  moveDurationScale: 1.65

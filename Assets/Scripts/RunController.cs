@@ -66,10 +66,7 @@ public class RunController : MonoBehaviour
         SubstractFishTries(1);
 
         if (FishTriesLeft <= 0)
-        {
             fishingInteraction.SetFishingPermission(false);
-            Debug.Log("No fish tries left");
-        }
 
         CheckEndRun();
     }

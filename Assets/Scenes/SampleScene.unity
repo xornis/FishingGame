@@ -1314,7 +1314,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 1253531103}
-  moveDuration: 0.25
+  baseMoveDuration: 0.35
 --- !u!114 &1076604563
 MonoBehaviour:
   m_ObjectHideFlags: 0

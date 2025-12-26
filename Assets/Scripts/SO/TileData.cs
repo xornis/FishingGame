@@ -19,4 +19,5 @@ public class TileData : ScriptableObject
 
     [Header("only if walkable is on")]
     public int stepCost;
+    [Range(0f, 3f)] public float moveDurationScale;
 }

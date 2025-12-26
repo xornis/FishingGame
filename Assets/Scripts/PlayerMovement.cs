@@ -7,7 +7,7 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private IslandManager manager;
-    [SerializeField, Range(0f, 0.5f)] private float moveDuration = 0.25f;
+    [SerializeField, Range(0f, 0.5f)] private float baseMoveDuration = 0.25f;
 
     public bool CanMove { get; private set; } = true;
     private bool isMoving;
@@ -82,14 +82,26 @@ public class PlayerMovement : MonoBehaviour
 
     private IEnumerator MoveTo(HexCoord target)
     {
-        isMoving = true;
+        var tile = manager.tileByCoord[target];
 
+        StartMove();
+        yield return AnimateMoveTo(target, tile);
+        EndMove(tile);
+
+        TryContinueQueuedStep(tile);
+    }
+
+    private void StartMove() => isMoving = true;
+    private void EndMove(TileInstance tile) { isMoving = false; AfterStep(tile); }
+
+    private IEnumerator AnimateMoveTo(HexCoord target, TileInstance tile)
+    {
         Vector3 start = transform.position;
         Vector3 end = manager.Layout.HexToWorld(target);
         end.z = start.z;
 
         float timer = 0f;
-        float duration = moveDuration;
+        float duration = baseMoveDuration * tile.data.moveDurationScale;
 
         while (timer < duration)
         {
@@ -99,17 +111,15 @@ public class PlayerMovement : MonoBehaviour
         }
 
         transform.position = end;
-        isMoving = false;
+    }
 
-        var tile = manager.tileByCoord[target];
-        AfterStep(tile);
+    private void TryContinueQueuedStep(TileInstance tile)
+    {
+        if (!queuedStep.HasValue) return;
 
-        if (queuedStep.HasValue)
-        {
-            var next = queuedStep.Value;
-            queuedStep = null;
-            StartCoroutine(MoveTo(next));
-        }
+        var next = queuedStep.Value;
+        queuedStep = null;
+        StartCoroutine(MoveTo(next));
     }
 
     private void ShowAvailableMoves()
