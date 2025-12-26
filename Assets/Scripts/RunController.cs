@@ -44,17 +44,18 @@ public class RunController : MonoBehaviour
         FishTriesLeft = Mathf.Clamp(FishTriesLeft, 0, MaxFishTries);
     }
 
-    private void OnStepFinished()
+    private void OnStepFinished(TileInstance tile)
     {
-        AddStepsWalked(1);
-        SubstractSteps(1);
+        int cost = tile.data.stepCost;
+
+        AddStepsWalked(cost);
+        SubstractSteps(cost);
 
         if (StepsLeft <= 0)
-        {
             playerMovement.SetMovePermission(false);
-            Debug.Log("No steps left");
-        }
-        if (StepsLeft <= 1) playerMovement.ClearQueuedStep();
+        
+        if (StepsLeft <= 1) 
+            playerMovement.ClearQueuedStep();
 
         CheckEndRun();
     }

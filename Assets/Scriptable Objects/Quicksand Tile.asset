@@ -12,7 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6ea095aa84c66d4dac6822af768e473, type: 3}
   m_Name: Quicksand Tile
   m_EditorClassIdentifier: 
-  prefab: {fileID: 5268574295593296186, guid: ab571a6b325fe7445b296cba7940cf02, type: 3}
-  tileType: 3
+  prefab: {fileID: 5268574295593296186, guid: 5e373d7465451364fbd0b9b01f606e43, type: 3}
+  tileType: 4
   walkable: 1
   fishable: 0
+  stepCost: 2
+  startMoveDurationMultiplier: 0.9
+  endMoveDurationMultiplier: 0.65

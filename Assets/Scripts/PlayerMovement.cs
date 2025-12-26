@@ -14,7 +14,7 @@ public class PlayerMovement : MonoBehaviour
     private HexCoord? queuedStep;
     private readonly List<TileView> highlightedTiles = new List<TileView>();
 
-    public event System.Action OnStepFinished;
+    public event System.Action<TileInstance> OnStepFinished;
 
     private PlayerInput playerInput;
     private InputAction action;
@@ -101,7 +101,8 @@ public class PlayerMovement : MonoBehaviour
         transform.position = end;
         isMoving = false;
 
-        AfterStep();
+        var tile = manager.tileByCoord[target];
+        AfterStep(tile);
 
         if (queuedStep.HasValue)
         {
@@ -145,9 +146,9 @@ public class PlayerMovement : MonoBehaviour
         transform.position = worldCoordPos;
     }
 
-    private void AfterStep()
+    private void AfterStep(TileInstance tile)
     {
-        OnStepFinished?.Invoke();
+        OnStepFinished?.Invoke(tile);
         ClearAvailableMoves();
         if (CanMove) ShowAvailableMoves();
     }

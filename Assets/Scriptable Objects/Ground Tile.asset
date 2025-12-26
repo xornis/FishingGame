@@ -13,5 +13,9 @@ MonoBehaviour:
   m_Name: Ground Tile
   m_EditorClassIdentifier: 
   prefab: {fileID: 5268574295593296186, guid: 4d808a2624700ef4fa5039ff885ec33b, type: 3}
+  tileType: 0
   walkable: 1
   fishable: 0
+  stepCost: 1
+  startMoveDurationMultiplier: 1
+  endMoveDurationMultiplier: 1

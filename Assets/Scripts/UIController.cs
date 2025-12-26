@@ -47,7 +47,7 @@ public class UIController : MonoBehaviour
         SetFishTriesText();
     }
 
-    private void UpdateStepsText() => stepsText.text = $"{runController.StepsLeft}/{runController.MaxSteps}";
+    private void UpdateStepsText(TileInstance _ = null) => stepsText.text = $"{runController.StepsLeft}/{runController.MaxSteps}";
     private void UpdateFishTriesText() => fishText.text = $"{runController.FishTriesLeft}/{runController.MaxFishTries}";
     private void ToggleGameObject(GameObject gameObject, bool state) => gameObject.SetActive(state);
     private void SetStepsWalkedText() => stepsWalkedText.text = $"Steps Walked: {runController.StepsWalked}";

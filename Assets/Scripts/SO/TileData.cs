@@ -16,4 +16,7 @@ public class TileData : ScriptableObject
     public TileType tileType;
     public bool walkable;
     public bool fishable;
+
+    [Header("only if walkable is on")]
+    public int stepCost;
 }

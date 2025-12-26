@@ -16,3 +16,6 @@ MonoBehaviour:
   tileType: 3
   walkable: 1
   fishable: 0
+  stepCost: 1
+  startMoveDurationMultiplier: 0.9
+  endMoveDurationMultiplier: 0.8
