@@ -9,9 +9,11 @@ public class TileGenerationRules : ScriptableObject
     public TileData fishTile;
     public TileData rockTile;
     public TileData sandTile;
+    public TileData quicksandTile;
 
     [Range(0f, 1f)] public float fishTileChanceInOuterLayer = 0.25f;
     [Range(0f, 1f)] public float sandTileChanceInInnerLayer = 0.5f;
+    [Range(0f, 1f)] public float quicksandTileChance = 0.2f;
     [Range(0f, 1f)] public float rockChance = 0.4f;
 
     public TileData GetBaseTile(HexCoord coord, HashSet<HexCoord> allCoords)
@@ -25,8 +27,10 @@ public class TileGenerationRules : ScriptableObject
         return groundTile;
     }
 
-    private TileData GetOuterEdgeTile(HexCoord coord) => Random.value < fishTileChanceInOuterLayer ? fishTile : sandTile;
-    private TileData GetInnerEdgeTile(HexCoord coord) => Random.value < sandTileChanceInInnerLayer ? sandTile : groundTile;
+    private TileData GetOuterEdgeTile(HexCoord coord) => Random.value < fishTileChanceInOuterLayer ? fishTile : GetSandTile(coord);
+    private TileData GetInnerEdgeTile(HexCoord coord) => Random.value < sandTileChanceInInnerLayer ? GetSandTile(coord) : groundTile;
+
+    private TileData GetSandTile(HexCoord coord) => Random.value < quicksandTileChance ? quicksandTile : sandTile;
 
     public TileData ApplyRock(HexCoord coord, Dictionary<HexCoord, TileInstance> tiles)
     {
@@ -45,8 +49,6 @@ public class TileGenerationRules : ScriptableObject
 
     private bool IsInnerEdgeLayer(HexCoord coord, HashSet<HexCoord> allCoords)
     {
-        if (IsOuterEdgeLayer(coord, allCoords)) return true;
-
         foreach (var dir in HexDirectionExtensions.hexDirections)
         {
             var neighbor = coord.Neighbor(dir);

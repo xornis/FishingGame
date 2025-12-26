@@ -8,7 +8,8 @@ public class TileData : ScriptableObject
         Ground,
         Fish,
         Rock,
-        Sand
+        Sand,
+        Quicksand,
     }
 
     public GameObject prefab;
