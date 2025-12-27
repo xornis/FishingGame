@@ -6,8 +6,9 @@ public class IslandManager : MonoBehaviour
 {
     [SerializeField] private HexRoomGenerator generator;
     [SerializeField] private TileGenerationRules tileGenerationRules;
-
-    public event System.Action OnIslandReady;
+    
+    [Header("Events")]
+    [SerializeField] private GameEvents gameEvents;
 
     public HexLayout Layout { get; private set; }
     public float HexScale { get; private set; }
@@ -37,7 +38,7 @@ public class IslandManager : MonoBehaviour
             SpawnTile(coord, tileByCoord[coord]);
         }
 
-        OnIslandReady?.Invoke();
+        gameEvents.CallIslandReady();
     }
 
     private void SpawnTile(HexCoord coord, TileInstance tile)

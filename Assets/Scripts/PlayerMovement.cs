@@ -9,10 +9,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private IslandManager manager;
     [SerializeField, Range(0f, 0.5f)] private float baseMoveDuration = 0.25f;
 
+    [Header("Events")]
+    [SerializeField] private GameEvents gameEvents;
+
     public bool CanMove { get; private set; } = true;
     private readonly List<TileView> highlightedTiles = new List<TileView>();
-
-    public event System.Action<TileInstance> OnStepFinished;
 
     private PlayerInput playerInput;
     private InputAction action;
@@ -25,14 +26,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        manager.OnIslandReady += OnIslandReady;
+        gameEvents.OnIslandReady += OnIslandReady;
         action.performed += OnClick;
+
+        gameEvents.OnSetMovementPermission += SetMovementPermission;
     }
 
     private void OnDisable()
     {
-        manager.OnIslandReady -= OnIslandReady;
+        gameEvents.OnIslandReady -= OnIslandReady;
         action.performed -= OnClick;
+
+        gameEvents.OnSetMovementPermission -= SetMovementPermission;
     }
 
     private void OnIslandReady()
@@ -141,10 +146,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void AfterStep(TileInstance tile)
     {
-        OnStepFinished?.Invoke(tile);
+        gameEvents.CallStepEnded(tile);
         ClearAvailableMoves();
         if (CanMove) ShowAvailableMoves();
     }
 
-    public void SetMovePermission(bool state) => CanMove = state;
+    private void SetMovementPermission(bool state) => CanMove = state;
 }

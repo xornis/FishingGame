@@ -4,6 +4,12 @@ using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
+    [SerializeField] private RunController runController;
+
+    [Header("Events")]
+    [SerializeField] private GameEvents gameEvents;
+
+    [Header("Settings")]
     [SerializeField] private TextMeshProUGUI stepsText;
     [SerializeField] private TextMeshProUGUI fishText;
     [SerializeField] private GameObject endRunPanel;
@@ -11,10 +17,6 @@ public class UIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI fishTriesText;
     [SerializeField] private TextMeshProUGUI fishCaughtText;
     [SerializeField] private TextMeshProUGUI stepsWalkedText;
-
-    [SerializeField] private RunController runController;
-    [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private FishingInteraction fishingInteraction;
 
     private void Start()
     {
@@ -25,16 +27,16 @@ public class UIController : MonoBehaviour
 
     private void OnEnable()
     {
-        runController.OnRunEnded += OnRunEnded;
-        playerMovement.OnStepFinished += UpdateStepsText;
-        fishingInteraction.OnFishTry += UpdateFishTriesText;
+        gameEvents.OnRunEnded += OnRunEnded;
+        gameEvents.OnStepEnded+= UpdateStepsText;
+        gameEvents.OnFishingAttempted += UpdateFishTriesText;
     }
 
     private void OnDisable()
     {
-        runController.OnRunEnded -= OnRunEnded;
-        playerMovement.OnStepFinished -= UpdateStepsText;
-        fishingInteraction.OnFishTry -= UpdateFishTriesText;
+        gameEvents.OnRunEnded -= OnRunEnded;
+        gameEvents.OnStepEnded -= UpdateStepsText;
+        gameEvents.OnFishingAttempted -= UpdateFishTriesText;
     }
 
     private void OnRunEnded()
@@ -47,12 +49,12 @@ public class UIController : MonoBehaviour
         SetFishTriesText();
     }
 
-    private void UpdateStepsText(TileInstance _ = null) => stepsText.text = $"{runController.StepsLeft}/{runController.MaxSteps}";
-    private void UpdateFishTriesText() => fishText.text = $"{runController.FishTriesLeft}/{runController.MaxFishTries}";
+    private void UpdateStepsText(TileInstance _ = null) => stepsText.text = $"{runController.StepsLeft}/{runController.maxSteps}";
+    private void UpdateFishTriesText() => fishText.text = $"{runController.FishingAttemptsLeft}/{runController.maxFishingAttempts}";
     private void ToggleGameObject(GameObject gameObject, bool state) => gameObject.SetActive(state);
-    private void SetStepsWalkedText() => stepsWalkedText.text = $"Steps Walked: {runController.StepsWalked}";
-    private void SetFishCaughtText() => fishCaughtText.text = $"Fish Caught: {runController.FishCaught}";
-    private void SetFishTriesText() => fishTriesText.text = $"Fishing Tries: {runController.FishTries}";
+    private void SetStepsWalkedText() => stepsWalkedText.text = $"Steps Walked: {runController.TotalStepsWalked}";
+    private void SetFishCaughtText() => fishCaughtText.text = $"Fish Caught: {runController.TotalFishCaught}";
+    private void SetFishTriesText() => fishTriesText.text = $"Fishing Tries: {runController.TotalFishingAttempts}";
 
     private IEnumerator ScalePingAnimation(Transform targetTransform, float duration, float animationStrength)
     {

@@ -9,12 +9,12 @@ public class FishingInteraction : MonoBehaviour
     [SerializeField] private float baseWaitingForFishInSeconds = 2f;
 
     [SerializeField] private IslandManager manager;
+    
+    [Header("Events")]
+    [SerializeField] private GameEvents gameEvents;
 
     public bool CanFish { get; private set; } = true;
     private bool isFishing;
-
-    public event System.Action OnFishCaught;
-    public event System.Action OnFishTry;
 
     private PlayerInput playerInput;
     private InputAction action;
@@ -28,11 +28,13 @@ public class FishingInteraction : MonoBehaviour
     private void OnEnable()
     {
         action.performed += OnClick;
+        gameEvents.OnSetFishingPermission += SetFishingPermission;
     }
 
     private void OnDisable()
     {
         action.performed -= OnClick;
+        gameEvents.OnSetFishingPermission -= SetFishingPermission;
     }
 
     private void OnClick(InputAction.CallbackContext ctx)
@@ -89,11 +91,11 @@ public class FishingInteraction : MonoBehaviour
         bool isCaught = Random.value < chance;
         string message = isCaught ? "Caught!" : "Got Away..";
 
-        OnFishTry?.Invoke();
+        gameEvents.CallFishingAttempted();
         
         if (isCaught)
         {
-            OnFishCaught?.Invoke();
+            gameEvents.CallFishCaught();
             yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/4, 1.4f));
         }
         else
