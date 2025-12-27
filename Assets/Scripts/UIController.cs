@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField] private RunController runController;
-
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
 
@@ -14,47 +12,87 @@ public class UIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI fishText;
     [SerializeField] private GameObject endRunPanel;
     [SerializeField] private GameObject endRunResultPanel;
-    [SerializeField] private TextMeshProUGUI fishTriesText;
-    [SerializeField] private TextMeshProUGUI fishCaughtText;
-    [SerializeField] private TextMeshProUGUI stepsWalkedText;
+    [SerializeField] private TextMeshProUGUI totalFishingAttemptsText;
+    [SerializeField] private TextMeshProUGUI totalFishCapturedText;
+    [SerializeField] private TextMeshProUGUI totalStepsWalkedText;
+
+    private int localStepsLeft;
+    private int localMaxSteps;
+
+    private int localFishingAttemptsLeft;
+    private int localMaxFishingAttempts;
+
+    private int localTotalStepsWalked;
+    private int localTotalFishCaptured;
+    private int localTotalFishingAttempts;
 
     private void Start()
     {
         ToggleGameObject(endRunPanel, false);
-        UpdateStepsText();
-        UpdateFishTriesText();
+        UpdateStepsUIText();
+        UpdateFishUIText();
     }
 
     private void OnEnable()
     {
-        gameEvents.OnRunEnded += OnRunEnded;
-        gameEvents.OnStepEnded+= UpdateStepsText;
-        gameEvents.OnFishingAttempted += UpdateFishTriesText;
+        gameEvents.OnRunEnded += ShowEndRunPanel;
+        gameEvents.OnStepEnded += UpdateStepsUIText;
+        gameEvents.OnFishingAttempted += UpdateFishUIText;
+
+        gameEvents.OnStepsLeftChanged += (value) => { localStepsLeft = value; UpdateStepsUIText(); }; 
+        gameEvents.OnMaxStepsChanged += (value) => { localMaxSteps = value; UpdateStepsUIText(); };
+        gameEvents.OnFishingAttemptsLeftChanged += (value) => { localFishingAttemptsLeft = value; UpdateFishUIText(); };
+        gameEvents.OnMaxFishingAttemptsChanged += (value) => { localMaxFishingAttempts = value; UpdateFishUIText(); };
+
+        gameEvents.OnTotalStepsWalkedChanged += (value) => { localTotalStepsWalked = value; SetTotalStepsWalkedText(); };
+        gameEvents.OnTotalFishCapturedChanged += (value) => { localTotalFishCaptured = value; SetTotalFishCapturedText(); };
+        gameEvents.OnTotalFishingAttemptsChanged += (value) => { localTotalFishingAttempts = value; SetTotalFishingAttemptsText(); };
     }
 
     private void OnDisable()
     {
-        gameEvents.OnRunEnded -= OnRunEnded;
-        gameEvents.OnStepEnded -= UpdateStepsText;
-        gameEvents.OnFishingAttempted -= UpdateFishTriesText;
+        gameEvents.OnRunEnded -= ShowEndRunPanel;
+        gameEvents.OnStepEnded -= UpdateStepsUIText;
+        gameEvents.OnFishingAttempted -= UpdateFishUIText;
+
+        gameEvents.OnStepsLeftChanged -= (value) => { localStepsLeft = value; UpdateStepsUIText(); };
+        gameEvents.OnMaxStepsChanged -= (value) => { localMaxSteps = value; UpdateStepsUIText(); };
+        gameEvents.OnFishingAttemptsLeftChanged -= (value) => { localFishingAttemptsLeft = value; UpdateFishUIText(); };
+        gameEvents.OnMaxFishingAttemptsChanged -= (value) => { localMaxFishingAttempts = value; UpdateFishUIText(); };
+
+        gameEvents.OnTotalStepsWalkedChanged -= (value) => { localTotalStepsWalked = value; SetTotalStepsWalkedText(); };
+        gameEvents.OnTotalFishCapturedChanged -= (value) => { localTotalFishCaptured = value; SetTotalFishCapturedText(); };
+        gameEvents.OnTotalFishingAttemptsChanged -= (value) => { localTotalFishingAttempts = value; SetTotalFishingAttemptsText(); };
     }
 
-    private void OnRunEnded()
+    private void ShowEndRunPanel()
+    {
+        TurnOnEndRunPanel();
+        SetResultsText();
+    }
+
+    private void UpdateStepsUIText(TileInstance _ = null) => stepsText.text = $"{localStepsLeft}/{localMaxSteps}";
+    private void UpdateFishUIText() => fishText.text = $"{localFishingAttemptsLeft}/{localMaxFishingAttempts}";
+
+    private void SetTotalStepsWalkedText() => totalStepsWalkedText.text = $"Total Steps Walked: {localTotalStepsWalked}";
+    private void SetTotalFishCapturedText() => totalFishCapturedText.text = $"Total Fish Captured: {localTotalFishCaptured}";
+    private void SetTotalFishingAttemptsText() => totalFishingAttemptsText.text = $"Total Fishing Attempts: {localTotalFishingAttempts}";
+
+    private void ToggleGameObject(GameObject gameObject, bool state) => gameObject.SetActive(state);
+
+    private void TurnOnEndRunPanel()
     {
         ToggleGameObject(endRunPanel, true);
+
         StartCoroutine(FadeAnimation(endRunPanel, 2f));
         StartCoroutine(ScalePingAnimation(endRunResultPanel.transform, 2f, 1.1f));
-        SetStepsWalkedText();
-        SetFishCaughtText();
-        SetFishTriesText();
     }
-
-    private void UpdateStepsText(TileInstance _ = null) => stepsText.text = $"{runController.StepsLeft}/{runController.maxSteps}";
-    private void UpdateFishTriesText() => fishText.text = $"{runController.FishingAttemptsLeft}/{runController.maxFishingAttempts}";
-    private void ToggleGameObject(GameObject gameObject, bool state) => gameObject.SetActive(state);
-    private void SetStepsWalkedText() => stepsWalkedText.text = $"Steps Walked: {runController.TotalStepsWalked}";
-    private void SetFishCaughtText() => fishCaughtText.text = $"Fish Caught: {runController.TotalFishCaught}";
-    private void SetFishTriesText() => fishTriesText.text = $"Fishing Tries: {runController.TotalFishingAttempts}";
+    private void SetResultsText()
+    {
+        SetTotalStepsWalkedText();
+        SetTotalFishCapturedText();
+        SetTotalFishingAttemptsText();
+    }
 
     private IEnumerator ScalePingAnimation(Transform targetTransform, float duration, float animationStrength)
     {
@@ -73,7 +111,6 @@ public class UIController : MonoBehaviour
         }
         targetTransform.localScale = originalScale;
     }
-
     private IEnumerator FadeAnimation(GameObject gameObject, float duration)
     {
         CanvasGroup canvasGroup = gameObject.GetComponent<CanvasGroup>();

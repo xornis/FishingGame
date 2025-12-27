@@ -135,6 +135,12 @@ public class PlayerMovement : MonoBehaviour
         highlightedTiles.Clear();
     }
 
+    private void UpdateAvailableMoves()
+    {
+        ClearAvailableMoves();
+        if (CanMove) ShowAvailableMoves();
+    }
+
     private void SpawnPlayer()
     {
         HexCoord randomCoord = manager.GetRandomGroundTileCoord();
@@ -147,8 +153,8 @@ public class PlayerMovement : MonoBehaviour
     private void AfterStep(TileInstance tile)
     {
         gameEvents.CallStepEnded(tile);
-        ClearAvailableMoves();
-        if (CanMove) ShowAvailableMoves();
+        gameEvents.CallPlayerMoved(tile.coord);
+        UpdateAvailableMoves();
     }
 
     private void SetMovementPermission(bool state) => CanMove = state;

@@ -4,7 +4,6 @@ using UnityEngine.SceneManagement;
 
 public class RunController : MonoBehaviour
 {
-    [SerializeField] private Transform playerTransform;
     [SerializeField] private IslandManager islandManager;
 
     [Header("Events")]
@@ -14,30 +13,39 @@ public class RunController : MonoBehaviour
     public int maxSteps = 10;
     public int maxFishingAttempts = 5;
 
-    public int StepsLeft { get; private set; }
-    public int FishingAttemptsLeft { get; private set; }
+    private HexCoord currentPlayerPos;
+
+    private int stepsLeft;
+    private int fishingAttemptsLeft;
 
     public int TotalFishingAttempts { get; private set; }
-    public int TotalFishCaught { get; private set; }
+    public int TotalFishCaptured { get; private set; }
     public int TotalStepsWalked { get; private set; }
 
-    private void Awake()
+    private void Start()
     {
-        StepsLeft = maxSteps;
-        FishingAttemptsLeft = maxFishingAttempts;
+        stepsLeft = maxSteps;
+        fishingAttemptsLeft = maxFishingAttempts;
+
+        gameEvents.CallStepsLeftChanged(stepsLeft);
+        gameEvents.CallFishingAttemptsLeftChanged(fishingAttemptsLeft);
+        gameEvents.CallMaxStepsChanged(maxSteps);
+        gameEvents.CallMaxFishingAttemptsChanged(maxFishingAttempts);
     }
 
     private void OnEnable()
     {
         gameEvents.OnStepEnded += HandleStep;
-        gameEvents.OnFishCaught += HandleFishCaught;
+        gameEvents.OnPlayerMoved += (coord) => currentPlayerPos = coord;
+        gameEvents.OnFishCaptured += HandleFishCaptured;
         gameEvents.OnFishingAttempted += HandleFishingAttempt;
     }
 
     private void OnDisable()
     {
         gameEvents.OnStepEnded -= HandleStep;
-        gameEvents.OnFishCaught -= HandleFishCaught;
+        gameEvents.OnPlayerMoved -= (coord) => currentPlayerPos = coord;
+        gameEvents.OnFishCaptured -= HandleFishCaptured;
         gameEvents.OnFishingAttempted -= HandleFishingAttempt;
     }
 
@@ -47,9 +55,7 @@ public class RunController : MonoBehaviour
 
         AddStepsWalked(cost);
         SubtractSteps(cost);
-
-        if (StepsLeft <= 0)
-            gameEvents.SendMovementPermission(false);
+        gameEvents.CallStepsLeftChanged(stepsLeft);
 
         CheckRunStatus();
     }
@@ -58,52 +64,60 @@ public class RunController : MonoBehaviour
     {
         AddFishingAttempts(1);
         SubtractFishingAttempts(1);
-
-        if (FishingAttemptsLeft <= 0)
-            gameEvents.SendFishingPermission(false);
+        gameEvents.CallFishingAttemptsLeftChanged(fishingAttemptsLeft);
 
         CheckRunStatus();
     }
 
     private void CheckRunStatus()
     {
-        if (FishingAttemptsLeft <= 0)
+        if (fishingAttemptsLeft <= 0)
         {
             gameEvents.SendFishingPermission(false);
-            gameEvents.SendMovementPermission(false);
-
             gameEvents.SendRunEnded();
         }
-        if (StepsLeft <= 0 && !HasReachableFishTile()) gameEvents.SendRunEnded();
+        if (stepsLeft <= 0)
+        {
+            gameEvents.SendMovementPermission(false);
+            if (!HasReachableFishTile()) gameEvents.SendRunEnded();
+        }
     }
 
     private bool HasReachableFishTile()
     {
-        HexCoord playerPos = islandManager.Layout.WorldToHex(playerTransform.position);
-
         foreach (var dir in HexDirectionExtensions.hexDirections)
         {
-            HexCoord neighbor = playerPos.Neighbor(dir);
+            HexCoord neighbor = currentPlayerPos.Neighbor(dir);
 
             if (!islandManager.tileByCoord.TryGetValue(neighbor, out var tile))
                 continue;
-
             if (tile.data.fishable)
                 return true;
         }
-
         return false;
     }
 
-    private void HandleFishCaught() => AddFishCaught(1);
+    private void HandleFishCaptured() => AddFishCaptured(1);
 
-    public void SubtractSteps(int amount) => StepsLeft -= amount;
+    public void SubtractSteps(int amount) => stepsLeft -= amount;
 
-    public void SubtractFishingAttempts(int amount) => FishingAttemptsLeft -= amount;
+    public void SubtractFishingAttempts(int amount) => fishingAttemptsLeft -= amount;
 
-    public void AddStepsWalked(int amount) => TotalStepsWalked += amount;
-    public void AddFishCaught(int amount) => TotalFishCaught += amount;
-    public void AddFishingAttempts(int amount) => TotalFishingAttempts += amount;
+    public void AddStepsWalked(int amount)
+    {
+        TotalStepsWalked += amount;
+        gameEvents.CallTotalStepsWalkedChanged(TotalStepsWalked);
+    }
+    public void AddFishCaptured(int amount)
+    {
+        TotalFishCaptured += amount;
+        gameEvents.CallTotalFishCapturedChanged(TotalFishCaptured);
+    }
+    public void AddFishingAttempts(int amount)
+    {
+        TotalFishingAttempts += amount;
+        gameEvents.CallTotalFishingAttemptsChanged(TotalFishingAttempts);
+    }
 
     public void RestartRun() => SceneManager.LoadScene(0);
 }

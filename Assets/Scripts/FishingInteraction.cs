@@ -95,7 +95,7 @@ public class FishingInteraction : MonoBehaviour
         
         if (isCaught)
         {
-            gameEvents.CallFishCaught();
+            gameEvents.CallFishCaptured();
             yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/4, 1.4f));
         }
         else
