@@ -72,7 +72,9 @@ public class RunController : MonoBehaviour
         if (fishingAttemptsLeft <= 0)
         {
             gameEvents.SendFishingPermission(false);
+            gameEvents.SendMovementPermission(false);
             gameEvents.SendRunEnded();
+            return;
         }
         if (stepsLeft <= 0)
         {
