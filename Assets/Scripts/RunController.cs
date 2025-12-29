@@ -27,10 +27,8 @@ public class RunController : MonoBehaviour
         stepsLeft = maxSteps;
         fishingAttemptsLeft = maxFishingAttempts;
 
-        gameEvents.CallStepsLeftChanged(stepsLeft);
-        gameEvents.CallFishingAttemptsLeftChanged(fishingAttemptsLeft);
-        gameEvents.CallMaxStepsChanged(maxSteps);
-        gameEvents.CallMaxFishingAttemptsChanged(maxFishingAttempts);
+        gameEvents.CallStepsChanged(new ResourceData(stepsLeft, maxSteps));
+        gameEvents.CallFishingAttemptsChanged(new ResourceData(fishingAttemptsLeft, maxFishingAttempts));
     }
 
     private void OnEnable()
@@ -55,7 +53,7 @@ public class RunController : MonoBehaviour
 
         AddStepsWalked(cost);
         SubtractSteps(cost);
-        gameEvents.CallStepsLeftChanged(stepsLeft);
+        gameEvents.CallStepsChanged(new ResourceData(stepsLeft, maxSteps));
 
         CheckRunStatus();
     }
@@ -64,7 +62,7 @@ public class RunController : MonoBehaviour
     {
         AddFishingAttempts(1);
         SubtractFishingAttempts(1);
-        gameEvents.CallFishingAttemptsLeftChanged(fishingAttemptsLeft);
+        gameEvents.CallFishingAttemptsChanged(new ResourceData(fishingAttemptsLeft, maxFishingAttempts));
 
         CheckRunStatus();
     }

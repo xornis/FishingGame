@@ -2,6 +2,19 @@ using UnityEngine;
 using System;
 using HexDungeon;
 
+[Serializable]
+public struct ResourceData
+{
+    public int current;
+    public int max;
+
+    public ResourceData(int current, int max)
+    {
+        this.current = current;
+        this.max = max;
+    }
+}
+
 [CreateAssetMenu(fileName = "GameEvents", menuName = "Scriptable Objects/Events")]
 public class GameEvents : ScriptableObject
 {
@@ -13,10 +26,8 @@ public class GameEvents : ScriptableObject
     public event Action<HexCoord> OnPlayerMoved;
 
     #region UI
-    public event Action<int> OnStepsLeftChanged;
-    public event Action<int> OnFishingAttemptsLeftChanged;
-    public event Action<int> OnMaxStepsChanged;
-    public event Action<int> OnMaxFishingAttemptsChanged;
+    public event Action<ResourceData> OnStepsChanged;
+    public event Action<ResourceData> OnFishingAttemptsChanged;
 
     public event Action<int> OnTotalStepsWalkedChanged;
     public event Action<int> OnTotalFishCapturedChanged;
@@ -34,10 +45,8 @@ public class GameEvents : ScriptableObject
     public void CallIslandReady() => OnIslandReady?.Invoke();
     public void CallPlayerMoved(HexCoord coord) => OnPlayerMoved?.Invoke(coord);
 
-    public void CallStepsLeftChanged(int value) => OnStepsLeftChanged?.Invoke(value);
-    public void CallFishingAttemptsLeftChanged(int value) => OnFishingAttemptsLeftChanged?.Invoke(value);
-    public void CallMaxStepsChanged(int value) => OnMaxStepsChanged?.Invoke(value);
-    public void CallMaxFishingAttemptsChanged(int value) => OnMaxFishingAttemptsChanged?.Invoke(value);
+    public void CallStepsChanged(ResourceData resourceData) => OnStepsChanged?.Invoke(resourceData); 
+    public void CallFishingAttemptsChanged(ResourceData resourceData) => OnFishingAttemptsChanged?.Invoke(resourceData); 
 
     public void CallTotalStepsWalkedChanged(int value) => OnTotalStepsWalkedChanged?.Invoke(value);
     public void CallTotalFishCapturedChanged(int value) => OnTotalFishCapturedChanged?.Invoke(value);

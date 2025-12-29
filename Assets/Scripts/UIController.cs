@@ -16,67 +16,45 @@ public class UIController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI totalFishCapturedText;
     [SerializeField] private TextMeshProUGUI totalStepsWalkedText;
 
-    private int localStepsLeft;
-    private int localMaxSteps;
-
-    private int localFishingAttemptsLeft;
-    private int localMaxFishingAttempts;
-
-    private int localTotalStepsWalked;
-    private int localTotalFishCaptured;
-    private int localTotalFishingAttempts;
-
     private void Start()
     {
         ToggleGameObject(endRunPanel, false);
-        UpdateStepsUIText();
-        UpdateFishUIText();
+
+        UpdateTotalStepsWalkedText(0);
+        UpdateTotalFishCapturedText(0);
+        UpdateTotalFishingAttemptsText(0);
     }
 
     private void OnEnable()
     {
-        gameEvents.OnRunEnded += ShowEndRunPanel;
-        gameEvents.OnStepEnded += UpdateStepsUIText;
-        gameEvents.OnFishingAttempted += UpdateFishUIText;
+        gameEvents.OnRunEnded += TurnOnEndRunPanel;
 
-        gameEvents.OnStepsLeftChanged += (value) => { localStepsLeft = value; UpdateStepsUIText(); }; 
-        gameEvents.OnMaxStepsChanged += (value) => { localMaxSteps = value; UpdateStepsUIText(); };
-        gameEvents.OnFishingAttemptsLeftChanged += (value) => { localFishingAttemptsLeft = value; UpdateFishUIText(); };
-        gameEvents.OnMaxFishingAttemptsChanged += (value) => { localMaxFishingAttempts = value; UpdateFishUIText(); };
+        gameEvents.OnStepsChanged += UpdateStepsUIText;
+        gameEvents.OnFishingAttemptsChanged += UpdateFishUIText;
 
-        gameEvents.OnTotalStepsWalkedChanged += (value) => { localTotalStepsWalked = value; SetTotalStepsWalkedText(); };
-        gameEvents.OnTotalFishCapturedChanged += (value) => { localTotalFishCaptured = value; SetTotalFishCapturedText(); };
-        gameEvents.OnTotalFishingAttemptsChanged += (value) => { localTotalFishingAttempts = value; SetTotalFishingAttemptsText(); };
+        gameEvents.OnTotalStepsWalkedChanged += UpdateTotalStepsWalkedText;
+        gameEvents.OnTotalFishCapturedChanged += UpdateTotalFishCapturedText;
+        gameEvents.OnTotalFishingAttemptsChanged += UpdateTotalFishingAttemptsText;
     }
 
     private void OnDisable()
     {
-        gameEvents.OnRunEnded -= ShowEndRunPanel;
-        gameEvents.OnStepEnded -= UpdateStepsUIText;
-        gameEvents.OnFishingAttempted -= UpdateFishUIText;
+        gameEvents.OnRunEnded -= TurnOnEndRunPanel;
 
-        gameEvents.OnStepsLeftChanged -= (value) => { localStepsLeft = value; UpdateStepsUIText(); };
-        gameEvents.OnMaxStepsChanged -= (value) => { localMaxSteps = value; UpdateStepsUIText(); };
-        gameEvents.OnFishingAttemptsLeftChanged -= (value) => { localFishingAttemptsLeft = value; UpdateFishUIText(); };
-        gameEvents.OnMaxFishingAttemptsChanged -= (value) => { localMaxFishingAttempts = value; UpdateFishUIText(); };
+        gameEvents.OnStepsChanged -= UpdateStepsUIText;
+        gameEvents.OnFishingAttemptsChanged -= UpdateFishUIText;
 
-        gameEvents.OnTotalStepsWalkedChanged -= (value) => { localTotalStepsWalked = value; SetTotalStepsWalkedText(); };
-        gameEvents.OnTotalFishCapturedChanged -= (value) => { localTotalFishCaptured = value; SetTotalFishCapturedText(); };
-        gameEvents.OnTotalFishingAttemptsChanged -= (value) => { localTotalFishingAttempts = value; SetTotalFishingAttemptsText(); };
+        gameEvents.OnTotalStepsWalkedChanged -= UpdateTotalStepsWalkedText;
+        gameEvents.OnTotalFishCapturedChanged -= UpdateTotalFishCapturedText;
+        gameEvents.OnTotalFishingAttemptsChanged -= UpdateTotalFishingAttemptsText;
     }
 
-    private void ShowEndRunPanel()
-    {
-        TurnOnEndRunPanel();
-        SetResultsText();
-    }
+    private void UpdateStepsUIText(ResourceData resourceData) => stepsText.text = $"{resourceData.current}/{resourceData.max}";
+    private void UpdateFishUIText(ResourceData resourceData) => fishText.text = $"{resourceData.current}/{resourceData.max}";
 
-    private void UpdateStepsUIText(TileInstance _ = null) => stepsText.text = $"{localStepsLeft}/{localMaxSteps}";
-    private void UpdateFishUIText() => fishText.text = $"{localFishingAttemptsLeft}/{localMaxFishingAttempts}";
-
-    private void SetTotalStepsWalkedText() => totalStepsWalkedText.text = $"Total Steps Walked: {localTotalStepsWalked}";
-    private void SetTotalFishCapturedText() => totalFishCapturedText.text = $"Total Fish Captured: {localTotalFishCaptured}";
-    private void SetTotalFishingAttemptsText() => totalFishingAttemptsText.text = $"Total Fishing Attempts: {localTotalFishingAttempts}";
+    private void UpdateTotalStepsWalkedText(int value) => totalStepsWalkedText.text = $"Total Steps Walked: {value}";
+    private void UpdateTotalFishCapturedText(int value) => totalFishCapturedText.text = $"Total Fish Captured: {value}";
+    private void UpdateTotalFishingAttemptsText(int value) => totalFishingAttemptsText.text = $"Total Fishing Attempts: {value}";
 
     private void ToggleGameObject(GameObject gameObject, bool state) => gameObject.SetActive(state);
 
@@ -86,12 +64,6 @@ public class UIController : MonoBehaviour
 
         StartCoroutine(FadeAnimation(endRunPanel, 2f));
         StartCoroutine(ScalePingAnimation(endRunResultPanel.transform, 2f, 1.1f));
-    }
-    private void SetResultsText()
-    {
-        SetTotalStepsWalkedText();
-        SetTotalFishCapturedText();
-        SetTotalFishingAttemptsText();
     }
 
     private IEnumerator ScalePingAnimation(Transform targetTransform, float duration, float animationStrength)
