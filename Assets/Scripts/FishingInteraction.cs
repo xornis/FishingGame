@@ -41,13 +41,12 @@ public class FishingInteraction : MonoBehaviour
     {
         if (!CanFish || isFishing) return;
 
-        if (TryGetClickedFishTile(out HexCoord target, out TileInstance tile, out Transform hitTransform))
+        if (TryGetClickedFishTile(out TileInstance tile, out Transform hitTransform))
             StartCoroutine(WaitForFishAndCatch(tile, hitTransform));
     }
 
-    private bool TryGetClickedFishTile(out HexCoord target, out TileInstance tile, out Transform hitTransform)
+    private bool TryGetClickedFishTile(out TileInstance tile, out Transform hitTransform)
     {
-        target = default;
         tile = default;
         hitTransform = default;
 
@@ -65,7 +64,6 @@ public class FishingInteraction : MonoBehaviour
         if (!manager.tileByCoord.TryGetValue(clickedPos, out var clickedTile)) return false;
         if (!clickedTile.data.fishable) return false;
 
-        target = clickedPos;
         tile = clickedTile;
         hitTransform = hit.transform;
         return true;
