@@ -13,5 +13,5 @@ public abstract class TileState { }
 
 public class FishState : TileState
 {
-    public FishTileData.FishTileQuality fishQuality;
+    public FishableTileData.FishTileQuality fishQuality;
 }

@@ -112,24 +112,24 @@ public class FishingInteraction : MonoBehaviour
         targetTransform.localScale = originalScale;
     }
 
-    private float GetChanceMultiplier(FishTileData.FishTileQuality quality)
+    private float GetChanceMultiplier(FishableTileData.FishTileQuality quality)
     {
         return quality switch
         {
-            FishTileData.FishTileQuality.Poor => 0.8f,
-            FishTileData.FishTileQuality.Normal => 1.1f,
-            FishTileData.FishTileQuality.Rich => 1.5f,
+            FishableTileData.FishTileQuality.Poor => 0.8f,
+            FishableTileData.FishTileQuality.Normal => 1.1f,
+            FishableTileData.FishTileQuality.Rich => 1.5f,
             _ => 1f
         };
     }
 
-    private float GetTimeMultiplier(FishTileData.FishTileQuality quality)
+    private float GetTimeMultiplier(FishableTileData.FishTileQuality quality)
     {
         return quality switch
         {
-            FishTileData.FishTileQuality.Poor => 1.3f,
-            FishTileData.FishTileQuality.Normal => 1.1f,
-            FishTileData.FishTileQuality.Rich => 0.8f,
+            FishableTileData.FishTileQuality.Poor => 1.3f,
+            FishableTileData.FishTileQuality.Normal => 1.1f,
+            FishableTileData.FishTileQuality.Rich => 0.8f,
             _ => 1f
         };
     }

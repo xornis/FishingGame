@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Tile Rules
   m_EditorClassIdentifier: 
   groundTile: {fileID: 11400000, guid: aa18f5512fd5694489233f8fb89654a5, type: 2}
-  fishTile: {fileID: 11400000, guid: fb205472512b38347a823dccc8a0f76b, type: 2}
+  fishTile: {fileID: 11400000, guid: e67440b1bbc4dd34fa4368dc523af802, type: 2}
   rockTile: {fileID: 11400000, guid: 6932b098d29738b4eb3448f75c970da8, type: 2}
-  sandTile: {fileID: 11400000, guid: 895b82d7506021c41b3a19180fa8b3bc, type: 2}
+  sandTile: {fileID: 0}
   quicksandTile: {fileID: 11400000, guid: ad6236bfdf6f21949be468489c29df88, type: 2}
   fishTileChanceInOuterLayer: 0.25
   sandTileChanceInInnerLayer: 0.5

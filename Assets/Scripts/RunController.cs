@@ -51,7 +51,11 @@ public class RunController : MonoBehaviour
     {
         currentPlayerPos = tile.coord;
 
-        int cost = tile.data.stepCost;
+        int cost = 1;
+
+        if (tile.data is WalkableTileData walkableTileData)
+            cost = walkableTileData.stepCost;
+
         AddStepsWalked(cost);
         SubtractSteps(cost);
 

@@ -48,12 +48,12 @@ public class IslandManager : MonoBehaviour
         go.transform.localScale = Vector3.one * HexScale;
 
         tile.view = go.GetComponent<TileView>();
-        if (tile.data is FishTileData) SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
+        if (tile.data is FishableTileData) SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
     }
 
     private void ComputeFishTileQuality(HexCoord coord, Tile tile)
     {
-        if (tile.data is not FishTileData) return;
+        if (tile.data is not FishableTileData) return;
 
         int count = 0;
 
@@ -65,9 +65,9 @@ public class IslandManager : MonoBehaviour
 
         fishState.fishQuality = count switch
         {
-            0 => FishTileData.FishTileQuality.Poor,
-            1 => FishTileData.FishTileQuality.Normal,
-            _ => FishTileData.FishTileQuality.Rich
+            0 => FishableTileData.FishTileQuality.Poor,
+            1 => FishableTileData.FishTileQuality.Normal,
+            _ => FishableTileData.FishTileQuality.Rich
         };
 
         tile.state = fishState;
@@ -79,9 +79,9 @@ public class IslandManager : MonoBehaviour
         {
             sr.color = fishState.fishQuality switch
             {
-                FishTileData.FishTileQuality.Poor => new Color(0.95f, 0.95f, 0.9f),
-                FishTileData.FishTileQuality.Normal => new Color(0.9f, 0.95f, 1f),
-                FishTileData.FishTileQuality.Rich => new Color(0.8f, 0.9f, 1f),
+                FishableTileData.FishTileQuality.Poor => new Color(0.95f, 0.95f, 0.9f),
+                FishableTileData.FishTileQuality.Normal => new Color(0.9f, 0.95f, 1f),
+                FishableTileData.FishTileQuality.Rich => new Color(0.8f, 0.9f, 1f),
                 _ => Color.white
             };
         }

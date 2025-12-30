@@ -83,11 +83,11 @@ public class PlayerMovement : MonoBehaviour
     private IEnumerator MoveTo(Tile tile)
     {
         isMoving = true;
-        
+
         yield return AnimateMoveTo(tile);
 
         gameEvents.CallPlayerMoved(tile);
-        UpdateAvailableMoves(); 
+        UpdateAvailableMoves();
 
         isMoving = false;
     }
@@ -99,7 +99,8 @@ public class PlayerMovement : MonoBehaviour
         end.z = start.z;
 
         float timer = 0f;
-        float duration = baseMoveDuration * tile.data.moveDurationScale;
+        float durationScale = (tile.data is WalkableTileData walkableTileData) ? walkableTileData.moveDurationScale : 1f;
+        float duration = baseMoveDuration * durationScale;
 
         while (timer < duration)
         {
