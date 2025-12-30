@@ -49,10 +49,12 @@ public class RunController : MonoBehaviour
 
     private void HandleStep(TileInstance tile)
     {
-        int cost = tile.data.stepCost;
+        currentPlayerPos = tile.coord;
 
+        int cost = tile.data.stepCost;
         AddStepsWalked(cost);
         SubtractSteps(cost);
+
         gameEvents.CallStepsChanged(new ResourceData(stepsLeft, maxSteps));
 
         CheckRunStatus();
@@ -62,6 +64,7 @@ public class RunController : MonoBehaviour
     {
         AddFishingAttempts(1);
         SubtractFishingAttempts(1);
+
         gameEvents.CallFishingAttemptsChanged(new ResourceData(fishingAttemptsLeft, maxFishingAttempts));
 
         CheckRunStatus();
@@ -69,18 +72,13 @@ public class RunController : MonoBehaviour
 
     private void CheckRunStatus()
     {
-        if (fishingAttemptsLeft <= 0)
-        {
-            gameEvents.SendFishingPermission(false);
-            gameEvents.SendMovementPermission(false);
-            gameEvents.SendRunEnded();
-            return;
-        }
-        if (stepsLeft <= 0)
-        {
-            gameEvents.SendMovementPermission(false);
-            if (!HasReachableFishTile()) gameEvents.SendRunEnded();
-        }
+        bool canMove = stepsLeft > 0;
+        bool canFish = fishingAttemptsLeft > 0 && HasReachableFishTile();
+
+        gameEvents.SendMovementPermission(canMove);
+        gameEvents.SendFishingPermission(canFish);
+        
+        if (!canMove && !canFish) gameEvents.SendRunEnded();
     }
 
     private bool HasReachableFishTile()

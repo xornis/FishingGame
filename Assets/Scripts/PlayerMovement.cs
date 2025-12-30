@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private GameEvents gameEvents;
 
     public bool CanMove { get; private set; } = true;
+    private bool isMoving;
+
     private readonly List<TileView> highlightedTiles = new List<TileView>();
 
     private PlayerInput playerInput;
@@ -48,8 +50,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnClick(InputAction.CallbackContext ctx)
     {
-        if (!TryGetClickedNeighbor(out HexCoord target)) return;
-        TryMove(target);
+        if (!CanMove || isMoving) return;
+
+        if (TryGetClickedNeighbor(out HexCoord target))
+        {
+            gameEvents.CallStepEnded(manager.tileByCoord[target]);
+
+            StartCoroutine(MoveTo(target));
+        }
     }
 
     private bool TryGetClickedNeighbor(out HexCoord target)
@@ -72,24 +80,19 @@ public class PlayerMovement : MonoBehaviour
         return true;
     }
 
-    private void TryMove(HexCoord target)
-    {
-        if (!CanMove) return;
-
-        StartCoroutine(MoveTo(target));
-    }
-
     private IEnumerator MoveTo(HexCoord target)
     {
         var tile = manager.tileByCoord[target];
 
-        StartMove();
+        isMoving = true;
+        
         yield return AnimateMoveTo(target, tile);
-        EndMove(tile);
-    }
 
-    private void StartMove() => CanMove = false;
-    private void EndMove(TileInstance tile) { CanMove = true; AfterStep(tile); }
+        gameEvents.CallPlayerMoved(tile.coord);
+        UpdateAvailableMoves(); 
+
+        isMoving = false;
+    }
 
     private IEnumerator AnimateMoveTo(HexCoord target, TileInstance tile)
     {
@@ -148,13 +151,6 @@ public class PlayerMovement : MonoBehaviour
         worldCoordPos.z = transform.position.z;
 
         transform.position = worldCoordPos;
-    }
-
-    private void AfterStep(TileInstance tile)
-    {
-        gameEvents.CallStepEnded(tile);
-        gameEvents.CallPlayerMoved(tile.coord);
-        UpdateAvailableMoves();
     }
 
     private void SetMovementPermission(bool state) => CanMove = state;
