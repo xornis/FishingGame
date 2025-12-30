@@ -51,13 +51,13 @@ public class RunController : MonoBehaviour
     {
         currentPlayerPos = tile.coord;
 
-        int cost = 1;
+        int valueChange = -1;
 
         if (tile.data is WalkableTileData walkableTileData)
-            cost = walkableTileData.stepCost;
+            valueChange = walkableTileData.stepValueChange;
 
-        AddStepsWalked(cost);
-        SubtractSteps(cost);
+        AddStepsWalkedUI(valueChange);
+        ChangeSteps(valueChange);
 
         gameEvents.CallStepsChanged(new ResourceData(stepsLeft, maxSteps));
 
@@ -66,8 +66,8 @@ public class RunController : MonoBehaviour
 
     private void HandleFishingAttempt()
     {
-        AddFishingAttempts(1);
-        SubtractFishingAttempts(1);
+        AddFishingAttemptsUI(1);
+        ChangeFishingAttempts(-1);
 
         gameEvents.CallFishingAttemptsChanged(new ResourceData(fishingAttemptsLeft, maxFishingAttempts));
 
@@ -99,25 +99,24 @@ public class RunController : MonoBehaviour
         return false;
     }
 
-    private void HandleFishCaptured() => AddFishCaptured(1);
+    private void HandleFishCaptured() => AddFishCapturedUI(1);
 
-    public void SubtractSteps(int amount) => stepsLeft -= amount;
+    public void ChangeSteps(int amount) => stepsLeft += amount;
+    public void ChangeFishingAttempts(int amount) => fishingAttemptsLeft += amount;
 
-    public void SubtractFishingAttempts(int amount) => fishingAttemptsLeft -= amount;
-
-    public void AddStepsWalked(int amount)
+    public void AddStepsWalkedUI(int amount)
     {
-        TotalStepsWalked += amount;
+        TotalStepsWalked += Mathf.Abs(amount);
         gameEvents.CallTotalStepsWalkedChanged(TotalStepsWalked);
     }
-    public void AddFishCaptured(int amount)
+    public void AddFishCapturedUI(int amount)
     {
-        TotalFishCaptured += amount;
+        TotalFishCaptured += Mathf.Abs(amount);
         gameEvents.CallTotalFishCapturedChanged(TotalFishCaptured);
     }
-    public void AddFishingAttempts(int amount)
+    public void AddFishingAttemptsUI(int amount)
     {
-        TotalFishingAttempts += amount;
+        TotalFishingAttempts += Mathf.Abs(amount);
         gameEvents.CallTotalFishingAttemptsChanged(TotalFishingAttempts);
     }
 

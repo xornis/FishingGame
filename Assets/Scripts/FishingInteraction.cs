@@ -71,7 +71,7 @@ public class FishingInteraction : MonoBehaviour
 
     private IEnumerator WaitForFishAndCatch(Tile tile, Transform hitTransform)
     {
-        if (tile.state is FishState fishState)
+        if (tile.state is FishTileState fishState)
         {
             isFishing = true;
 

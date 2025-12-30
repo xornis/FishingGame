@@ -11,7 +11,12 @@ public class Tile
 
 public abstract class TileState { }
 
-public class FishState : TileState
+public class FishTileState : TileState
 {
     public FishableTileData.FishTileQuality fishQuality;
+}
+
+public class CampfireTileState : TileState
+{
+    public bool isUsed;
 }

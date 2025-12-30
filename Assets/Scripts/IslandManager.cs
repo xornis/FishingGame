@@ -61,7 +61,7 @@ public class IslandManager : MonoBehaviour
             if (tileByCoord.TryGetValue(coord.Neighbor(dir), out var neighborTile) && neighborTile.data.fishable)
                 count++;
 
-        FishState fishState = new FishState();
+        FishTileState fishState = new FishTileState();
 
         fishState.fishQuality = count switch
         {
@@ -75,7 +75,7 @@ public class IslandManager : MonoBehaviour
 
     private void SetFishTileColor(SpriteRenderer sr, Tile tile)
     {
-        if (tile.state is FishState fishState)
+        if (tile.state is FishTileState fishState)
         {
             sr.color = fishState.fishQuality switch
             {
