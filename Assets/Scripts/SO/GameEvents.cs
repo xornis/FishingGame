@@ -18,11 +18,11 @@ public struct ResourceData
 public class GameEvents : ScriptableObject
 {
     // Events
-    public event Action<TileInstance> OnStepEnded;
+    public event Action<Tile> OnStepEnded;
     public event Action OnFishingAttempted;
     public event Action OnFishCaptured;
     public event Action OnIslandReady;
-    public event Action<TileInstance> OnPlayerMoved;
+    public event Action<Tile> OnPlayerMoved;
 
     #region UI
     public event Action<ResourceData> OnStepsChanged;
@@ -38,11 +38,11 @@ public class GameEvents : ScriptableObject
     public event Action<bool> OnSetFishingPermission;
     public event Action OnRunEnded;
 
-    public void CallStepEnded(TileInstance tile) => OnStepEnded?.Invoke(tile);
+    public void CallStepEnded(Tile tile) => OnStepEnded?.Invoke(tile);
     public void CallFishingAttempted() => OnFishingAttempted?.Invoke();
     public void CallFishCaptured() => OnFishCaptured?.Invoke();
     public void CallIslandReady() => OnIslandReady?.Invoke();
-    public void CallPlayerMoved(TileInstance tile) => OnPlayerMoved?.Invoke(tile);
+    public void CallPlayerMoved(Tile tile) => OnPlayerMoved?.Invoke(tile);
 
     public void CallStepsChanged(ResourceData resourceData) => OnStepsChanged?.Invoke(resourceData); 
     public void CallFishingAttemptsChanged(ResourceData resourceData) => OnFishingAttemptsChanged?.Invoke(resourceData); 

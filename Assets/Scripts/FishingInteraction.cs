@@ -41,11 +41,11 @@ public class FishingInteraction : MonoBehaviour
     {
         if (!CanFish || isFishing) return;
 
-        if (TryGetClickedFishTile(out TileInstance tile, out Transform hitTransform))
+        if (TryGetClickedFishTile(out Tile tile, out Transform hitTransform))
             StartCoroutine(WaitForFishAndCatch(tile, hitTransform));
     }
 
-    private bool TryGetClickedFishTile(out TileInstance tile, out Transform hitTransform)
+    private bool TryGetClickedFishTile(out Tile tile, out Transform hitTransform)
     {
         tile = default;
         hitTransform = default;
@@ -69,7 +69,7 @@ public class FishingInteraction : MonoBehaviour
         return true;
     }
 
-    private IEnumerator WaitForFishAndCatch(TileInstance tile, Transform hitTransform)
+    private IEnumerator WaitForFishAndCatch(Tile tile, Transform hitTransform)
     {
         isFishing = true;
 

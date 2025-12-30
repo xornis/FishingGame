@@ -32,7 +32,7 @@ public class TileGenerationRules : ScriptableObject
 
     private TileData GetSandTile(HexCoord coord) => Random.value < quicksandTileChance ? quicksandTile : sandTile;
 
-    public TileData ApplyRock(HexCoord coord, Dictionary<HexCoord, TileInstance> tiles)
+    public TileData ApplyRock(HexCoord coord, Dictionary<HexCoord, Tile> tiles)
     {
         if (!EligibleForRock(coord, tiles)) return tiles[coord].data;
         if (Random.value < rockChance) return rockTile;
@@ -60,7 +60,7 @@ public class TileGenerationRules : ScriptableObject
         return false;
     }
 
-    private bool EligibleForRock(HexCoord coord, Dictionary<HexCoord, TileInstance> tilesByCoord)
+    private bool EligibleForRock(HexCoord coord, Dictionary<HexCoord, Tile> tilesByCoord)
     {
         if (tilesByCoord[coord].data.tileType == TileData.TileType.Fish
             || tilesByCoord[coord].data.tileType == TileData.TileType.Sand) return false;

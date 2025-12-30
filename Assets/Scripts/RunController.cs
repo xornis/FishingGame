@@ -47,7 +47,7 @@ public class RunController : MonoBehaviour
         gameEvents.OnFishingAttempted -= HandleFishingAttempt;
     }
 
-    private void HandleStep(TileInstance tile)
+    private void HandleStep(Tile tile)
     {
         currentPlayerPos = tile.coord;
 

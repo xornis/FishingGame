@@ -52,7 +52,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!CanMove || isMoving) return;
 
-        if (TryGetClickedNeighbor(out TileInstance tile))
+        if (TryGetClickedNeighbor(out Tile tile))
         {
             gameEvents.CallStepEnded(tile);
 
@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    private bool TryGetClickedNeighbor(out TileInstance tile)
+    private bool TryGetClickedNeighbor(out Tile tile)
     {
         tile = default;
 
@@ -80,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
         return true;
     }
 
-    private IEnumerator MoveTo(TileInstance tile)
+    private IEnumerator MoveTo(Tile tile)
     {
         isMoving = true;
         
@@ -92,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
         isMoving = false;
     }
 
-    private IEnumerator AnimateMoveTo(TileInstance tile)
+    private IEnumerator AnimateMoveTo(Tile tile)
     {
         Vector3 start = transform.position;
         Vector3 end = manager.Layout.HexToWorld(tile.coord);

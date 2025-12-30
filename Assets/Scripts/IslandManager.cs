@@ -12,7 +12,7 @@ public class IslandManager : MonoBehaviour
 
     public HexLayout Layout { get; private set; }
     public float HexScale { get; private set; }
-    public readonly Dictionary<HexCoord, TileInstance> tileByCoord = new();
+    public readonly Dictionary<HexCoord, Tile> tileByCoord = new();
 
     private void Start()
     {
@@ -24,7 +24,7 @@ public class IslandManager : MonoBehaviour
         var coordSet = new HashSet<HexCoord>(coords);
 
         foreach (var coord in coordSet)
-            tileByCoord[coord] = new TileInstance { coord = coord };
+            tileByCoord[coord] = new Tile { coord = coord };
 
         foreach (var coord in coordSet)
             tileByCoord[coord].data = tileGenerationRules.GetBaseTile(coord, coordSet);
@@ -41,7 +41,7 @@ public class IslandManager : MonoBehaviour
         gameEvents.CallIslandReady();
     }
 
-    private void SpawnTile(HexCoord coord, TileInstance tile)
+    private void SpawnTile(HexCoord coord, Tile tile)
     {
         var worldPos = generator.transform.TransformPoint(Layout.HexToWorld(coord));
         var go = Instantiate(tile.data.prefab, worldPos, Quaternion.identity, transform);
@@ -51,7 +51,7 @@ public class IslandManager : MonoBehaviour
         if (tile.data.fishable) SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
     }
 
-    private void ComputeFishTileQuality(HexCoord coord, TileInstance tile)
+    private void ComputeFishTileQuality(HexCoord coord, Tile tile)
     {
         if (!tile.data.fishable) return;
 
@@ -66,7 +66,7 @@ public class IslandManager : MonoBehaviour
         else tile.fishQuality = FishTileQuality.Rich;
     }
 
-    private void SetFishTileColor(SpriteRenderer sr, TileInstance tile)
+    private void SetFishTileColor(SpriteRenderer sr, Tile tile)
     {
         sr.color = tile.fishQuality switch
         {

@@ -2,7 +2,7 @@ using HexDungeon;
 
 public enum FishTileQuality { Poor, Normal, Rich };
 
-public class TileInstance
+public class Tile
 {
     public HexCoord coord;
     public TileData data;
