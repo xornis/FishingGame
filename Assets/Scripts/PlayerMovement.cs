@@ -52,41 +52,39 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!CanMove || isMoving) return;
 
-        if (TryGetClickedNeighbor(out HexCoord target))
+        if (TryGetClickedNeighbor(out TileInstance tile))
         {
-            gameEvents.CallStepEnded(manager.tileByCoord[target]);
+            gameEvents.CallStepEnded(tile);
 
-            StartCoroutine(MoveTo(target));
+            StartCoroutine(MoveTo(tile));
         }
     }
 
-    private bool TryGetClickedNeighbor(out HexCoord target)
+    private bool TryGetClickedNeighbor(out TileInstance tile)
     {
-        target = default;
+        tile = default;
 
         var layout = manager.Layout;
 
         Vector3 screenMousePos = Mouse.current.position.ReadValue();
         Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(screenMousePos.x, screenMousePos.y, -Camera.main.transform.position.z));
 
-        HexCoord clickedPos = layout.WorldToHex(worldMousePos);
         HexCoord currentPos = layout.WorldToHex(transform.position);
+        HexCoord clickedPos = layout.WorldToHex(worldMousePos);
 
         if (currentPos.Distance(clickedPos) != 1) return false;
-        if (!manager.tileByCoord.TryGetValue(clickedPos, out var tile)) return false;
-        if (!tile.data.walkable) return false;
+        if (!manager.tileByCoord.TryGetValue(clickedPos, out var clickedTile)) return false;
+        if (!clickedTile.data.walkable) return false;
 
-        target = clickedPos;
+        tile = clickedTile;
         return true;
     }
 
-    private IEnumerator MoveTo(HexCoord target)
+    private IEnumerator MoveTo(TileInstance tile)
     {
-        var tile = manager.tileByCoord[target];
-
         isMoving = true;
         
-        yield return AnimateMoveTo(target, tile);
+        yield return AnimateMoveTo(tile);
 
         gameEvents.CallPlayerMoved(tile.coord);
         UpdateAvailableMoves(); 
@@ -94,10 +92,10 @@ public class PlayerMovement : MonoBehaviour
         isMoving = false;
     }
 
-    private IEnumerator AnimateMoveTo(HexCoord target, TileInstance tile)
+    private IEnumerator AnimateMoveTo(TileInstance tile)
     {
         Vector3 start = transform.position;
-        Vector3 end = manager.Layout.HexToWorld(target);
+        Vector3 end = manager.Layout.HexToWorld(tile.coord);
         end.z = start.z;
 
         float timer = 0f;
