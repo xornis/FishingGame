@@ -71,24 +71,27 @@ public class FishingInteraction : MonoBehaviour
 
     private IEnumerator WaitForFishAndCatch(Tile tile, Transform hitTransform)
     {
-        isFishing = true;
-
-        gameEvents.CallFishingAttempted();
-
-        float waitTime = baseWaitingForFishInSeconds * GetTimeMultiplier(tile.fishQuality);
-
-        yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/3, 1.1f));
-        yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/3, 1.1f));
-
-        if (Random.value <= baseCatchChance * GetChanceMultiplier(tile.fishQuality))
+        if (tile.state is FishState fishState)
         {
-            gameEvents.CallFishCaptured();
-            yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/4, 1.4f));
+            isFishing = true;
+
+            gameEvents.CallFishingAttempted();
+
+            float waitTime = baseWaitingForFishInSeconds * GetTimeMultiplier(fishState.fishQuality);
+
+            yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime / 3, 1.1f));
+            yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime / 3, 1.1f));
+
+            if (Random.value <= baseCatchChance * GetChanceMultiplier(fishState.fishQuality))
+            {
+                gameEvents.CallFishCaptured();
+                yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime / 4, 1.4f));
+            }
+            else
+                yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime / 6, 0.8f));
+
+            isFishing = false;
         }
-        else
-            yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/6, 0.8f));
-        
-        isFishing = false;
     }
 
     private IEnumerator AnimateScalePing(Transform targetTransform, float duration, float animationStrength)
@@ -109,24 +112,24 @@ public class FishingInteraction : MonoBehaviour
         targetTransform.localScale = originalScale;
     }
 
-    private float GetChanceMultiplier(FishTileQuality quality)
+    private float GetChanceMultiplier(FishTileData.FishTileQuality quality)
     {
         return quality switch
         {
-            FishTileQuality.Poor => 0.8f,
-            FishTileQuality.Normal => 1.1f,
-            FishTileQuality.Rich => 1.5f,
+            FishTileData.FishTileQuality.Poor => 0.8f,
+            FishTileData.FishTileQuality.Normal => 1.1f,
+            FishTileData.FishTileQuality.Rich => 1.5f,
             _ => 1f
         };
     }
 
-    private float GetTimeMultiplier(FishTileQuality quality)
+    private float GetTimeMultiplier(FishTileData.FishTileQuality quality)
     {
         return quality switch
         {
-            FishTileQuality.Poor => 1.3f,
-            FishTileQuality.Normal => 1.1f,
-            FishTileQuality.Rich => 0.8f,
+            FishTileData.FishTileQuality.Poor => 1.3f,
+            FishTileData.FishTileQuality.Normal => 1.1f,
+            FishTileData.FishTileQuality.Rich => 0.8f,
             _ => 1f
         };
     }

@@ -48,12 +48,12 @@ public class IslandManager : MonoBehaviour
         go.transform.localScale = Vector3.one * HexScale;
 
         tile.view = go.GetComponent<TileView>();
-        if (tile.data.fishable) SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
+        if (tile.data is FishTileData) SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
     }
 
     private void ComputeFishTileQuality(HexCoord coord, Tile tile)
     {
-        if (!tile.data.fishable) return;
+        if (tile.data is not FishTileData) return;
 
         int count = 0;
 
@@ -61,20 +61,30 @@ public class IslandManager : MonoBehaviour
             if (tileByCoord.TryGetValue(coord.Neighbor(dir), out var neighborTile) && neighborTile.data.fishable)
                 count++;
 
-        if (count == 0) tile.fishQuality = FishTileQuality.Poor;
-        else if (count == 1) tile.fishQuality = FishTileQuality.Normal;
-        else tile.fishQuality = FishTileQuality.Rich;
+        FishState fishState = new FishState();
+
+        fishState.fishQuality = count switch
+        {
+            0 => FishTileData.FishTileQuality.Poor,
+            1 => FishTileData.FishTileQuality.Normal,
+            _ => FishTileData.FishTileQuality.Rich
+        };
+
+        tile.state = fishState;
     }
 
     private void SetFishTileColor(SpriteRenderer sr, Tile tile)
     {
-        sr.color = tile.fishQuality switch
+        if (tile.state is FishState fishState)
         {
-            FishTileQuality.Poor => new Color(0.95f, 0.95f, 0.9f),
-            FishTileQuality.Normal => new Color(0.9f, 0.95f, 1f),
-            FishTileQuality.Rich => new Color(0.8f, 0.9f, 1f),
-            _ => Color.white
-        };
+            sr.color = fishState.fishQuality switch
+            {
+                FishTileData.FishTileQuality.Poor => new Color(0.95f, 0.95f, 0.9f),
+                FishTileData.FishTileQuality.Normal => new Color(0.9f, 0.95f, 1f),
+                FishTileData.FishTileQuality.Rich => new Color(0.8f, 0.9f, 1f),
+                _ => Color.white
+            };
+        }
     }
 
     public HexCoord GetRandomGroundTileCoord()

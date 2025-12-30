@@ -1,11 +1,17 @@
 using HexDungeon;
 
-public enum FishTileQuality { Poor, Normal, Rich };
-
 public class Tile
 {
     public HexCoord coord;
     public TileData data;
-    public FishTileQuality fishQuality;
     public TileView view;
+
+    public TileState state;
+}
+
+public abstract class TileState { }
+
+public class FishState : TileState
+{
+    public FishTileData.FishTileQuality fishQuality;
 }
