@@ -34,7 +34,7 @@ public class RunController : MonoBehaviour
     private void OnEnable()
     {
         gameEvents.OnStepEnded += HandleStep;
-        gameEvents.OnPlayerMoved += (coord) => currentPlayerPos = coord;
+        gameEvents.OnPlayerMoved += (tile) => currentPlayerPos = tile.coord;
         gameEvents.OnFishCaptured += HandleFishCaptured;
         gameEvents.OnFishingAttempted += HandleFishingAttempt;
     }
@@ -42,7 +42,7 @@ public class RunController : MonoBehaviour
     private void OnDisable()
     {
         gameEvents.OnStepEnded -= HandleStep;
-        gameEvents.OnPlayerMoved -= (coord) => currentPlayerPos = coord;
+        gameEvents.OnPlayerMoved -= (tile) => currentPlayerPos = tile.coord;
         gameEvents.OnFishCaptured -= HandleFishCaptured;
         gameEvents.OnFishingAttempted -= HandleFishingAttempt;
     }

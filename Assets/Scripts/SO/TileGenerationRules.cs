@@ -2,7 +2,7 @@ using HexDungeon;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Tile Generation Rules", menuName = "Scriptable Objects/Tile Generation Rules")]
+[CreateAssetMenu(fileName = "Tile Generation Rules", menuName = "Scriptable Objects/Tiles/Tile Generation Rules")]
 public class TileGenerationRules : ScriptableObject
 {
     public TileData groundTile;

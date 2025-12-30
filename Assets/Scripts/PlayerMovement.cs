@@ -86,7 +86,7 @@ public class PlayerMovement : MonoBehaviour
         
         yield return AnimateMoveTo(tile);
 
-        gameEvents.CallPlayerMoved(tile.coord);
+        gameEvents.CallPlayerMoved(tile);
         UpdateAvailableMoves(); 
 
         isMoving = false;

@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using HexDungeon;
 
 [Serializable]
 public struct ResourceData
@@ -23,7 +22,7 @@ public class GameEvents : ScriptableObject
     public event Action OnFishingAttempted;
     public event Action OnFishCaptured;
     public event Action OnIslandReady;
-    public event Action<HexCoord> OnPlayerMoved;
+    public event Action<TileInstance> OnPlayerMoved;
 
     #region UI
     public event Action<ResourceData> OnStepsChanged;
@@ -43,7 +42,7 @@ public class GameEvents : ScriptableObject
     public void CallFishingAttempted() => OnFishingAttempted?.Invoke();
     public void CallFishCaptured() => OnFishCaptured?.Invoke();
     public void CallIslandReady() => OnIslandReady?.Invoke();
-    public void CallPlayerMoved(HexCoord coord) => OnPlayerMoved?.Invoke(coord);
+    public void CallPlayerMoved(TileInstance tile) => OnPlayerMoved?.Invoke(tile);
 
     public void CallStepsChanged(ResourceData resourceData) => OnStepsChanged?.Invoke(resourceData); 
     public void CallFishingAttemptsChanged(ResourceData resourceData) => OnFishingAttemptsChanged?.Invoke(resourceData); 
