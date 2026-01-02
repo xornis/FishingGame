@@ -10,11 +10,15 @@ public class TileGenerationRules : ScriptableObject
     public TileData rockTile;
     public TileData sandTile;
     public TileData quicksandTile;
+    public TileData campfireTile;
 
     [Range(0f, 1f)] public float fishTileChanceInOuterLayer = 0.25f;
     [Range(0f, 1f)] public float sandTileChanceInInnerLayer = 0.5f;
     [Range(0f, 1f)] public float quicksandTileChance = 0.2f;
     [Range(0f, 1f)] public float rockChance = 0.4f;
+    [Range(0f, 1f)] public float campfireChance = 0.05f;
+
+    private bool campfireSpawned;
 
     public TileData GetBaseTile(HexCoord coord, HashSet<HexCoord> allCoords)
     {
@@ -31,6 +35,20 @@ public class TileGenerationRules : ScriptableObject
     private TileData GetInnerEdgeTile(HexCoord coord) => Random.value < sandTileChanceInInnerLayer ? GetSandTile(coord) : groundTile;
 
     private TileData GetSandTile(HexCoord coord) => Random.value < quicksandTileChance ? quicksandTile : sandTile;
+
+    public TileData ApplyCampfire(HexCoord coord, Dictionary<HexCoord, Tile> tiles)
+    {
+        if (Random.value > campfireChance || campfireSpawned) 
+            return tiles[coord].data;
+        
+        if (tiles[coord].data.tileType == TileData.TileType.Ground && EligibleForCampfire(coord, tiles))
+        {
+            campfireSpawned = true;
+            return campfireTile;
+        }
+
+        return tiles[coord].data;
+    }
 
     public TileData ApplyRock(HexCoord coord, Dictionary<HexCoord, Tile> tiles)
     {
@@ -75,4 +93,20 @@ public class TileGenerationRules : ScriptableObject
 
         return true;
     }
+
+    private bool EligibleForCampfire(HexCoord coord, Dictionary<HexCoord, Tile> tilesByCoord)
+    {
+        if (tilesByCoord[coord].data.tileType != TileData.TileType.Ground) return false;
+
+        foreach (var dir in HexDirectionExtensions.hexDirections)
+        {
+            if (tilesByCoord.TryGetValue(coord.Neighbor(dir), out var neighbor))
+                if (neighbor.data.tileType == TileData.TileType.Rock)
+                    return true;
+        }
+
+        return false;
+    }
+
+    public void ResetGeneration() => campfireSpawned = false;
 }

@@ -29,11 +29,19 @@ public class IslandManager : MonoBehaviour
         foreach (var coord in coordSet)
             tileByCoord[coord].data = tileGenerationRules.GetBaseTile(coord, coordSet);
 
+        tileGenerationRules.ResetGeneration();
+
         foreach (var coord in coordSet)
             tileByCoord[coord].data = tileGenerationRules.ApplyRock(coord, tileByCoord);
 
         foreach (var coord in coordSet)
+            tileByCoord[coord].data = tileGenerationRules.ApplyCampfire(coord, tileByCoord);
+
+        foreach (var coord in coordSet)
         {
+            if (tileByCoord[coord].data == tileGenerationRules.campfireTile)
+                tileByCoord[coord].state = new CampfireTileState { isUsed = false };
+
             ComputeFishTileQuality(coord, tileByCoord[coord]);
             SpawnTile(coord, tileByCoord[coord]);
         }
@@ -49,6 +57,7 @@ public class IslandManager : MonoBehaviour
 
         tile.view = go.GetComponent<TileView>();
         if (tile.data is FishableTileData) SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
+        if (tile.data is CampfireTileData) tile.state = new CampfireTileState { isUsed = false };
     }
 
     private void ComputeFishTileQuality(HexCoord coord, Tile tile)

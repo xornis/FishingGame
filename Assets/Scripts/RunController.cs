@@ -51,13 +51,8 @@ public class RunController : MonoBehaviour
     {
         currentPlayerPos = tile.coord;
 
-        int valueChange = -1;
-
-        if (tile.data is WalkableTileData walkableTileData)
-            valueChange = walkableTileData.stepValueChange;
-
-        AddStepsWalkedUI(valueChange);
-        ChangeSteps(valueChange);
+        if (tile.data is IStepEffect stepEffect)
+            stepEffect.Execute(this, tile);
 
         gameEvents.CallStepsChanged(new ResourceData(stepsLeft, maxSteps));
 

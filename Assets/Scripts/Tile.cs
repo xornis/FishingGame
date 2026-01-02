@@ -18,5 +18,5 @@ public class FishTileState : TileState
 
 public class CampfireTileState : TileState
 {
-    public bool isUsed;
+    public bool isUsed = false;
 }

@@ -12,12 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e6f10278d102434fb13bd071d2350bb, type: 3}
   m_Name: Tile Rules
   m_EditorClassIdentifier: 
-  groundTile: {fileID: 11400000, guid: aa18f5512fd5694489233f8fb89654a5, type: 2}
+  groundTile: {fileID: 11400000, guid: 0408ba4b62e86334bb6e0da75d650e4e, type: 2}
   fishTile: {fileID: 11400000, guid: e67440b1bbc4dd34fa4368dc523af802, type: 2}
   rockTile: {fileID: 11400000, guid: 6932b098d29738b4eb3448f75c970da8, type: 2}
-  sandTile: {fileID: 0}
-  quicksandTile: {fileID: 11400000, guid: ad6236bfdf6f21949be468489c29df88, type: 2}
+  sandTile: {fileID: 11400000, guid: 895b82d7506021c41b3a19180fa8b3bc, type: 2}
+  quicksandTile: {fileID: 11400000, guid: 3894b56f3ec616d49a0ceb14ddf44d29, type: 2}
+  campfireTile: {fileID: 11400000, guid: 3d898c15e319ce54288d3cf2c92a8e6f, type: 2}
   fishTileChanceInOuterLayer: 0.25
   sandTileChanceInInnerLayer: 0.5
   quicksandTileChance: 0.2
   rockChance: 0.1
+  campfireChance: 0.683

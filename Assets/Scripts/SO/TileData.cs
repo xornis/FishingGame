@@ -10,6 +10,7 @@ public class TileData : ScriptableObject
         Rock,
         Sand,
         Quicksand,
+        Campfire,
     }
 
     public GameObject prefab;
