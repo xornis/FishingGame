@@ -16,7 +16,7 @@ public class TileGenerationRules : ScriptableObject
     [Range(0f, 1f)] public float sandTileChanceInInnerLayer = 0.5f;
     [Range(0f, 1f)] public float quicksandTileChance = 0.2f;
     [Range(0f, 1f)] public float rockChance = 0.4f;
-    [Range(0f, 1f)] public float campfireChance = 0.05f;
+    [Range(0f, 1f)] public float campfireChance = 1f;
 
     private bool campfireSpawned;
 
@@ -99,11 +99,9 @@ public class TileGenerationRules : ScriptableObject
         if (tilesByCoord[coord].data.tileType != TileData.TileType.Ground) return false;
 
         foreach (var dir in HexDirectionExtensions.hexDirections)
-        {
             if (tilesByCoord.TryGetValue(coord.Neighbor(dir), out var neighbor))
                 if (neighbor.data.tileType == TileData.TileType.Rock)
                     return true;
-        }
 
         return false;
     }

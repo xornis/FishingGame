@@ -5,15 +5,18 @@ public class CampfireTileData : WalkableTileData, IStepEffect
 {
     public override void Execute(RunController runController, Tile tile)
     {
-        if (tile.state is CampfireTileState { isUsed: true })
+        CampfireTileState state = tile.state as CampfireTileState;
+
+        if (state == null || state.isUsed)
         {
-            base.Execute(runController, tile);
+            runController.ChangeSteps(-1);
             return;
         }
 
+        state.isUsed = true;
+
         runController.ChangeSteps(stepValueChange);
 
-        if (tile.state is CampfireTileState campfireTileState)
-            campfireTileState.isUsed = true;
+        Debug.Log(state.isUsed);
     }
 }

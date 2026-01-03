@@ -17,4 +17,4 @@ MonoBehaviour:
   walkable: 1
   fishable: 0
   stepValueChange: 3
-  moveDurationScale: 0.386
+  moveDurationScale: 0.85

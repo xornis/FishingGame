@@ -22,4 +22,4 @@ MonoBehaviour:
   sandTileChanceInInnerLayer: 0.5
   quicksandTileChance: 0.2
   rockChance: 0.1
-  campfireChance: 0.683
+  campfireChance: 1
