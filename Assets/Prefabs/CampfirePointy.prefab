@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 590984661723474764}
   - component: {fileID: 675940646655328776}
   - component: {fileID: -795033012890007929}
-  - component: {fileID: -362977755030018065}
+  - component: {fileID: 5897349339237138593}
   m_Layer: 0
-  m_Name: RockPointy
+  m_Name: CampfirePointy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78,7 +78,7 @@ SpriteRenderer:
   m_SortingLayerID: 456217289
   m_SortingLayer: 1
   m_SortingOrder: 2
-  m_Sprite: {fileID: 21300000, guid: b4ff30272aa83e448a11ae3e0887ed99, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 6e57422c89b25074ebfc6a18b07ae510, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -144,7 +144,7 @@ PolygonCollider2D:
       - {x: -0.015625, y: -0.25}
       - {x: 0.015625, y: -0.25}
   m_UseDelaunayMesh: 0
---- !u!114 &-362977755030018065
+--- !u!114 &5897349339237138593
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -153,6 +153,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 5268574295593296186}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3a93f5b961dc518448598f4262f49bc5, type: 3}
+  m_Script: {fileID: 11500000, guid: 55f290646fadbee45b1d458e37948e08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  usedSprite: {fileID: 21300000, guid: dd9ea89f8b7bfd841921d44399df73d3, type: 3}

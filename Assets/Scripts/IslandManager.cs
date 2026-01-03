@@ -5,16 +5,19 @@ using UnityEngine;
 public class IslandManager : MonoBehaviour
 {
     [SerializeField] private HexRoomGenerator generator;
-    [SerializeField] private TileAssigner tileAssigner;
-
-    public event System.Action OnIslandReady;
+    [SerializeField] private TileGenerationRules tileGenerationRules;
+    
+    [Header("Events")]
+    [SerializeField] private GameEvents gameEvents;
 
     public HexLayout Layout { get; private set; }
     public float HexScale { get; private set; }
-    public readonly Dictionary<HexCoord, TileInstance> tileByCoord = new();
+    public readonly Dictionary<HexCoord, Tile> tileByCoord = new();
 
     private void Start()
     {
+        tileGenerationRules.ResetGeneration();
+
         var coords = generator.GetCoords(out var layout, out var hexScale);
 
         Layout = layout;
@@ -23,36 +26,46 @@ public class IslandManager : MonoBehaviour
         var coordSet = new HashSet<HexCoord>(coords);
 
         foreach (var coord in coordSet)
-            tileByCoord[coord] = new TileInstance { coord = coord };
+            tileByCoord[coord] = new Tile { coord = coord };
 
         foreach (var coord in coordSet)
-            tileByCoord[coord].data = tileAssigner.AssignBaseTile(coord, coordSet);
+            tileByCoord[coord].data = tileGenerationRules.GetBaseTile(coord, coordSet);
 
         foreach (var coord in coordSet)
-            tileByCoord[coord].data = tileAssigner.ApplyRock(coord, tileByCoord);
+            tileByCoord[coord].data = tileGenerationRules.ApplyRock(coord, tileByCoord);
 
         foreach (var coord in coordSet)
         {
+            tileByCoord[coord].data = tileGenerationRules.ApplyCampfire(coord, tileByCoord);
+
+            if (tileByCoord[coord].data == tileGenerationRules.campfireTile)
+                tileByCoord[coord].state = new CampfireTileState { isUsed = false };
+
+
             ComputeFishTileQuality(coord, tileByCoord[coord]);
             SpawnTile(coord, tileByCoord[coord]);
         }
 
-        OnIslandReady?.Invoke();
+        foreach (var coord in coordSet)
+            if (tileByCoord[coord].view is CampfireTileView cView)
+                cView.Initialize(tileByCoord[coord], gameEvents);
+
+        gameEvents.CallIslandReady();
     }
 
-    private void SpawnTile(HexCoord coord, TileInstance tile)
+    private void SpawnTile(HexCoord coord, Tile tile)
     {
         var worldPos = generator.transform.TransformPoint(Layout.HexToWorld(coord));
         var go = Instantiate(tile.data.prefab, worldPos, Quaternion.identity, transform);
         go.transform.localScale = Vector3.one * HexScale;
 
         tile.view = go.GetComponent<TileView>();
-        if (tile.data.fishable) SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
+        if (tile.data is FishableTileData) SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
     }
 
-    private void ComputeFishTileQuality(HexCoord coord, TileInstance tile)
+    private void ComputeFishTileQuality(HexCoord coord, Tile tile)
     {
-        if (!tile.data.fishable) return;
+        if (tile.data is not FishableTileData) return;
 
         int count = 0;
 
@@ -60,20 +73,30 @@ public class IslandManager : MonoBehaviour
             if (tileByCoord.TryGetValue(coord.Neighbor(dir), out var neighborTile) && neighborTile.data.fishable)
                 count++;
 
-        if (count == 0) tile.fishQuality = FishTileQuality.Poor;
-        else if (count == 1) tile.fishQuality = FishTileQuality.Normal;
-        else tile.fishQuality = FishTileQuality.Rich;
+        FishTileState fishState = new FishTileState();
+
+        fishState.fishQuality = count switch
+        {
+            0 => FishableTileData.FishTileQuality.Poor,
+            1 => FishableTileData.FishTileQuality.Normal,
+            _ => FishableTileData.FishTileQuality.Rich
+        };
+
+        tile.state = fishState;
     }
 
-    private void SetFishTileColor(SpriteRenderer sr, TileInstance tile)
+    private void SetFishTileColor(SpriteRenderer sr, Tile tile)
     {
-        sr.color = tile.fishQuality switch
+        if (tile.state is FishTileState fishState)
         {
-            FishTileQuality.Poor => new Color(0.95f, 0.95f, 0.9f),
-            FishTileQuality.Normal => new Color(0.9f, 0.95f, 1f),
-            FishTileQuality.Rich => new Color(0.8f, 0.9f, 1f),
-            _ => Color.white
-        };
+            sr.color = fishState.fishQuality switch
+            {
+                FishableTileData.FishTileQuality.Poor => new Color(0.95f, 0.95f, 0.9f),
+                FishableTileData.FishTileQuality.Normal => new Color(0.9f, 0.95f, 1f),
+                FishableTileData.FishTileQuality.Rich => new Color(0.8f, 0.9f, 1f),
+                _ => Color.white
+            };
+        }
     }
 
     public HexCoord GetRandomGroundTileCoord()

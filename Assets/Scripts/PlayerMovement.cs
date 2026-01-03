@@ -7,14 +7,15 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private IslandManager manager;
-    [SerializeField, Range(0f, 0.5f)] private float moveDuration = 0.25f;
+    [SerializeField, Range(0f, 0.5f)] private float baseMoveDuration = 0.25f;
+
+    [Header("Events")]
+    [SerializeField] private GameEvents gameEvents;
 
     public bool CanMove { get; private set; } = true;
     private bool isMoving;
-    private HexCoord? queuedStep;
-    private readonly List<TileView> highlightedTiles = new List<TileView>();
 
-    public event System.Action OnStepFinished;
+    private readonly List<TileView> highlightedTiles = new List<TileView>();
 
     private PlayerInput playerInput;
     private InputAction action;
@@ -27,14 +28,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnEnable()
     {
-        manager.OnIslandReady += OnIslandReady;
+        gameEvents.OnIslandReady += OnIslandReady;
         action.performed += OnClick;
+
+        gameEvents.OnSetMovementPermission += SetMovementPermission;
     }
 
     private void OnDisable()
     {
-        manager.OnIslandReady -= OnIslandReady;
+        gameEvents.OnIslandReady -= OnIslandReady;
         action.performed -= OnClick;
+
+        gameEvents.OnSetMovementPermission -= SetMovementPermission;
     }
 
     private void OnIslandReady()
@@ -45,51 +50,57 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnClick(InputAction.CallbackContext ctx)
     {
-        if (!TryGetClickedNeighbor(out HexCoord target)) return;
-        TryMove(target);
+        if (!CanMove || isMoving) return;
+
+        if (TryGetClickedNeighbor(out Tile tile))
+        {
+            gameEvents.CallStepEnded(tile);
+
+            StartCoroutine(MoveTo(tile));
+        }
     }
 
-    private bool TryGetClickedNeighbor(out HexCoord target)
+    private bool TryGetClickedNeighbor(out Tile tile)
     {
-        target = default;
+        tile = default;
 
         var layout = manager.Layout;
 
         Vector3 screenMousePos = Mouse.current.position.ReadValue();
         Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(screenMousePos.x, screenMousePos.y, -Camera.main.transform.position.z));
 
-        HexCoord clickedPos = layout.WorldToHex(worldMousePos);
         HexCoord currentPos = layout.WorldToHex(transform.position);
+        HexCoord clickedPos = layout.WorldToHex(worldMousePos);
 
         if (currentPos.Distance(clickedPos) != 1) return false;
-        if (!manager.tileByCoord.TryGetValue(clickedPos, out var tile)) return false;
-        if (!tile.data.walkable) return false;
+        if (!manager.tileByCoord.TryGetValue(clickedPos, out var clickedTile)) return false;
+        if (!clickedTile.data.walkable) return false;
 
-        target = clickedPos;
+        tile = clickedTile;
         return true;
     }
 
-    private void TryMove(HexCoord target)
-    {
-        if (!CanMove) return;
-
-        if (isMoving) { queuedStep = target; return; }
-
-        if (queuedStep.HasValue && queuedStep.Value.Equals(target)) return;
-
-        StartCoroutine(MoveTo(target));
-    }
-
-    private IEnumerator MoveTo(HexCoord target)
+    private IEnumerator MoveTo(Tile tile)
     {
         isMoving = true;
 
+        yield return AnimateMoveTo(tile);
+
+        gameEvents.CallPlayerMoved(tile);
+        UpdateAvailableMoves();
+
+        isMoving = false;
+    }
+
+    private IEnumerator AnimateMoveTo(Tile tile)
+    {
         Vector3 start = transform.position;
-        Vector3 end = manager.Layout.HexToWorld(target);
+        Vector3 end = manager.Layout.HexToWorld(tile.coord);
         end.z = start.z;
 
         float timer = 0f;
-        float duration = moveDuration;
+        float durationScale = (tile.data is WalkableTileData walkableTileData) ? walkableTileData.moveDurationScale : 1f;
+        float duration = baseMoveDuration * durationScale;
 
         while (timer < duration)
         {
@@ -99,16 +110,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         transform.position = end;
-        isMoving = false;
-
-        AfterStep();
-
-        if (queuedStep.HasValue)
-        {
-            var next = queuedStep.Value;
-            queuedStep = null;
-            StartCoroutine(MoveTo(next));
-        }
     }
 
     private void ShowAvailableMoves()
@@ -136,6 +137,12 @@ public class PlayerMovement : MonoBehaviour
         highlightedTiles.Clear();
     }
 
+    private void UpdateAvailableMoves()
+    {
+        ClearAvailableMoves();
+        if (CanMove) ShowAvailableMoves();
+    }
+
     private void SpawnPlayer()
     {
         HexCoord randomCoord = manager.GetRandomGroundTileCoord();
@@ -145,13 +152,5 @@ public class PlayerMovement : MonoBehaviour
         transform.position = worldCoordPos;
     }
 
-    private void AfterStep()
-    {
-        OnStepFinished?.Invoke();
-        ClearAvailableMoves();
-        if (CanMove) ShowAvailableMoves();
-    }
-
-    public void ClearQueuedStep() => queuedStep = null;
-    public void SetMovePermission(bool state) => CanMove = state;
+    private void SetMovementPermission(bool state) => CanMove = state;
 }

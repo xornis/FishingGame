@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "TileData", menuName = "Scriptable Objects/Tile Data")]
+[CreateAssetMenu(fileName = "TileData", menuName = "Scriptable Objects/Tiles/Tile Data")]
 public class TileData : ScriptableObject
 {
     public enum TileType
@@ -8,7 +8,9 @@ public class TileData : ScriptableObject
         Ground,
         Fish,
         Rock,
-        Sand
+        Sand,
+        Quicksand,
+        Campfire,
     }
 
     public GameObject prefab;

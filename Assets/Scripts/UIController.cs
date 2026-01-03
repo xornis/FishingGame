@@ -4,55 +4,67 @@ using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
+    [Header("Events")]
+    [SerializeField] private GameEvents gameEvents;
+
+    [Header("Settings")]
     [SerializeField] private TextMeshProUGUI stepsText;
     [SerializeField] private TextMeshProUGUI fishText;
     [SerializeField] private GameObject endRunPanel;
     [SerializeField] private GameObject endRunResultPanel;
-    [SerializeField] private TextMeshProUGUI fishTriesText;
-    [SerializeField] private TextMeshProUGUI fishCaughtText;
-    [SerializeField] private TextMeshProUGUI stepsWalkedText;
-
-    [SerializeField] private RunController runController;
-    [SerializeField] private PlayerMovement playerMovement;
-    [SerializeField] private FishingInteraction fishingInteraction;
+    [SerializeField] private TextMeshProUGUI totalFishingAttemptsText;
+    [SerializeField] private TextMeshProUGUI totalFishCapturedText;
+    [SerializeField] private TextMeshProUGUI totalStepsWalkedText;
 
     private void Start()
     {
         ToggleGameObject(endRunPanel, false);
-        UpdateStepsText();
-        UpdateFishTriesText();
+
+        UpdateTotalStepsWalkedText(0);
+        UpdateTotalFishCapturedText(0);
+        UpdateTotalFishingAttemptsText(0);
     }
 
     private void OnEnable()
     {
-        runController.OnRunEnded += OnRunEnded;
-        playerMovement.OnStepFinished += UpdateStepsText;
-        fishingInteraction.OnFishTry += UpdateFishTriesText;
+        gameEvents.OnRunEnded += TurnOnEndRunPanel;
+
+        gameEvents.OnStepsChanged += UpdateStepsUIText;
+        gameEvents.OnFishingAttemptsChanged += UpdateFishUIText;
+
+        gameEvents.OnTotalStepsWalkedChanged += UpdateTotalStepsWalkedText;
+        gameEvents.OnTotalFishCapturedChanged += UpdateTotalFishCapturedText;
+        gameEvents.OnTotalFishingAttemptsChanged += UpdateTotalFishingAttemptsText;
     }
 
     private void OnDisable()
     {
-        runController.OnRunEnded -= OnRunEnded;
-        playerMovement.OnStepFinished -= UpdateStepsText;
-        fishingInteraction.OnFishTry -= UpdateFishTriesText;
+        gameEvents.OnRunEnded -= TurnOnEndRunPanel;
+
+        gameEvents.OnStepsChanged -= UpdateStepsUIText;
+        gameEvents.OnFishingAttemptsChanged -= UpdateFishUIText;
+
+        gameEvents.OnTotalStepsWalkedChanged -= UpdateTotalStepsWalkedText;
+        gameEvents.OnTotalFishCapturedChanged -= UpdateTotalFishCapturedText;
+        gameEvents.OnTotalFishingAttemptsChanged -= UpdateTotalFishingAttemptsText;
     }
 
-    private void OnRunEnded()
+    private void UpdateStepsUIText(ResourceData resourceData) => stepsText.text = $"{resourceData.current}/{resourceData.max}";
+    private void UpdateFishUIText(ResourceData resourceData) => fishText.text = $"{resourceData.current}/{resourceData.max}";
+
+    private void UpdateTotalStepsWalkedText(int value) => totalStepsWalkedText.text = $"Total Steps Walked: {value}";
+    private void UpdateTotalFishCapturedText(int value) => totalFishCapturedText.text = $"Total Fish Captured: {value}";
+    private void UpdateTotalFishingAttemptsText(int value) => totalFishingAttemptsText.text = $"Total Fishing Attempts: {value}";
+
+    private void ToggleGameObject(GameObject gameObject, bool state) => gameObject.SetActive(state);
+
+    private void TurnOnEndRunPanel()
     {
         ToggleGameObject(endRunPanel, true);
+
         StartCoroutine(FadeAnimation(endRunPanel, 2f));
         StartCoroutine(ScalePingAnimation(endRunResultPanel.transform, 2f, 1.1f));
-        SetStepsWalkedText();
-        SetFishCaughtText();
-        SetFishTriesText();
     }
-
-    private void UpdateStepsText() => stepsText.text = $"{runController.StepsLeft}/{runController.MaxSteps}";
-    private void UpdateFishTriesText() => fishText.text = $"{runController.FishTriesLeft}/{runController.MaxFishTries}";
-    private void ToggleGameObject(GameObject gameObject, bool state) => gameObject.SetActive(state);
-    private void SetStepsWalkedText() => stepsWalkedText.text = $"Steps Walked: {runController.StepsWalked}";
-    private void SetFishCaughtText() => fishCaughtText.text = $"Fish Caught: {runController.FishCaught}";
-    private void SetFishTriesText() => fishTriesText.text = $"Fishing Tries: {runController.FishTries}";
 
     private IEnumerator ScalePingAnimation(Transform targetTransform, float duration, float animationStrength)
     {
@@ -71,7 +83,6 @@ public class UIController : MonoBehaviour
         }
         targetTransform.localScale = originalScale;
     }
-
     private IEnumerator FadeAnimation(GameObject gameObject, float duration)
     {
         CanvasGroup canvasGroup = gameObject.GetComponent<CanvasGroup>();

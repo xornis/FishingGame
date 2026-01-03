@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TileView : MonoBehaviour
 {
-    private SpriteRenderer sr;
+    protected SpriteRenderer sr;
     private Color baseColor;
 
     private void Awake()

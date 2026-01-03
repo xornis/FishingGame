@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 1e6f10278d102434fb13bd071d2350bb
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - groundTile: {instanceID: 0}
+  - fishTile: {instanceID: 0}
+  - rockTile: {instanceID: 0}
+  - sandTile: {instanceID: 0}
+  - quicksandTile: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

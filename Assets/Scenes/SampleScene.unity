@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 225492492}
   - component: {fileID: 225492491}
   m_Layer: 5
-  m_Name: Steps Walked Text
+  m_Name: Total Steps Walked Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -176,7 +176,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Steps Walked:'
+  m_text: 'Total Steps Walked:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7b4f9326abd233a46aeb969c4627e00b, type: 2}
   m_sharedMaterial: {fileID: 8930471190719016688, guid: 7b4f9326abd233a46aeb969c4627e00b, type: 2}
@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 277655242}
   - component: {fileID: 277655243}
   m_Layer: 5
-  m_Name: 'Fish Tries Text '
+  m_Name: 'Total Fish Captured Text '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -453,7 +453,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Fish Captured:'
+  m_text: 'Total Fish Captured:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7b4f9326abd233a46aeb969c4627e00b, type: 2}
   m_sharedMaterial: {fileID: 8930471190719016688, guid: 7b4f9326abd233a46aeb969c4627e00b, type: 2}
@@ -944,10 +944,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab86afeba195c894b96dff5bf39388a9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  UIController: {fileID: 1298899553}
-  playerMovement: {fileID: 1076604562}
-  fishingInteraction: {fileID: 1076604566}
   islandManager: {fileID: 1253531103}
+  gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
+  maxSteps: 10
+  maxFishingAttempts: 5
 --- !u!4 &775456355
 Transform:
   m_ObjectHideFlags: 0
@@ -1157,7 +1157,7 @@ GameObject:
   - component: {fileID: 1048835414}
   - component: {fileID: 1048835413}
   m_Layer: 5
-  m_Name: Fish Captured Text
+  m_Name: Total Fishing Attempts Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1202,7 +1202,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Fishing Tries:'
+  m_text: 'Total Fishing Attempts:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 7b4f9326abd233a46aeb969c4627e00b, type: 2}
   m_sharedMaterial: {fileID: 8930471190719016688, guid: 7b4f9326abd233a46aeb969c4627e00b, type: 2}
@@ -1314,7 +1314,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 1253531103}
-  moveDuration: 0.25
+  baseMoveDuration: 0.35
+  gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
 --- !u!114 &1076604563
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1431,6 +1432,7 @@ MonoBehaviour:
   baseCatchChance: 0.25
   baseWaitingForFishInSeconds: 2
   manager: {fileID: 1253531103}
+  gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
 --- !u!1 &1077393699
 GameObject:
   m_ObjectHideFlags: 0
@@ -1555,7 +1557,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   generator: {fileID: 1253531101}
-  tileAssigner: {fileID: 11400000, guid: db6552e818959dc4ab53170e285f26dc, type: 2}
+  tileGenerationRules: {fileID: 11400000, guid: db6552e818959dc4ab53170e285f26dc, type: 2}
+  gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
 --- !u!1 &1298899548
 GameObject:
   m_ObjectHideFlags: 0
@@ -1673,16 +1676,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f37c63c0b8800fb47bce6915e8242bde, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
   stepsText: {fileID: 1338846189}
   fishText: {fileID: 1474444516}
   endRunPanel: {fileID: 1728529800}
   endRunResultPanel: {fileID: 797810602}
-  fishTriesText: {fileID: 277655243}
-  fishCaughtText: {fileID: 1048835413}
-  stepsWalkedText: {fileID: 225492491}
-  runController: {fileID: 775456354}
-  playerMovement: {fileID: 1076604562}
-  fishingInteraction: {fileID: 1076604566}
+  totalFishingAttemptsText: {fileID: 1048835413}
+  totalFishCapturedText: {fileID: 277655243}
+  totalStepsWalkedText: {fileID: 225492491}
 --- !u!1 &1338846186
 GameObject:
   m_ObjectHideFlags: 0

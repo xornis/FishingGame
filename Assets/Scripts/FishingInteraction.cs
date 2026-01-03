@@ -9,12 +9,12 @@ public class FishingInteraction : MonoBehaviour
     [SerializeField] private float baseWaitingForFishInSeconds = 2f;
 
     [SerializeField] private IslandManager manager;
+    
+    [Header("Events")]
+    [SerializeField] private GameEvents gameEvents;
 
     public bool CanFish { get; private set; } = true;
     private bool isFishing;
-
-    public event System.Action OnFishCaught;
-    public event System.Action OnFishTry;
 
     private PlayerInput playerInput;
     private InputAction action;
@@ -28,22 +28,25 @@ public class FishingInteraction : MonoBehaviour
     private void OnEnable()
     {
         action.performed += OnClick;
+        gameEvents.OnSetFishingPermission += SetFishingPermission;
     }
 
     private void OnDisable()
     {
         action.performed -= OnClick;
+        gameEvents.OnSetFishingPermission -= SetFishingPermission;
     }
 
     private void OnClick(InputAction.CallbackContext ctx)
     {
-        if (!TryGetClickedFishTile(out HexCoord target, out TileInstance tile, out Transform hitTransform)) return;
-        TryCatch(target, tile, hitTransform);
+        if (!CanFish || isFishing) return;
+
+        if (TryGetClickedFishTile(out Tile tile, out Transform hitTransform))
+            StartCoroutine(WaitForFishAndCatch(tile, hitTransform));
     }
 
-    private bool TryGetClickedFishTile(out HexCoord target, out TileInstance tile, out Transform hitTransform)
+    private bool TryGetClickedFishTile(out Tile tile, out Transform hitTransform)
     {
-        target = default;
         tile = default;
         hitTransform = default;
 
@@ -61,47 +64,34 @@ public class FishingInteraction : MonoBehaviour
         if (!manager.tileByCoord.TryGetValue(clickedPos, out var clickedTile)) return false;
         if (!clickedTile.data.fishable) return false;
 
-        target = clickedPos;
         tile = clickedTile;
         hitTransform = hit.transform;
         return true;
     }
 
-    private void TryCatch(in HexCoord clickedPos, in TileInstance tile, in Transform hitTransform)
+    private IEnumerator WaitForFishAndCatch(Tile tile, Transform hitTransform)
     {
-        if (!CanFish) return;
-        if (isFishing) return;
-        StartCoroutine(WaitForFishAndCatch(tile, hitTransform));
-    }
-
-    private IEnumerator WaitForFishAndCatch(TileInstance tile, Transform hitTransform)
-    {
-        CanFish = false;
-
-        float chance = baseCatchChance * GetChanceMultiplier(tile.fishQuality);
-        float waitTime = baseWaitingForFishInSeconds * GetTimeMultiplier(tile.fishQuality);
-
-        print("3...");
-        yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/3, 1.1f));
-        print("2...");
-        yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/3, 1.1f));
-
-        bool isCaught = Random.value < chance;
-        string message = isCaught ? "Caught!" : "Got Away..";
-
-        OnFishTry?.Invoke();
-        
-        if (isCaught)
+        if (tile.state is FishTileState fishState)
         {
-            OnFishCaught?.Invoke();
-            yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/4, 1.4f));
+            isFishing = true;
+
+            gameEvents.CallFishingAttempted();
+
+            float waitTime = baseWaitingForFishInSeconds * GetTimeMultiplier(fishState.fishQuality);
+
+            yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime / 3, 1.1f));
+            yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime / 3, 1.1f));
+
+            if (Random.value <= baseCatchChance * GetChanceMultiplier(fishState.fishQuality))
+            {
+                gameEvents.CallFishCaptured();
+                yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime / 4, 1.4f));
+            }
+            else
+                yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime / 6, 0.8f));
+
+            isFishing = false;
         }
-        else
-            yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime/6, 0.8f));
-
-        Debug.Log(message);
-
-        CanFish = true;
     }
 
     private IEnumerator AnimateScalePing(Transform targetTransform, float duration, float animationStrength)
@@ -122,31 +112,27 @@ public class FishingInteraction : MonoBehaviour
         targetTransform.localScale = originalScale;
     }
 
-    private float GetChanceMultiplier(FishTileQuality quality)
+    private float GetChanceMultiplier(FishableTileData.FishTileQuality quality)
     {
         return quality switch
         {
-            FishTileQuality.Poor => 0.8f,
-            FishTileQuality.Normal => 1.1f,
-            FishTileQuality.Rich => 1.5f,
+            FishableTileData.FishTileQuality.Poor => 0.8f,
+            FishableTileData.FishTileQuality.Normal => 1.1f,
+            FishableTileData.FishTileQuality.Rich => 1.5f,
             _ => 1f
         };
     }
 
-    private float GetTimeMultiplier(FishTileQuality quality)
+    private float GetTimeMultiplier(FishableTileData.FishTileQuality quality)
     {
         return quality switch
         {
-            FishTileQuality.Poor => 1.3f,
-            FishTileQuality.Normal => 1.1f,
-            FishTileQuality.Rich => 0.8f,
+            FishableTileData.FishTileQuality.Poor => 1.3f,
+            FishableTileData.FishTileQuality.Normal => 1.1f,
+            FishableTileData.FishTileQuality.Rich => 0.8f,
             _ => 1f
         };
     }
 
-    public void SetFishingPermission(bool state)
-    {
-        CanFish = state;
-        isFishing = !state;
-    }
+    public void SetFishingPermission(bool state) => CanFish = state;
 }

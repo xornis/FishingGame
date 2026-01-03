@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: efbbe4f94d3d4ec4cb663719d9477fb9
+guid: 60437dec70556054f8e83460162aa7bd
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2612419594051259850
-    second: stepsHex_0
+      213: 2894817968736568616
+    second: hex1_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -56,7 +56,7 @@ TextureImporter:
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
   alphaIsTransparency: 1
-  spriteTessellationDetail: -1
+  spriteTessellationDetail: 0
   textureType: 8
   textureShape: 1
   singleChannelComponent: 0
@@ -75,7 +75,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -126,7 +126,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: stepsHex_0
+      name: hex1_0
       rect:
         serializedVersion: 2
         x: 17
@@ -134,25 +134,33 @@ TextureImporter:
         width: 30
         height: 34
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 632fd4c6832debbd0800000000000000
-      internalID: -2612419594051259850
+      spriteID: 82506fbea957c2820800000000000000
+      internalID: 2894817968736568616
       vertices: []
       indices: 
       edges: []
       weights: []
     outline: []
     customData: 
-    physicsShape: []
+    physicsShape:
+    - - {x: 14, y: -9}
+      - {x: 14, y: 9}
+      - {x: 1, y: 16}
+      - {x: -1, y: 16}
+      - {x: -14, y: 9}
+      - {x: -14, y: -9}
+      - {x: -1, y: -16}
+      - {x: 1, y: -16}
     bones: []
     spriteID: 5e97eb03825dee720800000000000000
-    internalID: 0
+    internalID: 1537655665
     vertices: []
     indices: 
     edges: []
@@ -161,7 +169,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      stepsHex_0: -2612419594051259850
+      hex1_0: 2894817968736568616
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
