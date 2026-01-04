@@ -5,11 +5,13 @@ public class WalkableTileData : TileData, IStepEffect
 {
     public int stepValueChange;
     [Range(0f, 3f)] public float moveDurationScale;
+    public TileStepSounds stepSounds;
 
     public virtual void Execute(RunController runController, Tile tile)
     {
         runController.ChangeSteps(stepValueChange);
         runController.AddStepsWalkedUI(stepValueChange);
+        AudioManager.Instance.PlayTileSounds(stepSounds);
     }
 }
 

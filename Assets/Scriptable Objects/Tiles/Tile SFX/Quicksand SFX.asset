@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d38ec03280b2048affb1c96acc4286, type: 3}
+  m_Name: Quicksand SFX
+  m_EditorClassIdentifier: 
+  tileSounds:
+  - {fileID: 8300000, guid: de2c9f53cb12eed44921863d7d8197da, type: 3}
+  - {fileID: 8300000, guid: 5d05249f5cedfd040aad9ee0c5b9a9eb, type: 3}
+  - {fileID: 8300000, guid: e3450d9a880cfc540b056e526c76991d, type: 3}
+  - {fileID: 8300000, guid: f9d3a5c2296f6c84cb22b0e5c93faaf1, type: 3}
+  - {fileID: 8300000, guid: 87f676b54aad1c34994f3fbeabc74b6e, type: 3}
+  - {fileID: 8300000, guid: 68f0e8d174fb4284eb25aec723c777d2, type: 3}
+  volume: 0.15

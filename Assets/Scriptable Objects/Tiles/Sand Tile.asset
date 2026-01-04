@@ -18,3 +18,4 @@ MonoBehaviour:
   fishable: 0
   stepValueChange: -1
   moveDurationScale: 1.15
+  stepSounds: {fileID: 11400000, guid: 003220c5d541e81429ff5180f37ebed3, type: 2}

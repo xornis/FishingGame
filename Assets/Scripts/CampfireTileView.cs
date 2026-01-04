@@ -19,9 +19,6 @@ public class CampfireTileView : TileView
     public void SetUsedVisuals()
     {
         if (parentTile.state is CampfireTileState { isUsed: true })
-        {
             sr.sprite = usedSprite;
-            sr.color = Color.gray;
-        }
     }
 }
