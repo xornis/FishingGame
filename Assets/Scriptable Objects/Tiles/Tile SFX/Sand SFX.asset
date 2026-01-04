@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d38ec03280b2048affb1c96acc4286, type: 3}
+  m_Name: Sand SFX
+  m_EditorClassIdentifier: 
+  tileSounds:
+  - {fileID: 8300000, guid: 9e104f12387e2aa478ecb915b4369b10, type: 3}
+  - {fileID: 8300000, guid: 86abdf36fa6d450459344d6af64df043, type: 3}
+  - {fileID: 8300000, guid: 760638395497ca14f801e6580cdc66a3, type: 3}
+  - {fileID: 8300000, guid: 37a7da0f75e4fe845a80ecb6416b40c6, type: 3}
+  - {fileID: 8300000, guid: 6624db8c3cc912c40a85ce26d30d15d1, type: 3}
+  - {fileID: 8300000, guid: a7cc199586a14d74db295c0c12a5b619, type: 3}
+  volume: 0.15
