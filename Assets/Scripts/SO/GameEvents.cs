@@ -24,6 +24,8 @@ public class GameEvents : ScriptableObject
     public event Action OnIslandReady;
     public event Action<Tile> OnPlayerMoved;
 
+    public event Action<Tile> OnTileClicked;
+
     #region UI
     public event Action<ResourceData> OnStepsChanged;
     public event Action<ResourceData> OnFishingAttemptsChanged;
@@ -43,6 +45,8 @@ public class GameEvents : ScriptableObject
     public void CallFishCaptured() => OnFishCaptured?.Invoke();
     public void CallIslandReady() => OnIslandReady?.Invoke();
     public void CallPlayerMoved(Tile tile) => OnPlayerMoved?.Invoke(tile);
+
+    public void CallTileClicked(Tile tile) => OnTileClicked?.Invoke(tile);
 
     public void CallStepsChanged(ResourceData resourceData) => OnStepsChanged?.Invoke(resourceData); 
     public void CallFishingAttemptsChanged(ResourceData resourceData) => OnFishingAttemptsChanged?.Invoke(resourceData); 

@@ -2,7 +2,6 @@ using HexDungeon;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -17,67 +16,38 @@ public class PlayerMovement : MonoBehaviour
 
     private readonly List<TileView> highlightedTiles = new List<TileView>();
 
-    private PlayerInput playerInput;
-    private InputAction action;
-
-    private void Awake()
-    {
-        playerInput = GetComponent<PlayerInput>();
-        action = playerInput.actions["Attack"];
-    }
-
     private void OnEnable()
     {
         gameEvents.OnIslandReady += OnIslandReady;
-        action.performed += OnClick;
-
         gameEvents.OnSetMovementPermission += SetMovementPermission;
+
+        gameEvents.OnTileClicked += HandleMoveRequest;
     }
 
     private void OnDisable()
     {
         gameEvents.OnIslandReady -= OnIslandReady;
-        action.performed -= OnClick;
-
         gameEvents.OnSetMovementPermission -= SetMovementPermission;
+
+        gameEvents.OnTileClicked -= HandleMoveRequest;
+    }
+
+    private void HandleMoveRequest(Tile tile)
+    {
+        if (!CanMove || isMoving) return;
+
+        HexCoord currentPos = manager.Layout.WorldToHex(transform.position);
+        if (currentPos.Distance(tile.coord) == 1 && tile.data.walkable)
+        {
+            gameEvents.CallStepEnded(tile);
+            StartCoroutine(MoveTo(tile));
+        }
     }
 
     private void OnIslandReady()
     {
         SpawnPlayer();
         ShowAvailableMoves();
-    }
-
-    private void OnClick(InputAction.CallbackContext ctx)
-    {
-        if (!CanMove || isMoving) return;
-
-        if (TryGetClickedNeighbor(out Tile tile))
-        {
-            gameEvents.CallStepEnded(tile);
-
-            StartCoroutine(MoveTo(tile));
-        }
-    }
-
-    private bool TryGetClickedNeighbor(out Tile tile)
-    {
-        tile = default;
-
-        var layout = manager.Layout;
-
-        Vector3 screenMousePos = Mouse.current.position.ReadValue();
-        Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(screenMousePos.x, screenMousePos.y, -Camera.main.transform.position.z));
-
-        HexCoord currentPos = layout.WorldToHex(transform.position);
-        HexCoord clickedPos = layout.WorldToHex(worldMousePos);
-
-        if (currentPos.Distance(clickedPos) != 1) return false;
-        if (!manager.tileByCoord.TryGetValue(clickedPos, out var clickedTile)) return false;
-        if (!clickedTile.data.walkable) return false;
-
-        tile = clickedTile;
-        return true;
     }
 
     private IEnumerator MoveTo(Tile tile)
