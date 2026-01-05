@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
         HexCoord currentPos = manager.Layout.WorldToHex(transform.position);
         if (currentPos.Distance(tile.coord) == 1 && tile.data.walkable)
         {
+            tile.view.PlayPulse(0.9f, 0.15f);
             gameEvents.CallStepEnded(tile);
             StartCoroutine(MoveTo(tile));
         }

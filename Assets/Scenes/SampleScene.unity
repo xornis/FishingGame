@@ -1670,7 +1670,7 @@ MonoBehaviour:
   hexPrefab: {fileID: 5268574295593296186, guid: 4d808a2624700ef4fa5039ff885ec33b, type: 3}
   hexScale: 4
   hexOrientation: 1
-  hexRadius: 1.15
+  hexRadius: 1.085
   mode: 1
   startAxial: {x: 0, y: 0}
   randomAlgorithm: 1

@@ -12,13 +12,16 @@ public class TileView : MonoBehaviour
     private Coroutine scaleCoroutine;
     private Vector3 baseScale;
     private Color baseColor;
+    private int baseSortingOrder;
 
     private bool initialized;
+    private bool pulsing;
 
     private void Awake()
     {
         sr = GetComponent<SpriteRenderer>();
         baseColor = sr.color;
+        baseSortingOrder = sr.sortingOrder;
     }
 
     private void Start()
@@ -28,14 +31,20 @@ public class TileView : MonoBehaviour
 
     private void EnsureInitialized()
     {
-        if (initialized) return;
+        if (initialized && baseScale != Vector3.zero) return;
         baseScale = transform.localScale;
+        if (baseScale == Vector3.zero) baseScale = Vector3.one;
         initialized = true;
     }
 
     public void SetHover(bool isHovered)
     {
+        if (pulsing) return;
+
         EnsureInitialized();
+
+        sr.sortingOrder = isHovered ? baseSortingOrder + 10 : baseSortingOrder;
+
         Vector3 target = isHovered ? baseScale * hoverScaleMultiplier : baseScale;
         StartScaleAnimation(target, hoverScaleDuration);
     }
@@ -49,9 +58,15 @@ public class TileView : MonoBehaviour
 
     private IEnumerator PulseRoutine(float strength, float duration)
     {
+        pulsing = true;
+        sr.sortingOrder = baseSortingOrder + 15;
+
         Vector3 target = baseScale * strength;
-        yield return ScaleAnimate(target, duration / 2f);
-        yield return ScaleAnimate(baseScale, duration / 2f);
+        yield return StartCoroutine(ScaleAnimate(target, duration / 2f));
+        yield return StartCoroutine(ScaleAnimate(baseScale, duration / 2f));
+
+        sr.sortingOrder = baseSortingOrder;
+        pulsing = false;
     }
 
     public void SetClickPulse()

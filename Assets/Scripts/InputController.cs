@@ -31,9 +31,7 @@ public class InputController : MonoBehaviour
         Tile currentTile = GetTileOnClick();
 
         if (currentTile != null)
-        {
             gameEvents.CallTileClicked(currentTile);
-        }
     }
 
     private void Update()
@@ -53,10 +51,24 @@ public class InputController : MonoBehaviour
     {
         Vector2 screenMousePos = Mouse.current.position.ReadValue();
         Vector3 worldMousePos = Camera.main.ScreenToWorldPoint(new Vector3(screenMousePos.x, screenMousePos.y, -Camera.main.transform.position.z));
+        RaycastHit2D hit = Physics2D.Raycast(worldMousePos, Vector2.zero);
 
-        HexCoord coord = islandManager.Layout.WorldToHex(worldMousePos);
+        if (hit.collider != null)
+        {
+            TileView view = hit.collider.GetComponent<TileView>();
+            if (view != null)
+            {
+                HexCoord coord = islandManager.Layout.WorldToHex(view.transform.position);
+                if (islandManager.tileByCoord.TryGetValue(coord, out var tile))
+                {
+                    if (tile.view == null) tile.view = view;
+                    return tile;
+                }
+            }
+        }
 
-        islandManager.tileByCoord.TryGetValue(coord, out var tile);
-        return tile;
+        HexCoord directCoord = islandManager.Layout.WorldToHex(worldMousePos);
+        if (islandManager.tileByCoord.TryGetValue(directCoord, out var fallbackTile)) return fallbackTile;
+        return null;
     }
 }
