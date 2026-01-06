@@ -4,33 +4,34 @@ using UnityEngine.InputSystem;
 
 public class InputController : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private IslandManager islandManager;
-    [SerializeField] private GameEvents gameEvents;
     [SerializeField] private PlayerInput playerInput;
+    [SerializeField] private Transform playerTransform;
+
+    [Header("Events")]
+    [SerializeField] private GameEvents gameEvents;
 
     private InputAction clickAction;
     private TileView lastHovered;
 
-    private void Awake()
-    {
-        clickAction = playerInput.actions["Attack"];
-    }
-
-    private void OnEnable()
-    {
-        clickAction.performed += OnMouseClickPerformed;
-    }
-
-    private void OnDisable()
-    {
-        clickAction.performed -= OnMouseClickPerformed;
-    }
+    private void Awake() => clickAction = playerInput.actions["Attack"];
+    private void OnEnable() => clickAction.performed += OnMouseClickPerformed;
+    private void OnDisable() => clickAction.performed -= OnMouseClickPerformed;
 
     private void OnMouseClickPerformed(InputAction.CallbackContext ctx)
     {
         Tile currentTile = GetTileOnClick();
 
-        if (currentTile != null)
+        if (currentTile == null) return;
+
+        Vector3 playerPos = playerTransform ? playerTransform.position : transform.position;
+        HexCoord playerHex = islandManager.Layout.WorldToHex(playerPos);
+        bool neighbor = playerHex.Distance(currentTile.coord) == 1;
+
+        if (!neighbor || (!currentTile.data.walkable && !currentTile.data.fishable))
+            currentTile.view.PlayErrorEffect();
+        else
             gameEvents.CallTileClicked(currentTile);
     }
 
@@ -68,7 +69,6 @@ public class InputController : MonoBehaviour
         }
 
         HexCoord directCoord = islandManager.Layout.WorldToHex(worldMousePos);
-        if (islandManager.tileByCoord.TryGetValue(directCoord, out var fallbackTile)) return fallbackTile;
-        return null;
+        return islandManager.tileByCoord.TryGetValue(directCoord, out var fallbackTile) ? fallbackTile : null;
     }
 }

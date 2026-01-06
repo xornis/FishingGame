@@ -1589,8 +1589,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   islandManager: {fileID: 1253531103}
-  gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
   playerInput: {fileID: 1076604563}
+  playerTransform: {fileID: 1076604564}
+  gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
 --- !u!1 &1077393699
 GameObject:
   m_ObjectHideFlags: 0

@@ -156,6 +156,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a93f5b961dc518448598f4262f49bc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clickScaleMultiplier: 1.25
-  hoverScaleMultiplier: 1.15
-  hoverScaleDuration: 0.1
+  hoverScaleMultiplier: 1.05
+  hoverScaleDuration: 0.3
+  rejectedClickScaleMultiplier: 0.975
+  rejectedClickScaleDuration: 0.5
