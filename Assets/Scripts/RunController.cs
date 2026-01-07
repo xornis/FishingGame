@@ -27,8 +27,8 @@ public class RunController : MonoBehaviour
         stepsLeft = maxSteps;
         fishingAttemptsLeft = maxFishingAttempts;
 
-        gameEvents.CallStepsChanged(new ResourceData(stepsLeft, maxSteps));
-        gameEvents.CallFishingAttemptsChanged(new ResourceData(fishingAttemptsLeft, maxFishingAttempts));
+        gameEvents.CallStepsChanged(new ResourceData(stepsLeft, maxSteps, 0));
+        gameEvents.CallFishingAttemptsChanged(new ResourceData(fishingAttemptsLeft, maxFishingAttempts, 0));
     }
 
     private void OnEnable()
@@ -54,8 +54,6 @@ public class RunController : MonoBehaviour
         if (tile.data is IStepEffect stepEffect)
             stepEffect.Execute(this, tile);
 
-        gameEvents.CallStepsChanged(new ResourceData(stepsLeft, maxSteps));
-
         CheckRunStatus();
     }
 
@@ -63,8 +61,6 @@ public class RunController : MonoBehaviour
     {
         AddFishingAttemptsUI(1);
         ChangeFishingAttempts(-1);
-
-        gameEvents.CallFishingAttemptsChanged(new ResourceData(fishingAttemptsLeft, maxFishingAttempts));
 
         CheckRunStatus();
     }
@@ -96,8 +92,16 @@ public class RunController : MonoBehaviour
 
     private void HandleFishCaptured() => AddFishCapturedUI(1);
 
-    public void ChangeSteps(int amount) => stepsLeft += amount;
-    public void ChangeFishingAttempts(int amount) => fishingAttemptsLeft += amount;
+    public void ChangeSteps(int amount)
+    {
+        stepsLeft += amount;
+        gameEvents.CallStepsChanged(new ResourceData(stepsLeft, maxSteps, amount));
+    }
+    public void ChangeFishingAttempts(int amount)
+    {
+        fishingAttemptsLeft += amount;
+        gameEvents.CallFishingAttemptsChanged(new ResourceData(fishingAttemptsLeft, maxFishingAttempts, amount));
+    }
 
     public void AddStepsWalkedUI(int amount)
     {

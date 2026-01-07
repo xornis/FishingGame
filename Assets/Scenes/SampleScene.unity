@@ -1843,6 +1843,10 @@ MonoBehaviour:
   totalFishingAttemptsText: {fileID: 1048835413}
   totalFishCapturedText: {fileID: 277655243}
   totalStepsWalkedText: {fileID: 225492491}
+  popupPrefab: {fileID: 2572160747862047125, guid: 68e3b3c6e8780f240a2de5fa5182cf16, type: 3}
+  positiveColor: {r: 0.35, g: 1, b: 0.3, a: 1}
+  negativeLight: {r: 1, g: 0.18396229, b: 0.18396229, a: 1}
+  negativeDark: {r: 0.5, g: 0, b: 0, a: 1}
 --- !u!1 &1338846186
 GameObject:
   m_ObjectHideFlags: 0
