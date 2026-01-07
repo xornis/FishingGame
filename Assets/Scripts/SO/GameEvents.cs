@@ -6,11 +6,13 @@ public struct ResourceData
 {
     public int current;
     public int max;
+    public int delta;
 
-    public ResourceData(int current, int max)
+    public ResourceData(int current, int max, int delta)
     {
         this.current = current;
         this.max = max;
+        this.delta = delta;
     }
 }
 
@@ -23,6 +25,8 @@ public class GameEvents : ScriptableObject
     public event Action OnFishCaptured;
     public event Action OnIslandReady;
     public event Action<Tile> OnPlayerMoved;
+
+    public event Action<Tile> OnTileClicked;
 
     #region UI
     public event Action<ResourceData> OnStepsChanged;
@@ -43,6 +47,8 @@ public class GameEvents : ScriptableObject
     public void CallFishCaptured() => OnFishCaptured?.Invoke();
     public void CallIslandReady() => OnIslandReady?.Invoke();
     public void CallPlayerMoved(Tile tile) => OnPlayerMoved?.Invoke(tile);
+
+    public void CallTileClicked(Tile tile) => OnTileClicked?.Invoke(tile);
 
     public void CallStepsChanged(ResourceData resourceData) => OnStepsChanged?.Invoke(resourceData); 
     public void CallFishingAttemptsChanged(ResourceData resourceData) => OnFishingAttemptsChanged?.Invoke(resourceData); 

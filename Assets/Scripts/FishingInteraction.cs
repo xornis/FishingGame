@@ -1,7 +1,6 @@
 using HexDungeon;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class FishingInteraction : MonoBehaviour
 {
@@ -16,100 +15,72 @@ public class FishingInteraction : MonoBehaviour
     public bool CanFish { get; private set; } = true;
     private bool isFishing;
 
-    private PlayerInput playerInput;
-    private InputAction action;
-
-    private void Awake()
-    {
-        playerInput = GetComponent<PlayerInput>();
-        action = playerInput.actions["Attack"];
-    }
-
     private void OnEnable()
     {
-        action.performed += OnClick;
+        gameEvents.OnTileClicked += HandleFishingRequest;
         gameEvents.OnSetFishingPermission += SetFishingPermission;
     }
 
     private void OnDisable()
     {
-        action.performed -= OnClick;
+        gameEvents.OnTileClicked -= HandleFishingRequest;
         gameEvents.OnSetFishingPermission -= SetFishingPermission;
     }
 
-    private void OnClick(InputAction.CallbackContext ctx)
+    private void HandleFishingRequest(Tile tile)
     {
-        if (!CanFish || isFishing) return;
+        HexCoord currentPos = manager.Layout.WorldToHex(transform.position);
+        bool target = currentPos.Distance(tile.coord) == 1 && tile.data.fishable;
 
-        if (TryGetClickedFishTile(out Tile tile, out Transform hitTransform))
-            StartCoroutine(WaitForFishAndCatch(tile, hitTransform));
-    }
+        if (!target) return;
 
-    private bool TryGetClickedFishTile(out Tile tile, out Transform hitTransform)
-    {
-        tile = default;
-        hitTransform = default;
-
-        var layout = manager.Layout;
-
-        Vector3 screenPos = Mouse.current.position.ReadValue();
-        Vector3 worldPos = Camera.main.ScreenToWorldPoint(new Vector3(screenPos.x, screenPos.y, -Camera.main.transform.position.z));
-
-        HexCoord clickedPos = layout.WorldToHex(worldPos);
-        HexCoord currentPos = layout.WorldToHex(transform.position);
-
-        RaycastHit2D hit = Physics2D.Raycast(worldPos, Vector2.zero);
-
-        if (currentPos.Distance(clickedPos) != 1) return false;
-        if (!manager.tileByCoord.TryGetValue(clickedPos, out var clickedTile)) return false;
-        if (!clickedTile.data.fishable) return false;
-
-        tile = clickedTile;
-        hitTransform = hit.transform;
-        return true;
-    }
-
-    private IEnumerator WaitForFishAndCatch(Tile tile, Transform hitTransform)
-    {
-        if (tile.state is FishTileState fishState)
+        if (!CanFish)
         {
-            isFishing = true;
+            tile.view.PlayErrorEffect();
+            return;
+        }
 
-            gameEvents.CallFishingAttempted();
+        if (isFishing) return;
+        
+        StartCoroutine(WaitForFishAndCatch(tile));
+    }
 
-            float waitTime = baseWaitingForFishInSeconds * GetTimeMultiplier(fishState.fishQuality);
+    private IEnumerator WaitForFishAndCatch(Tile tile)
+    {
+        isFishing = true;
 
-            yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime / 3, 1.1f));
-            yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime / 3, 1.1f));
+        gameEvents.CallFishingAttempted();
 
-            if (Random.value <= baseCatchChance * GetChanceMultiplier(fishState.fishQuality))
-            {
-                gameEvents.CallFishCaptured();
-                yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime / 4, 1.4f));
-            }
-            else
-                yield return StartCoroutine(AnimateScalePing(hitTransform, waitTime / 6, 0.8f));
+        float waitTime = baseWaitingForFishInSeconds;
+        if (tile.state is FishTileState fishState1)
+            waitTime *= GetTimeMultiplier(fishState1.fishQuality);
+
+        float count = 4;
+        float regularWaitTime = waitTime / count;
+
+        for (int i = 0; i < count; i++)
+        {
+            tile.view.PlayPulse(1.1f, regularWaitTime);
+            yield return new WaitForSeconds(regularWaitTime);
+        }
+
+        float chance = baseCatchChance;
+        if (tile.state is FishTileState fishState2)
+            chance *= GetChanceMultiplier(fishState2.fishQuality);
+
+        if (Random.value <= chance)
+        {
+            gameEvents.CallFishCaptured();
+            tile.view.PlayPulse(1.2f, regularWaitTime / 2);
+            yield return new WaitForSeconds(regularWaitTime / 2);
+        }
+        else
+        {
+            tile.view.PlayPulse(0.9f, regularWaitTime / 2);
+            yield return new WaitForSeconds(regularWaitTime / 2);
+        }
 
             isFishing = false;
-        }
-    }
-
-    private IEnumerator AnimateScalePing(Transform targetTransform, float duration, float animationStrength)
-    {
-        float timer = 0f;
-        Vector3 originalScale = targetTransform.localScale;
-        Vector3 targetScale = originalScale * animationStrength;
-        targetTransform.localScale = originalScale;
-
-        while (timer < duration)
-        {
-            float t = Mathf.PingPong(timer / duration * 2f, 1f);
-            targetTransform.localScale = Vector3.Lerp(originalScale, targetScale, t);
-
-            timer += Time.deltaTime;
-            yield return null;
-        }
-        targetTransform.localScale = originalScale;
     }
 
     private float GetChanceMultiplier(FishableTileData.FishTileQuality quality)

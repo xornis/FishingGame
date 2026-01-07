@@ -14,10 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSounds:
   - {fileID: 8300000, guid: ec0b8cd3f0bcea74f843a0364bd88432, type: 3}
-  - {fileID: 8300000, guid: a86924d048f858a419100f11586b14f1, type: 3}
   - {fileID: 8300000, guid: 4e7ffc900b34f9c409821e0abff80fd8, type: 3}
   - {fileID: 8300000, guid: 1cf8757bdb9b05949953b9b37a198fc1, type: 3}
   - {fileID: 8300000, guid: a254096c646b9274b903fd286895a438, type: 3}
-  - {fileID: 8300000, guid: f7bd15f269a95f24f83b187a2ce66dde, type: 3}
   - {fileID: 8300000, guid: 6119d7da94cc6ac45a652dfd2b29517b, type: 3}
   volume: 0.25

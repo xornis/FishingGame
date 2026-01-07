@@ -1436,6 +1436,7 @@ GameObject:
   - component: {fileID: 1076604565}
   - component: {fileID: 1076604562}
   - component: {fileID: 1076604566}
+  - component: {fileID: 1076604567}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1575,6 +1576,22 @@ MonoBehaviour:
   baseWaitingForFishInSeconds: 2
   manager: {fileID: 1253531103}
   gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
+--- !u!114 &1076604567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076604561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d9ff3d99bd390be419678ef411a52fb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  islandManager: {fileID: 1253531103}
+  playerInput: {fileID: 1076604563}
+  playerTransform: {fileID: 1076604564}
+  gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
 --- !u!1 &1077393699
 GameObject:
   m_ObjectHideFlags: 0
@@ -1654,7 +1671,7 @@ MonoBehaviour:
   hexPrefab: {fileID: 5268574295593296186, guid: 4d808a2624700ef4fa5039ff885ec33b, type: 3}
   hexScale: 4
   hexOrientation: 1
-  hexRadius: 1
+  hexRadius: 1.085
   mode: 1
   startAxial: {x: 0, y: 0}
   randomAlgorithm: 1
@@ -1826,6 +1843,10 @@ MonoBehaviour:
   totalFishingAttemptsText: {fileID: 1048835413}
   totalFishCapturedText: {fileID: 277655243}
   totalStepsWalkedText: {fileID: 225492491}
+  popupPrefab: {fileID: 2572160747862047125, guid: 68e3b3c6e8780f240a2de5fa5182cf16, type: 3}
+  positiveColor: {r: 0.35, g: 1, b: 0.3, a: 1}
+  negativeLight: {r: 1, g: 0.18396229, b: 0.18396229, a: 1}
+  negativeDark: {r: 0.5, g: 0, b: 0, a: 1}
 --- !u!1 &1338846186
 GameObject:
   m_ObjectHideFlags: 0
