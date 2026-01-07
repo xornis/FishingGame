@@ -29,11 +29,20 @@ public class FishingInteraction : MonoBehaviour
 
     private void HandleFishingRequest(Tile tile)
     {
-        if (!CanFish || isFishing) return;
-
         HexCoord currentPos = manager.Layout.WorldToHex(transform.position);
-        if (currentPos.Distance(tile.coord) == 1 && tile.data.fishable)
-            StartCoroutine(WaitForFishAndCatch(tile));
+        bool target = currentPos.Distance(tile.coord) == 1 && tile.data.fishable;
+
+        if (!target) return;
+
+        if (!CanFish)
+        {
+            tile.view.PlayErrorEffect();
+            return;
+        }
+
+        if (isFishing) return;
+        
+        StartCoroutine(WaitForFishAndCatch(tile));
     }
 
     private IEnumerator WaitForFishAndCatch(Tile tile)
