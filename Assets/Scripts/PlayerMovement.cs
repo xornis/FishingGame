@@ -34,15 +34,22 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleMoveRequest(Tile tile)
     {
-        if (!CanMove || isMoving) return;
-
         HexCoord currentPos = manager.Layout.WorldToHex(transform.position);
-        if (currentPos.Distance(tile.coord) == 1 && tile.data.walkable)
+        bool target = currentPos.Distance(tile.coord) == 1 && tile.data.walkable;
+
+        if (!target) return;
+
+        if (!CanMove)
         {
-            tile.view.PlayPulse(0.9f, 0.15f);
-            gameEvents.CallStepEnded(tile);
-            StartCoroutine(MoveTo(tile));
+            tile.view.PlayErrorEffect();
+            return;
         }
+
+        if (isMoving) return;
+
+        tile.view.PlayPulse(0.9f, 0.15f);
+        gameEvents.CallStepEnded(tile);
+        StartCoroutine(MoveTo(tile));
     }
 
     private void OnIslandReady()
