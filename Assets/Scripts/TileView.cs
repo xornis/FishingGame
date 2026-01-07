@@ -66,7 +66,7 @@ public class TileView : MonoBehaviour
     {
         hoveredState = hovered;
 
-        if (!pulsing || errorCoroutine == null)
+        if (!pulsing && errorCoroutine == null)
         {
             PlayScaleAnimate(GetTargetScale(), hoverScaleDuration);
             sr.sortingOrder = hovered ? baseSortingOrder + 10 : baseSortingOrder;
