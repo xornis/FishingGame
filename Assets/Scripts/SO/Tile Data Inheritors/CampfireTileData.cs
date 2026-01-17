@@ -5,20 +5,20 @@ public class CampfireTileData : WalkableTileData, IStepEffect
 {
     public TileStepSounds campfireSound;
 
-    public override void Execute(RunController runController, Tile tile)
+    public override void Execute(ResourceManager resourceManager, RunController _, Tile tile)
     {
         CampfireTileState state = tile.state as CampfireTileState;
 
         if (state == null || state.isUsed)
         {
             AudioManager.Instance.PlayTileSounds(this.stepSounds);
-            runController.ChangeSteps(-1);
+            resourceManager.ChangeResource(ResourceType.Steps, -1);
             return;
         }
 
         state.isUsed = true;
 
         AudioManager.Instance.PlayTileSounds(campfireSound);
-        runController.ChangeSteps(stepValueChange);
+        resourceManager.ChangeResource(ResourceType.Steps, stepValueChange);
     }
 }

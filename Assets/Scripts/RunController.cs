@@ -5,31 +5,16 @@ using UnityEngine.SceneManagement;
 public class RunController : MonoBehaviour
 {
     [SerializeField] private IslandManager islandManager;
+    [SerializeField] private ResourceManager resourceManager;
 
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
 
-    [Header("Settings")]
-    public int maxSteps = 10;
-    public int maxFishingAttempts = 5;
-
     private HexCoord currentPlayerPos;
-
-    private int stepsLeft;
-    private int fishingAttemptsLeft;
 
     public int TotalFishingAttempts { get; private set; }
     public int TotalFishCaptured { get; private set; }
     public int TotalStepsWalked { get; private set; }
-
-    private void Start()
-    {
-        stepsLeft = maxSteps;
-        fishingAttemptsLeft = maxFishingAttempts;
-
-        gameEvents.CallStepsChanged(new ResourceData(stepsLeft, maxSteps, 0));
-        gameEvents.CallFishingAttemptsChanged(new ResourceData(fishingAttemptsLeft, maxFishingAttempts, 0));
-    }
 
     private void OnEnable()
     {
@@ -52,21 +37,24 @@ public class RunController : MonoBehaviour
         currentPlayerPos = tile.coord;
 
         if (tile.data is IStepEffect stepEffect)
-            stepEffect.Execute(this, tile);
+            stepEffect.Execute(resourceManager, this, tile);
 
         CheckRunStatus();
     }
 
     private void HandleFishingAttempt()
     {
+        resourceManager.ChangeResource(ResourceType.FishingAttempts, -1);
         AddFishingAttemptsUI(1);
-        ChangeFishingAttempts(-1);
 
         CheckRunStatus();
     }
 
     private void CheckRunStatus()
     {
+        int stepsLeft = resourceManager.GetResourceAmount(ResourceType.Steps);
+        int fishingAttemptsLeft = resourceManager.GetResourceAmount(ResourceType.FishingAttempts);
+
         bool canMove = stepsLeft > 0;
         bool canFish = fishingAttemptsLeft > 0 && HasReachableFishTile();
 
@@ -91,17 +79,6 @@ public class RunController : MonoBehaviour
     }
 
     private void HandleFishCaptured() => AddFishCapturedUI(1);
-
-    public void ChangeSteps(int amount)
-    {
-        stepsLeft += amount;
-        gameEvents.CallStepsChanged(new ResourceData(stepsLeft, maxSteps, amount));
-    }
-    public void ChangeFishingAttempts(int amount)
-    {
-        fishingAttemptsLeft += amount;
-        gameEvents.CallFishingAttemptsChanged(new ResourceData(fishingAttemptsLeft, maxFishingAttempts, amount));
-    }
 
     public void AddStepsWalkedUI(int amount)
     {

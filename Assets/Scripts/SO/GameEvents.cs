@@ -1,21 +1,6 @@
 using UnityEngine;
 using System;
 
-[Serializable]
-public struct ResourceData
-{
-    public int current;
-    public int max;
-    public int delta;
-
-    public ResourceData(int current, int max, int delta)
-    {
-        this.current = current;
-        this.max = max;
-        this.delta = delta;
-    }
-}
-
 [CreateAssetMenu(fileName = "GameEvents", menuName = "Scriptable Objects/Events")]
 public class GameEvents : ScriptableObject
 {
@@ -29,9 +14,6 @@ public class GameEvents : ScriptableObject
     public event Action<Tile> OnTileClicked;
 
     #region UI
-    public event Action<ResourceData> OnStepsChanged;
-    public event Action<ResourceData> OnFishingAttemptsChanged;
-
     public event Action<int> OnTotalStepsWalkedChanged;
     public event Action<int> OnTotalFishCapturedChanged;
     public event Action<int> OnTotalFishingAttemptsChanged;
@@ -49,9 +31,6 @@ public class GameEvents : ScriptableObject
     public void CallPlayerMoved(Tile tile) => OnPlayerMoved?.Invoke(tile);
 
     public void CallTileClicked(Tile tile) => OnTileClicked?.Invoke(tile);
-
-    public void CallStepsChanged(ResourceData resourceData) => OnStepsChanged?.Invoke(resourceData); 
-    public void CallFishingAttemptsChanged(ResourceData resourceData) => OnFishingAttemptsChanged?.Invoke(resourceData); 
 
     public void CallTotalStepsWalkedChanged(int value) => OnTotalStepsWalkedChanged?.Invoke(value);
     public void CallTotalFishCapturedChanged(int value) => OnTotalFishCapturedChanged?.Invoke(value);

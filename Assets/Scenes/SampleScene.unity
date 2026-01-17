@@ -1087,9 +1087,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   islandManager: {fileID: 1253531103}
+  resourceManager: {fileID: 1119722682}
   gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
-  maxSteps: 10
-  maxFishingAttempts: 5
 --- !u!4 &775456355
 Transform:
   m_ObjectHideFlags: 0
@@ -1638,6 +1637,56 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1077393699}
   m_CullTransparentMesh: 1
+--- !u!1 &1119722681
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1119722683}
+  - component: {fileID: 1119722682}
+  m_Layer: 0
+  m_Name: ResourceManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1119722682
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119722681}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f5579a051a47e94e8c4f5f0c2d3f7a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceEvents: {fileID: 11400000, guid: 574bc81d8e71f5d498a9794a7f317333, type: 2}
+  startingResources:
+  - type: 0
+    maxValue: 10
+  - type: 1
+    maxValue: 5
+--- !u!4 &1119722683
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119722681}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1253531100
 GameObject:
   m_ObjectHideFlags: 0
@@ -1731,6 +1780,7 @@ GameObject:
   - component: {fileID: 1298899550}
   - component: {fileID: 1298899549}
   - component: {fileID: 1298899553}
+  - component: {fileID: 1298899554}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1836,17 +1886,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
-  stepsText: {fileID: 1338846189}
-  fishText: {fileID: 1474444516}
   endRunPanel: {fileID: 1728529800}
   endRunResultPanel: {fileID: 797810602}
   totalFishingAttemptsText: {fileID: 1048835413}
   totalFishCapturedText: {fileID: 277655243}
   totalStepsWalkedText: {fileID: 225492491}
-  popupPrefab: {fileID: 2572160747862047125, guid: 68e3b3c6e8780f240a2de5fa5182cf16, type: 3}
-  positiveColor: {r: 0.35, g: 1, b: 0.3, a: 1}
-  negativeLight: {r: 1, g: 0.18396229, b: 0.18396229, a: 1}
-  negativeDark: {r: 0.5, g: 0, b: 0, a: 1}
+--- !u!114 &1298899554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1298899548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1c3360da08653c4bbd72755a83e63c1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceEvents: {fileID: 11400000, guid: 574bc81d8e71f5d498a9794a7f317333, type: 2}
+  popupSettings: {fileID: 11400000, guid: 414f5702891a25648b3506a4dfe49eb5, type: 2}
+  uIElements:
+  - type: 0
+    text: {fileID: 1338846189}
+  - type: 1
+    text: {fileID: 1474444516}
 --- !u!1 &1338846186
 GameObject:
   m_ObjectHideFlags: 0
@@ -2843,6 +2906,7 @@ SceneRoots:
   - {fileID: 1253531102}
   - {fileID: 1076604564}
   - {fileID: 1298899552}
-  - {fileID: 1347571967}
   - {fileID: 775456355}
+  - {fileID: 1119722683}
   - {fileID: 446690297}
+  - {fileID: 1347571967}
