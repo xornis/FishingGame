@@ -11,7 +11,10 @@ public class ResourceManager : MonoBehaviour
     private void Awake()
     {
         foreach (var resource in startingResources)
-            resources[resource.type] = new(resource.maxValue, resource.maxValue, 0);
+        {
+            int savedMax = SaveSystem.LoadMaxResource(resource.type, resource.maxValue);
+            resources[resource.type] = new(savedMax, savedMax, 0);
+        }
     }
     private void Start()
     {
