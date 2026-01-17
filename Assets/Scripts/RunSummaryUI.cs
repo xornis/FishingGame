@@ -2,7 +2,7 @@ using System.Collections;
 using TMPro;
 using UnityEngine;
 
-public class UIController : MonoBehaviour
+public class RunSummaryUI : MonoBehaviour
 {
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;

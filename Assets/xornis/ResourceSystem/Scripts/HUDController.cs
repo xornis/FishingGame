@@ -2,7 +2,7 @@ using TMPro;
 using UnityEngine;
 using System.Collections.Generic;
 
-public class ResourceUIController : MonoBehaviour
+public class HUDController : MonoBehaviour
 {
     [SerializeField] private ResourceEvents resourceEvents;
     [SerializeField] private PopupSettings popupSettings;
