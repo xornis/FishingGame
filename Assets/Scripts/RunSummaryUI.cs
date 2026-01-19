@@ -7,11 +7,17 @@ public class RunSummaryUI : MonoBehaviour
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
 
+    [Header("References")]
+    [SerializeField] private RunController runController;
+    [SerializeField] private ResourceManager resourceManager;
+
     [Header("Settings")]
     [SerializeField] private GameObject endRunPanel;
     [SerializeField] private GameObject endRunResultPanel;
-    [SerializeField] private TextMeshProUGUI totalFishingAttemptsText;
     [SerializeField] private TextMeshProUGUI totalFishCapturedText;
+    [SerializeField] private TextMeshProUGUI totalCoinsText;
+
+    [SerializeField] private TextMeshProUGUI totalFishingAttemptsText;
     [SerializeField] private TextMeshProUGUI totalStepsWalkedText;
 
     private void Start()
@@ -50,9 +56,19 @@ public class RunSummaryUI : MonoBehaviour
     private void TurnOnEndRunPanel()
     {
         ToggleGameObject(endRunPanel, true);
+        InitializeCoins();
 
         StartCoroutine(FadeAnimation(endRunPanel, 2f));
         StartCoroutine(ScalePingAnimation(endRunResultPanel.transform, 2f, 1.1f));
+    }
+
+    private void InitializeCoins()
+    {
+        int earnedCoins = runController.TotalFishCaptured * 10;
+        resourceManager.ChangeResource(ResourceType.Coins, earnedCoins);
+        int totalCoins = resourceManager.GetResourceAmount(ResourceType.Coins);
+        SaveSystem.SaveMaxResource(ResourceType.Coins, totalCoins);
+        totalCoinsText.text = totalCoins.ToString();
     }
 
     private IEnumerator ScalePingAnimation(Transform targetTransform, float duration, float animationStrength)

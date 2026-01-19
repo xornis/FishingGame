@@ -13,4 +13,4 @@ public struct ResourceData
     }
 }
 
-public enum ResourceType { Steps, FishingAttempts }
+public enum ResourceType { Steps, FishingAttempts, Coins }
