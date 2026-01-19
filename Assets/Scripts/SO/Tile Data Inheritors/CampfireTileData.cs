@@ -5,7 +5,7 @@ public class CampfireTileData : WalkableTileData, IStepEffect
 {
     public TileStepSounds campfireSound;
 
-    public override void Execute(ResourceManager resourceManager, RunController _, Tile tile)
+    public override void Execute(ResourceManager resourceManager, Tile tile)
     {
         CampfireTileState state = tile.state as CampfireTileState;
 

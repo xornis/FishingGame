@@ -7,15 +7,14 @@ public class WalkableTileData : TileData, IStepEffect
     [Range(0f, 3f)] public float moveDurationScale;
     public TileStepSounds stepSounds;
 
-    public virtual void Execute(ResourceManager resourceManager, RunController runController, Tile tile)
+    public virtual void Execute(ResourceManager resourceManager, Tile tile)
     {
         resourceManager.ChangeResource(ResourceType.Steps, stepValueChange);
-        runController.AddStepsWalkedUI(stepValueChange);
         AudioManager.Instance.PlayTileSounds(stepSounds);
     }
 }
 
 public interface IStepEffect
 {
-    public void Execute(ResourceManager resourceManager, RunController runController, Tile tile);
+    public void Execute(ResourceManager resourceManager, Tile tile);
 }

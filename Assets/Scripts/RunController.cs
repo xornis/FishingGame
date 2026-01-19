@@ -12,9 +12,7 @@ public class RunController : MonoBehaviour
 
     private HexCoord currentPlayerPos;
 
-    public int TotalFishingAttempts { get; private set; }
     public int TotalFishCaptured { get; private set; }
-    public int TotalStepsWalked { get; private set; }
 
     private void OnEnable()
     {
@@ -37,7 +35,7 @@ public class RunController : MonoBehaviour
         currentPlayerPos = tile.coord;
 
         if (tile.data is IStepEffect stepEffect)
-            stepEffect.Execute(resourceManager, this, tile);
+            stepEffect.Execute(resourceManager, tile);
 
         CheckRunStatus();
     }
@@ -45,7 +43,6 @@ public class RunController : MonoBehaviour
     private void HandleFishingAttempt()
     {
         resourceManager.ChangeResource(ResourceType.FishingAttempts, -1);
-        AddFishingAttemptsUI(1);
 
         CheckRunStatus();
     }
@@ -80,20 +77,10 @@ public class RunController : MonoBehaviour
 
     private void HandleFishCaptured() => AddFishCapturedUI(1);
 
-    public void AddStepsWalkedUI(int amount)
-    {
-        TotalStepsWalked += Mathf.Abs(amount);
-        gameEvents.CallTotalStepsWalkedChanged(TotalStepsWalked);
-    }
     public void AddFishCapturedUI(int amount)
     {
         TotalFishCaptured += Mathf.Abs(amount);
         gameEvents.CallTotalFishCapturedChanged(TotalFishCaptured);
-    }
-    public void AddFishingAttemptsUI(int amount)
-    {
-        TotalFishingAttempts += Mathf.Abs(amount);
-        gameEvents.CallTotalFishingAttemptsChanged(TotalFishingAttempts);
     }
 
     public void RestartRun() => SceneManager.LoadScene(0);

@@ -17,39 +17,28 @@ public class RunSummaryUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI totalFishCapturedText;
     [SerializeField] private TextMeshProUGUI totalCoinsText;
 
-    [SerializeField] private TextMeshProUGUI totalFishingAttemptsText;
-    [SerializeField] private TextMeshProUGUI totalStepsWalkedText;
-
     private void Start()
     {
         ToggleGameObject(endRunPanel, false);
 
-        UpdateTotalStepsWalkedText(0);
         UpdateTotalFishCapturedText(0);
-        UpdateTotalFishingAttemptsText(0);
     }
 
     private void OnEnable()
     {
         gameEvents.OnRunEnded += TurnOnEndRunPanel;
 
-        gameEvents.OnTotalStepsWalkedChanged += UpdateTotalStepsWalkedText;
         gameEvents.OnTotalFishCapturedChanged += UpdateTotalFishCapturedText;
-        gameEvents.OnTotalFishingAttemptsChanged += UpdateTotalFishingAttemptsText;
     }
 
     private void OnDisable()
     {
         gameEvents.OnRunEnded -= TurnOnEndRunPanel;
 
-        gameEvents.OnTotalStepsWalkedChanged -= UpdateTotalStepsWalkedText;
         gameEvents.OnTotalFishCapturedChanged -= UpdateTotalFishCapturedText;
-        gameEvents.OnTotalFishingAttemptsChanged -= UpdateTotalFishingAttemptsText;
     }
 
-    private void UpdateTotalStepsWalkedText(int value) => totalStepsWalkedText.text = $"Total Steps Walked: {value}";
     private void UpdateTotalFishCapturedText(int value) => totalFishCapturedText.text = $"Total Fish Captured: {value}";
-    private void UpdateTotalFishingAttemptsText(int value) => totalFishingAttemptsText.text = $"Total Fishing Attempts: {value}";
 
     private void ToggleGameObject(GameObject gameObject, bool state) => gameObject.SetActive(state);
 

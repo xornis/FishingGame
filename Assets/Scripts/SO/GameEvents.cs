@@ -14,9 +14,7 @@ public class GameEvents : ScriptableObject
     public event Action<Tile> OnTileClicked;
 
     #region UI
-    public event Action<int> OnTotalStepsWalkedChanged;
     public event Action<int> OnTotalFishCapturedChanged;
-    public event Action<int> OnTotalFishingAttemptsChanged;
     #endregion UI
 
     // Event-Commands
@@ -32,9 +30,7 @@ public class GameEvents : ScriptableObject
 
     public void CallTileClicked(Tile tile) => OnTileClicked?.Invoke(tile);
 
-    public void CallTotalStepsWalkedChanged(int value) => OnTotalStepsWalkedChanged?.Invoke(value);
     public void CallTotalFishCapturedChanged(int value) => OnTotalFishCapturedChanged?.Invoke(value);
-    public void CallTotalFishingAttemptsChanged(int value) => OnTotalFishingAttemptsChanged?.Invoke(value);
 
     public void SendMovementPermission(bool state) => OnSetMovementPermission?.Invoke(state);
     public void SendFishingPermission(bool state) => OnSetFishingPermission?.Invoke(state);
