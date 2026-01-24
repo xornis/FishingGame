@@ -1815,12 +1815,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
+  resourceEvents: {fileID: 11400000, guid: 574bc81d8e71f5d498a9794a7f317333, type: 2}
   runController: {fileID: 775456354}
   resourceManager: {fileID: 1119722682}
   endRunPanel: {fileID: 1728529800}
   endRunResultPanel: {fileID: 797810602}
   totalFishCapturedText: {fileID: 277655243}
   totalCoinsText: {fileID: 1848148977}
+  availableTemplates:
+  - {fileID: 11400000, guid: ab73d6108781a11469919e38c5f996a6, type: 2}
+  - {fileID: 11400000, guid: 744e9ae73eca4c549ba25696e722e7b2, type: 2}
+  - {fileID: 11400000, guid: 839c9a872f140634fb60d52446bcf015, type: 2}
+  - {fileID: 11400000, guid: 8894860997ce1e54790327703a86d9ea, type: 2}
+  shopButtonPrefab: {fileID: 8454774715727075310, guid: ec29b017bdb1c2b45a6c5035db402d38, type: 3}
+  shopButtonsContainer: {fileID: 1333403417}
 --- !u!114 &1298899554
 MonoBehaviour:
   m_ObjectHideFlags: 0

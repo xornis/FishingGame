@@ -9,6 +9,8 @@ public class UpgradeTemplate : ScriptableObject
     [SerializeField] private int minBonusAmount;
     [SerializeField] private int maxBonusAmount;
 
+    public ResourceType ResourceType => resourceType;
+
     public UpgradeOffer GenerateOffer()
     {
         int bonus = Random.Range(minBonusAmount, maxBonusAmount + 1);
