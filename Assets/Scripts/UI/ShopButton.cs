@@ -6,6 +6,8 @@ public class ShopButton : MonoBehaviour
 {
     [Header("UI Elements")]
     [SerializeField] private TextMeshProUGUI resourceTypeText;
+    [SerializeField] private Image resourceTypeIcon;
+    [SerializeField] private Sprite[] resourceTypeIconVariants;
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private TextMeshProUGUI bonusText;
     [SerializeField] private Button purchaseButton;
@@ -18,7 +20,8 @@ public class ShopButton : MonoBehaviour
         currentOffer = offer;
         resourceManager = manager;
 
-        resourceTypeText.text = offer.type.ToString();
+        ResourceTypeInitialize(offer);
+
         priceText.text = "$" + offer.price.ToString();
         bonusText.text = "+" + offer.bonusAmount.ToString();
 
@@ -38,5 +41,19 @@ public class ShopButton : MonoBehaviour
             gameObject.SetActive(false);
             print($"Purchased {currentOffer.type} max is now {currentMax + currentOffer.bonusAmount}");
         }
+    }
+
+    private void ResourceTypeInitialize(UpgradeTemplate.UpgradeOffer offer)
+    {
+        if (resourceTypeIcon != null)
+        {
+            resourceTypeText.gameObject.SetActive(false);
+
+            if (offer.type == ResourceType.Steps)
+                resourceTypeIcon.sprite = resourceTypeIconVariants[0];
+            if (offer.type == ResourceType.FishingAttempts)
+                resourceTypeIcon.sprite = resourceTypeIconVariants[1];
+        }
+        else resourceTypeText.text = offer.type.ToString();
     }
 }
