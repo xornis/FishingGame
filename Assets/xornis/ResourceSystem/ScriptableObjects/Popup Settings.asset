@@ -26,3 +26,6 @@ MonoBehaviour:
   - type: 1
     positiveColor: {r: 0.24056602, g: 0.28416422, b: 1, a: 1}
     negativeColor: {r: 0.35292807, g: 0.7921834, b: 0.9716981, a: 1}
+  - type: 2
+    positiveColor: {r: 0.92453253, g: 1, b: 0.23921567, a: 1}
+    negativeColor: {r: 0.8235294, g: 0.6603774, b: 0.05918475, a: 1}

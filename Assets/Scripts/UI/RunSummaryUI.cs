@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Collections;
 using TMPro;
 using UnityEngine;
@@ -7,28 +6,20 @@ public class RunSummaryUI : MonoBehaviour
 {
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
-    [SerializeField] private ResourceEvents resourceEvents;
 
     [Header("References")]
     [SerializeField] private RunController runController;
     [SerializeField] private ResourceManager resourceManager;
+    [SerializeField] private ShopManager shopManager;
 
     [Header("Settings")]
     [SerializeField] private GameObject endRunPanel;
     [SerializeField] private GameObject endRunResultPanel;
     [SerializeField] private TextMeshProUGUI totalFishCapturedText;
-    [SerializeField] private TextMeshProUGUI totalCoinsText;
-
-    [Header("Shop Settings")]
-    [SerializeField] private List<UpgradeTemplate> availableTemplates;
-    [SerializeField] private GameObject shopButtonPrefab;
-    [SerializeField] private Transform shopButtonsContainer;
 
     private void Start()
     {
         ToggleGameObject(endRunPanel, false);
-        
-        UpdateTotalFishCapturedText(0);
     }
 
     private void OnEnable()
@@ -36,8 +27,6 @@ public class RunSummaryUI : MonoBehaviour
         gameEvents.OnRunEnded += TurnOnEndRunPanel;
 
         gameEvents.OnTotalFishCapturedChanged += UpdateTotalFishCapturedText;
-
-        resourceEvents.OnResourceChanged += HandleResourceUpdate;
     }
 
     private void OnDisable()
@@ -45,16 +34,9 @@ public class RunSummaryUI : MonoBehaviour
         gameEvents.OnRunEnded -= TurnOnEndRunPanel;
 
         gameEvents.OnTotalFishCapturedChanged -= UpdateTotalFishCapturedText;
-
-        resourceEvents.OnResourceChanged -= HandleResourceUpdate;
     }
 
-    private void HandleResourceUpdate(ResourceType type, ResourceData data)
-    {
-        if (type == ResourceType.Coins) totalCoinsText.text = "$" + data.current.ToString();
-    }
-
-    private void UpdateTotalFishCapturedText(int value) => totalFishCapturedText.text = $"Total Fish Captured: {value}";
+    private void UpdateTotalFishCapturedText(int value = 0) => totalFishCapturedText.text = $"Total Fish Captured: {value}";
 
     private void ToggleGameObject(GameObject gameObject, bool state) => gameObject.SetActive(state);
 
@@ -62,7 +44,7 @@ public class RunSummaryUI : MonoBehaviour
     {
         ToggleGameObject(endRunPanel, true);
         InitializeCoins();
-        GenerateShopButtons();
+        shopManager.GenerateShopButtons(resourceManager);
 
         StartCoroutine(FadeAnimation(endRunPanel, 2f));
         StartCoroutine(ScalePingAnimation(endRunResultPanel.transform, 2f, 1.1f));
@@ -74,36 +56,6 @@ public class RunSummaryUI : MonoBehaviour
         resourceManager.ChangeResource(ResourceType.Coins, earnedCoins);
         int totalCoins = resourceManager.GetResourceAmount(ResourceType.Coins);
         SaveSystem.SaveMaxResource(ResourceType.Coins, totalCoins);
-        totalCoinsText.text = "$" + totalCoins.ToString();
-    }
-
-    private void GenerateShopButtons()
-    {
-        foreach (Transform child in shopButtonsContainer) Destroy(child.gameObject);
-
-        List<UpgradeTemplate> selected = GetRandomTemplates(availableTemplates, 6);
-
-        foreach (var template in selected)
-        {
-            GameObject button = Instantiate(shopButtonPrefab, shopButtonsContainer);
-            ShopButton shopButton = button.GetComponent<ShopButton>();
-
-            shopButton.Initialize(template.GenerateOffer(), resourceManager);
-        }
-    }
-
-    private List<UpgradeTemplate> GetRandomTemplates(List<UpgradeTemplate> upgradeTemplates, int count)
-    {
-        List<UpgradeTemplate> result = new();
-        List<UpgradeTemplate> copy = new(upgradeTemplates);
-
-        for (int i = 0; i < count && copy.Count > 0; i++)
-        {
-            int randomIndex = Random.Range(0, copy.Count);
-            result.Add(copy[randomIndex]);
-        }
-
-        return result;
     }
     
     private IEnumerator ScalePingAnimation(Transform targetTransform, float duration, float animationStrength)

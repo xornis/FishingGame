@@ -594,6 +594,57 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &452827037
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 452827039}
+  - component: {fileID: 452827038}
+  m_Layer: 0
+  m_Name: Shop Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &452827038
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452827037}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e8e9c267a684a24e9c86ccb8ac94b25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  availableTemplates:
+  - {fileID: 11400000, guid: ab73d6108781a11469919e38c5f996a6, type: 2}
+  - {fileID: 11400000, guid: 744e9ae73eca4c549ba25696e722e7b2, type: 2}
+  - {fileID: 11400000, guid: 839c9a872f140634fb60d52446bcf015, type: 2}
+  - {fileID: 11400000, guid: 8894860997ce1e54790327703a86d9ea, type: 2}
+  shopButtonPrefab: {fileID: 8454774715727075310, guid: ec29b017bdb1c2b45a6c5035db402d38, type: 3}
+  shopButtonsContainer: {fileID: 1333403417}
+--- !u!4 &452827039
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 452827037}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -1575,7 +1626,7 @@ GameObject:
   - component: {fileID: 1119722683}
   - component: {fileID: 1119722682}
   m_Layer: 0
-  m_Name: ResourceManager
+  m_Name: Resource Manager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1709,7 +1760,7 @@ GameObject:
   - component: {fileID: 1298899550}
   - component: {fileID: 1298899549}
   - component: {fileID: 1298899553}
-  - component: {fileID: 1298899554}
+  - component: {fileID: 1298899555}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1815,21 +1866,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
-  resourceEvents: {fileID: 11400000, guid: 574bc81d8e71f5d498a9794a7f317333, type: 2}
   runController: {fileID: 775456354}
   resourceManager: {fileID: 1119722682}
+  shopManager: {fileID: 452827038}
   endRunPanel: {fileID: 1728529800}
   endRunResultPanel: {fileID: 797810602}
   totalFishCapturedText: {fileID: 277655243}
-  totalCoinsText: {fileID: 1848148977}
-  availableTemplates:
-  - {fileID: 11400000, guid: ab73d6108781a11469919e38c5f996a6, type: 2}
-  - {fileID: 11400000, guid: 744e9ae73eca4c549ba25696e722e7b2, type: 2}
-  - {fileID: 11400000, guid: 839c9a872f140634fb60d52446bcf015, type: 2}
-  - {fileID: 11400000, guid: 8894860997ce1e54790327703a86d9ea, type: 2}
-  shopButtonPrefab: {fileID: 8454774715727075310, guid: ec29b017bdb1c2b45a6c5035db402d38, type: 3}
-  shopButtonsContainer: {fileID: 1333403417}
---- !u!114 &1298899554
+--- !u!114 &1298899555
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1838,16 +1881,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 1298899548}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a1c3360da08653c4bbd72755a83e63c1, type: 3}
+  m_Script: {fileID: 11500000, guid: 408ca5dd0442f27498128255bf856e1e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   resourceEvents: {fileID: 11400000, guid: 574bc81d8e71f5d498a9794a7f317333, type: 2}
   popupSettings: {fileID: 11400000, guid: 414f5702891a25648b3506a4dfe49eb5, type: 2}
-  uIElements:
+  anchors:
   - type: 0
-    text: {fileID: 1338846189}
+    transform: {fileID: 1338846187}
   - type: 1
-    text: {fileID: 1474444516}
+    transform: {fileID: 1474444514}
+  - type: 2
+    transform: {fileID: 1848148979}
 --- !u!1 &1333403416
 GameObject:
   m_ObjectHideFlags: 0
@@ -1921,6 +1966,7 @@ GameObject:
   - component: {fileID: 1338846187}
   - component: {fileID: 1338846190}
   - component: {fileID: 1338846189}
+  - component: {fileID: 1338846191}
   m_Layer: 5
   m_Name: Steps Text
   m_TagString: Untagged
@@ -2046,6 +2092,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1338846186}
   m_CullTransparentMesh: 1
+--- !u!114 &1338846191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1338846186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58817eb6e407e6648a26e32d083afe02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceEvents: {fileID: 11400000, guid: 574bc81d8e71f5d498a9794a7f317333, type: 2}
+  resourceType: 0
+  prefix: 
+  showMax: 1
 --- !u!1 &1347571964
 GameObject:
   m_ObjectHideFlags: 0
@@ -2289,6 +2351,7 @@ GameObject:
   - component: {fileID: 1474444514}
   - component: {fileID: 1474444515}
   - component: {fileID: 1474444516}
+  - component: {fileID: 1474444517}
   m_Layer: 5
   m_Name: Fish Text
   m_TagString: Untagged
@@ -2414,6 +2477,22 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &1474444517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1474444513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58817eb6e407e6648a26e32d083afe02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceEvents: {fileID: 11400000, guid: 574bc81d8e71f5d498a9794a7f317333, type: 2}
+  resourceType: 1
+  prefix: 
+  showMax: 1
 --- !u!1 &1615054715
 GameObject:
   m_ObjectHideFlags: 0
@@ -2635,6 +2714,7 @@ GameObject:
   - component: {fileID: 1848148979}
   - component: {fileID: 1848148978}
   - component: {fileID: 1848148977}
+  - component: {fileID: 1848148980}
   m_Layer: 5
   m_Name: Coins Text
   m_TagString: Untagged
@@ -2760,6 +2840,22 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 400, y: 400}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1848148980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1848148976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58817eb6e407e6648a26e32d083afe02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resourceEvents: {fileID: 11400000, guid: 574bc81d8e71f5d498a9794a7f317333, type: 2}
+  resourceType: 2
+  prefix: $
+  showMax: 0
 --- !u!1 &2003998645
 GameObject:
   m_ObjectHideFlags: 0
@@ -3157,3 +3253,4 @@ SceneRoots:
   - {fileID: 1119722683}
   - {fileID: 446690297}
   - {fileID: 1347571967}
+  - {fileID: 452827039}
