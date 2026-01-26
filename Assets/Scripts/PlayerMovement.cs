@@ -22,6 +22,11 @@ public class PlayerMovement : MonoBehaviour
         gameEvents.OnSetMovementPermission += SetMovementPermission;
 
         gameEvents.OnTileClicked += HandleMoveRequest;
+
+        gameEvents.OnRunEnded += () => {
+            SetMovementPermission(false);
+            ClearAvailableMoves();
+            };
     }
 
     private void OnDisable()
@@ -30,6 +35,11 @@ public class PlayerMovement : MonoBehaviour
         gameEvents.OnSetMovementPermission -= SetMovementPermission;
 
         gameEvents.OnTileClicked -= HandleMoveRequest;
+
+        gameEvents.OnRunEnded -= () => {
+            SetMovementPermission(false);
+            ClearAvailableMoves();
+        };
     }
 
     private void HandleMoveRequest(Tile tile)

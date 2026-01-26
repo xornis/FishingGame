@@ -11,8 +11,15 @@ public class RunController : MonoBehaviour
     [SerializeField] private GameEvents gameEvents;
 
     private HexCoord currentPlayerPos;
+    private bool dayActive;
 
     public int TotalFishCaptured { get; private set; }
+
+    private void Start()
+    {
+        dayActive = true;
+        CheckDayStatus();
+    }
 
     private void OnEnable()
     {
@@ -37,28 +44,32 @@ public class RunController : MonoBehaviour
         if (tile.data is IStepEffect stepEffect)
             stepEffect.Execute(resourceManager, tile);
 
-        CheckRunStatus();
+        CheckDayStatus();
     }
 
     private void HandleFishingAttempt()
     {
         resourceManager.ChangeResource(ResourceType.FishingAttempts, -1);
 
-        CheckRunStatus();
+        CheckDayStatus();
     }
 
-    private void CheckRunStatus()
+    private void CheckDayStatus()
     {
+        if (!dayActive) return;
+
         int stepsLeft = resourceManager.GetResourceAmount(ResourceType.Steps);
         int fishingAttemptsLeft = resourceManager.GetResourceAmount(ResourceType.FishingAttempts);
 
         bool canMove = stepsLeft > 0;
         bool canFish = fishingAttemptsLeft > 0 && HasReachableFishTile();
 
-        gameEvents.SendMovementPermission(canMove);
-        gameEvents.SendFishingPermission(canFish);
-        
-        if (!canMove && !canFish) gameEvents.SendRunEnded();
+        if (canMove || canFish)
+        {
+            gameEvents.SendMovementPermission(canMove);
+            gameEvents.SendFishingPermission(canFish);
+        }
+        else EndDay();
     }
 
     private bool HasReachableFishTile()
@@ -83,5 +94,15 @@ public class RunController : MonoBehaviour
         gameEvents.CallTotalFishCapturedChanged(TotalFishCaptured);
     }
 
-    public void RestartRun() => SceneManager.LoadScene(0);
+    public void RestartDay() => SceneManager.LoadScene(0);
+    public void EndDay()
+    {
+        if (!dayActive) return;
+
+        dayActive = false;
+
+        gameEvents.SendMovementPermission(false);
+        gameEvents.SendFishingPermission(false);
+        gameEvents.SendRunEnded();
+    }
 }
