@@ -101,6 +101,9 @@ public class RunController : MonoBehaviour
 
         dayActive = false;
 
+        int currentDay = SaveSystem.LoadDay();
+        SaveSystem.SaveDay(currentDay+1);
+
         gameEvents.SendMovementPermission(false);
         gameEvents.SendFishingPermission(false);
         gameEvents.SendRunEnded();

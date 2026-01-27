@@ -7,12 +7,17 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private List<UpgradeTemplate> availableTemplates;
     [SerializeField] private GameObject shopButtonPrefab;
     [SerializeField] private Transform shopButtonsContainer;
+    [SerializeField] private int initialCardsToSpawnNumber = 2;
 
     public void GenerateShopButtons(ResourceManager resourceManager)
     {
         foreach (Transform child in shopButtonsContainer) Destroy(child.gameObject);
 
-        List<UpgradeTemplate> selected = GetRandomTemplates(availableTemplates, 6);
+        int day = SaveSystem.LoadDay();
+
+        int cardsToSpawn = Mathf.Clamp(initialCardsToSpawnNumber + (day - 1) / 3, initialCardsToSpawnNumber, 6);
+
+        List<UpgradeTemplate> selected = GetRandomTemplates(availableTemplates, cardsToSpawn);
 
         foreach (var template in selected)
         {
