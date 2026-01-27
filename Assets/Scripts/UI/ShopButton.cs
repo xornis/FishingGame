@@ -5,9 +5,8 @@ using UnityEngine.UI;
 public class ShopButton : MonoBehaviour
 {
     [Header("UI Elements")]
-    [SerializeField] private TextMeshProUGUI resourceTypeText;
     [SerializeField] private Image resourceTypeIcon;
-    [SerializeField] private Sprite[] resourceTypeIconVariants;
+    [SerializeField] private TextMeshProUGUI resourceTypeText;
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private TextMeshProUGUI bonusText;
     [SerializeField] private Button purchaseButton;
@@ -45,15 +44,16 @@ public class ShopButton : MonoBehaviour
 
     private void ResourceTypeInitialize(UpgradeTemplate.UpgradeOffer offer)
     {
-        if (resourceTypeIcon != null)
+        if (resourceTypeIcon != null && offer.icon != null)
         {
-            resourceTypeText.gameObject.SetActive(false);
-
-            if (offer.type == ResourceType.Steps)
-                resourceTypeIcon.sprite = resourceTypeIconVariants[0];
-            if (offer.type == ResourceType.FishingAttempts)
-                resourceTypeIcon.sprite = resourceTypeIconVariants[1];
+            resourceTypeIcon.sprite = offer.icon;
+            if (resourceTypeText != null) resourceTypeText.gameObject.SetActive(false);
         }
-        else resourceTypeText.text = offer.type.ToString();
+        else if (resourceTypeText != null)
+        {
+            resourceTypeText.text = offer.type.ToString();
+            
+            resourceTypeIcon.gameObject.SetActive(false);
+        }
     }
 }
