@@ -20,7 +20,7 @@ public class GameEvents : ScriptableObject
     // Event-Commands
     public event Action<bool> OnSetMovementPermission;
     public event Action<bool> OnSetFishingPermission;
-    public event Action OnRunEnded;
+    public event Action OnDayEnded;
 
     public void CallStepEnded(Tile tile) => OnStepEnded?.Invoke(tile);
     public void CallFishingAttempted() => OnFishingAttempted?.Invoke();
@@ -34,5 +34,5 @@ public class GameEvents : ScriptableObject
 
     public void SendMovementPermission(bool state) => OnSetMovementPermission?.Invoke(state);
     public void SendFishingPermission(bool state) => OnSetFishingPermission?.Invoke(state);
-    public void SendRunEnded() => OnRunEnded?.Invoke();
+    public void SendDayEnded() => OnDayEnded?.Invoke();
 }

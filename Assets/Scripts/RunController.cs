@@ -106,6 +106,6 @@ public class RunController : MonoBehaviour
 
         gameEvents.SendMovementPermission(false);
         gameEvents.SendFishingPermission(false);
-        gameEvents.SendRunEnded();
+        gameEvents.SendDayEnded();
     }
 }

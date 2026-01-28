@@ -23,7 +23,7 @@ public class PlayerMovement : MonoBehaviour
 
         gameEvents.OnTileClicked += HandleMoveRequest;
 
-        gameEvents.OnRunEnded += () => {
+        gameEvents.OnDayEnded += () => {
             SetMovementPermission(false);
             ClearAvailableMoves();
             };
@@ -36,7 +36,7 @@ public class PlayerMovement : MonoBehaviour
 
         gameEvents.OnTileClicked -= HandleMoveRequest;
 
-        gameEvents.OnRunEnded -= () => {
+        gameEvents.OnDayEnded -= () => {
             SetMovementPermission(false);
             ClearAvailableMoves();
         };

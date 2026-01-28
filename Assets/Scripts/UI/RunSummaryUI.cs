@@ -16,6 +16,7 @@ public class RunSummaryUI : MonoBehaviour
     [SerializeField] private GameObject endRunPanel;
     [SerializeField] private GameObject endRunResultPanel;
     [SerializeField] private TextMeshProUGUI totalFishCapturedText;
+    [SerializeField] private TextMeshProUGUI dayOverText;
 
     private void Start()
     {
@@ -24,27 +25,36 @@ public class RunSummaryUI : MonoBehaviour
 
     private void OnEnable()
     {
-        gameEvents.OnRunEnded += TurnOnEndRunPanel;
+        gameEvents.OnDayEnded += HandleDayEnded;
 
         gameEvents.OnTotalFishCapturedChanged += UpdateTotalFishCapturedText;
     }
 
     private void OnDisable()
     {
-        gameEvents.OnRunEnded -= TurnOnEndRunPanel;
+        gameEvents.OnDayEnded -= HandleDayEnded;
 
         gameEvents.OnTotalFishCapturedChanged -= UpdateTotalFishCapturedText;
     }
 
+    private void HandleDayEnded()
+    {
+        TurnOnEndDayPanel();
+        UpdateDayOverText();
+
+        InitializeCoins();
+        shopManager.GenerateShopButtons(resourceManager);
+    }
+
     private void UpdateTotalFishCapturedText(int value = 0) => totalFishCapturedText.text = $"Total Fish Captured: {value}";
+
+    private void UpdateDayOverText() => dayOverText.text = $"Day {SaveSystem.LoadDay() - 1} is over...";
 
     private void ToggleGameObject(GameObject gameObject, bool state) => gameObject.SetActive(state);
 
-    private void TurnOnEndRunPanel()
+    private void TurnOnEndDayPanel()
     {
         ToggleGameObject(endRunPanel, true);
-        InitializeCoins();
-        shopManager.GenerateShopButtons(resourceManager);
 
         StartCoroutine(FadeAnimation(endRunPanel, 2f));
         StartCoroutine(ScalePingAnimation(endRunResultPanel.transform, 2f, 1.1f));

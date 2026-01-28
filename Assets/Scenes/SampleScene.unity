@@ -2143,7 +2143,7 @@ MonoBehaviour:
   endRunPanel: {fileID: 1728529800}
   endRunResultPanel: {fileID: 797810602}
   totalFishCapturedText: {fileID: 277655243}
-  currentDayText: {fileID: 0}
+  dayOverText: {fileID: 654704055}
 --- !u!114 &1298899555
 MonoBehaviour:
   m_ObjectHideFlags: 0
