@@ -8,14 +8,17 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private GameObject shopButtonPrefab;
     [SerializeField] private Transform shopButtonsContainer;
     [SerializeField] private int initialCardsToSpawnNumber = 2;
+    [SerializeField] private int targetDayMaxCards = 15;
 
     public void GenerateShopButtons(ResourceManager resourceManager)
     {
         foreach (Transform child in shopButtonsContainer) Destroy(child.gameObject);
 
-        int day = SaveSystem.LoadDay();
+        int currentDay = SaveSystem.LoadDay();
+        const int MaxCards = 6;
+        float divisor = Mathf.Pow(targetDayMaxCards, 2f) / (MaxCards - initialCardsToSpawnNumber);
 
-        int cardsToSpawn = Mathf.Clamp(initialCardsToSpawnNumber + (day - 1) / 3, initialCardsToSpawnNumber, 6);
+        int cardsToSpawn = Mathf.Clamp(initialCardsToSpawnNumber + Mathf.FloorToInt(Mathf.Pow(currentDay, 2f) / divisor), initialCardsToSpawnNumber, MaxCards);
 
         List<UpgradeTemplate> selected = GetRandomTemplates(availableTemplates, cardsToSpawn);
 
@@ -37,6 +40,7 @@ public class ShopManager : MonoBehaviour
         {
             int randomIndex = Random.Range(0, copy.Count);
             result.Add(copy[randomIndex]);
+            copy.RemoveAt(randomIndex);
         }
 
         return result;
