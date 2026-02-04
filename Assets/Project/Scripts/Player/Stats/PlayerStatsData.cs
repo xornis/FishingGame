@@ -16,5 +16,5 @@ public struct StatValue
 
 public enum StatType
 {
-    MoveSpeed, MaxHealth, HealthRegen, PickUpRange
+    MoveDuration, CatchChance, FishingSpeed
 }

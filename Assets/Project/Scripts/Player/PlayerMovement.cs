@@ -3,18 +3,27 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerStats))]
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private IslandManager manager;
-    [SerializeField, Range(0f, 0.5f)] private float baseMoveDuration = 0.25f;
 
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
+    
+    private PlayerStats playerStats;
+
+    private float MoveDuration => playerStats.GetStat(StatType.MoveDuration);
 
     public bool CanMove { get; private set; } = true;
     private bool isMoving;
 
     private readonly List<TileView> highlightedTiles = new List<TileView>();
+
+    private void Awake()
+    {
+        playerStats = GetComponent<PlayerStats>();
+    }
 
     private void OnEnable()
     {
@@ -88,7 +97,7 @@ public class PlayerMovement : MonoBehaviour
 
         float timer = 0f;
         float durationScale = (tile.data is WalkableTileData walkableTileData) ? walkableTileData.moveDurationScale : 1f;
-        float duration = baseMoveDuration * durationScale;
+        float duration = MoveDuration * durationScale;
 
         while (timer < duration)
         {

@@ -2,18 +2,26 @@ using HexDungeon;
 using System.Collections;
 using UnityEngine;
 
+[RequireComponent(typeof(PlayerStats))]
 public class FishingInteraction : MonoBehaviour
 {
-    [SerializeField, Range(0f, 1f)] private float baseCatchChance = 0.25f;
-    [SerializeField] private float baseWaitingForFishInSeconds = 2f;
-
     [SerializeField] private IslandManager manager;
     
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
 
+    private PlayerStats playerStats;
+
+    private float CatchChance => playerStats.GetStat(StatType.CatchChance);
+    private float FishingSpeed => playerStats.GetStat(StatType.FishingSpeed);
+
     public bool CanFish { get; private set; } = true;
     private bool isFishing;
+
+    private void Awake()
+    {
+        playerStats = GetComponent<PlayerStats>();
+    }
 
     private void OnEnable()
     {
@@ -55,7 +63,7 @@ public class FishingInteraction : MonoBehaviour
 
         gameEvents.CallFishingAttempted();
 
-        float waitTime = baseWaitingForFishInSeconds;
+        float waitTime = FishingSpeed;
         if (tile.state is FishTileState fishState1)
             waitTime *= GetTimeMultiplier(fishState1.fishQuality);
 
@@ -68,7 +76,7 @@ public class FishingInteraction : MonoBehaviour
             yield return new WaitForSeconds(regularWaitTime);
         }
 
-        float chance = baseCatchChance;
+        float chance = CatchChance;
         if (tile.state is FishTileState fishState2)
             chance *= GetChanceMultiplier(fishState2.fishQuality);
 

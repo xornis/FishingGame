@@ -36,8 +36,9 @@ public class PlayerStats : MonoBehaviour
     {
         return type switch
         {
-            StatType.MaxHealth => Mathf.Max(1, value),
-            StatType.MoveSpeed => Mathf.Max(0, value),
+            StatType.MoveDuration => Mathf.Max(0.01f, value),
+            StatType.FishingSpeed => Mathf.Max(0.01f, value),
+            StatType.CatchChance => Mathf.Max(0.01f, value),
             _ => value
         };
     }

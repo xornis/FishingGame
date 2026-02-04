@@ -1685,6 +1685,7 @@ GameObject:
   - component: {fileID: 1076604562}
   - component: {fileID: 1076604566}
   - component: {fileID: 1076604567}
+  - component: {fileID: 1076604568}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1705,7 +1706,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 1253531103}
-  baseMoveDuration: 0.35
   gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
 --- !u!114 &1076604563
 MonoBehaviour:
@@ -1840,6 +1840,19 @@ MonoBehaviour:
   playerInput: {fileID: 1076604563}
   playerTransform: {fileID: 1076604564}
   gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
+--- !u!114 &1076604568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1076604561}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0c1cb002e2d96142a297704c1376806, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  baseData: {fileID: 11400000, guid: 1e53f286dd823364b9acd89987065caf, type: 2}
 --- !u!1 &1077393699
 GameObject:
   m_ObjectHideFlags: 0
