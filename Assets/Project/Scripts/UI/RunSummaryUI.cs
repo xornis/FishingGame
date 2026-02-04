@@ -8,7 +8,7 @@ public class RunSummaryUI : MonoBehaviour
     [SerializeField] private GameEvents gameEvents;
 
     [Header("References")]
-    [SerializeField] private RunController runController;
+    [SerializeField] private DayController dayController;
     [SerializeField] private ResourceManager resourceManager;
     [SerializeField] private ShopManager shopManager;
 
@@ -62,7 +62,7 @@ public class RunSummaryUI : MonoBehaviour
 
     private void InitializeCoins()
     {
-        int earnedCoins = runController.TotalFishCaptured * 10;
+        int earnedCoins = dayController.TotalFishCaptured * 10;
         resourceManager.ChangeResource(ResourceType.Coins, earnedCoins);
         int totalCoins = resourceManager.GetResourceAmount(ResourceType.Coins);
         SaveSystem.SaveMaxResource(ResourceType.Coins, totalCoins);

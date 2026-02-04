@@ -605,7 +605,7 @@ GameObject:
   - component: {fileID: 452827039}
   - component: {fileID: 452827038}
   m_Layer: 0
-  m_Name: Shop Manager
+  m_Name: ShopManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -631,6 +631,7 @@ MonoBehaviour:
   shopButtonPrefab: {fileID: 8454774715727075310, guid: ec29b017bdb1c2b45a6c5035db402d38, type: 3}
   shopButtonsContainer: {fileID: 1333403417}
   initialCardsToSpawnNumber: 2
+  targetDayMaxCards: 15
 --- !u!4 &452827039
 Transform:
   m_ObjectHideFlags: 0
@@ -1258,7 +1259,7 @@ GameObject:
   - component: {fileID: 775456355}
   - component: {fileID: 775456354}
   m_Layer: 0
-  m_Name: Run Controller
+  m_Name: DayController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1273,7 +1274,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 775456353}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab86afeba195c894b96dff5bf39388a9, type: 3}
+  m_Script: {fileID: 11500000, guid: 0d8d02d5bfc7c4442ba7dfad14dff794, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   islandManager: {fileID: 1253531103}
@@ -1896,7 +1897,7 @@ GameObject:
   - component: {fileID: 1119722683}
   - component: {fileID: 1119722682}
   m_Layer: 0
-  m_Name: Resource Manager
+  m_Name: ResourceManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2137,7 +2138,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
-  runController: {fileID: 775456354}
+  dayController: {fileID: 775456354}
   resourceManager: {fileID: 1119722682}
   shopManager: {fileID: 452827038}
   endRunPanel: {fileID: 1728529800}

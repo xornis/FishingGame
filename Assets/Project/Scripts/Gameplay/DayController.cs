@@ -2,7 +2,7 @@ using HexDungeon;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class RunController : MonoBehaviour
+public class DayController : MonoBehaviour
 {
     [SerializeField] private IslandManager islandManager;
     [SerializeField] private ResourceManager resourceManager;
