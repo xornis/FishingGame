@@ -4,7 +4,7 @@ using System.Collections.Generic;
 [CreateAssetMenu(fileName = "NewPlayerStatsData", menuName = "Scriptable Objects/PlayerStatsData")]
 public class PlayerStatsData : ScriptableObject
 {
-    public List<StatValue> stats;
+    public List<StatValue> initialStats;
 }
 
 [System.Serializable]
@@ -16,5 +16,5 @@ public struct StatValue
 
 public enum StatType
 {
-    MoveDuration, CatchChance, FishingSpeed
+    MoveSpeed, CatchChance, FishingSpeed
 }

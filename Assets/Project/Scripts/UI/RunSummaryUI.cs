@@ -1,6 +1,7 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI;
 
 public class RunSummaryUI : MonoBehaviour
 {
@@ -21,6 +22,7 @@ public class RunSummaryUI : MonoBehaviour
     private void Start()
     {
         ToggleGameObject(endRunPanel, false);
+        UpdateTotalFishCapturedText(0);
     }
 
     private void OnEnable()
@@ -46,7 +48,7 @@ public class RunSummaryUI : MonoBehaviour
         shopManager.GenerateShopButtons(resourceManager);
     }
 
-    private void UpdateTotalFishCapturedText(int value = 0) => totalFishCapturedText.text = $"Total Fish Captured: {value}";
+    private void UpdateTotalFishCapturedText(int value) => totalFishCapturedText.text = $"Total Fish Captured: {value}";
 
     private void UpdateDayOverText() => dayOverText.text = $"Day {SaveSystem.LoadDay() - 1} is over...";
 

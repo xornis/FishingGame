@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e30214beb40f4994e86b2b33f8711649, type: 3}
-  m_Name: Quicksand Tile
+  m_Name: Ground Tile
   m_EditorClassIdentifier: 
-  prefab: {fileID: 5268574295593296186, guid: 5e373d7465451364fbd0b9b01f606e43, type: 3}
-  tileType: 4
+  prefab: {fileID: 5268574295593296186, guid: 4d808a2624700ef4fa5039ff885ec33b, type: 3}
+  tileType: 0
   walkable: 1
   fishable: 0
-  stepValueChange: -2
-  moveDurationScale: 1.6
-  stepSounds: {fileID: 11400000, guid: f0b5b8f28c9c8184f83787112b3c85f7, type: 2}
+  stepValueChange: -1
+  moveSpeedMultiplier: 1
+  stepSounds: {fileID: 11400000, guid: 3515b7403eae4914c83cc07e58565930, type: 2}

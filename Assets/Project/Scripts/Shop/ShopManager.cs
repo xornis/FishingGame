@@ -8,7 +8,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] private GameObject shopButtonPrefab;
     [SerializeField] private Transform shopButtonsContainer;
     [SerializeField] private int initialCardsToSpawnNumber = 2;
-    [SerializeField] private int targetDayMaxCards = 15;
+    [SerializeField] private int targetDayUntilMaxCards = 15;
 
     public void GenerateShopButtons(ResourceManager resourceManager)
     {
@@ -16,7 +16,7 @@ public class ShopManager : MonoBehaviour
 
         int currentDay = SaveSystem.LoadDay();
         const int MaxCards = 6;
-        float divisor = Mathf.Pow(targetDayMaxCards, 2f) / (MaxCards - initialCardsToSpawnNumber);
+        float divisor = Mathf.Pow(targetDayUntilMaxCards, 2f) / (MaxCards - initialCardsToSpawnNumber);
 
         int cardsToSpawn = Mathf.Clamp(initialCardsToSpawnNumber + Mathf.FloorToInt(Mathf.Pow(currentDay, 2f) / divisor), initialCardsToSpawnNumber, MaxCards);
 

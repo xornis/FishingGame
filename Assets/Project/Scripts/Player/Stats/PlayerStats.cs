@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
     [SerializeField] private PlayerStatsData baseData;
+    [SerializeField] private bool deletePlayerSaves;
 
     private Dictionary<StatType, float> runtimeStats = new();
 
@@ -13,11 +14,16 @@ public class PlayerStats : MonoBehaviour
     // Stats Initialization from SO
     private void Awake()
     {
-        foreach (var stat in baseData.stats)
-            runtimeStats[stat.type] = stat.value;
+        if (deletePlayerSaves) PlayerPrefs.DeleteAll();
+
+        foreach (var stat in baseData.initialStats)
+        {
+            float savedValue = SaveSystem.LoadMaxStat(stat.type, stat.value);
+            runtimeStats[stat.type] = ValidateStat(stat.type, savedValue);
+        }
     }
 
-    public float GetStat(StatType type) => runtimeStats.GetValueOrDefault(type, 0);
+    public float GetStat(StatType type) => runtimeStats.GetValueOrDefault(type, 1);
 
     public void UpdateStat(StatType type, float value)
     {
@@ -36,9 +42,10 @@ public class PlayerStats : MonoBehaviour
     {
         return type switch
         {
-            StatType.MoveDuration => Mathf.Max(0.01f, value),
-            StatType.FishingSpeed => Mathf.Max(0.01f, value),
-            StatType.CatchChance => Mathf.Max(0.01f, value),
+            StatType.CatchChance => Mathf.Clamp(value, 1f, 100f),
+
+            StatType.MoveSpeed => Mathf.Clamp(value, 10f, 9999f),
+            StatType.FishingSpeed => Mathf.Clamp(value, 10f, 9999f),
             _ => value
         };
     }

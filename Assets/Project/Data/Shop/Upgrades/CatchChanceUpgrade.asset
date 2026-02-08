@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51a0204246b76f1478603e4d54b71a0c, type: 3}
-  m_Name: UpgradeOption 4
+  m_Name: CatchChanceUpgrade
   m_EditorClassIdentifier: 
-  resourceType: 1
-  minBasePrice: 60
-  maxBasePrice: 120
-  minBonusAmount: 4
-  maxBonusAmount: 12
-  resourceIcon: {fileID: 21300000, guid: 5e5de8a8133c50641817c1f58aee672e, type: 3}
+  upgradeEffect: {fileID: 11400000, guid: 6238bd879b6423c479a7d289b4afa204, type: 2}
+  minBasePrice: 10
+  maxBasePrice: 100
+  minBonusAmount: 1
+  maxBonusAmount: 10
+  resourceIcon: {fileID: 0}

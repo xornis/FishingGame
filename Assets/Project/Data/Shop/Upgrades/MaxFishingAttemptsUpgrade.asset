@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51a0204246b76f1478603e4d54b71a0c, type: 3}
-  m_Name: UpgradeOption 3
+  m_Name: MaxFishingAttemptsUpgrade
   m_EditorClassIdentifier: 
-  resourceType: 0
-  minBasePrice: 15
-  maxBasePrice: 30
-  minBonusAmount: 3
+  upgradeEffect: {fileID: 11400000, guid: 7d87ef2691535c54684e80e40257ca22, type: 2}
+  minBasePrice: 10
+  maxBasePrice: 100
+  minBonusAmount: 1
   maxBonusAmount: 5
-  resourceIcon: {fileID: 21300000, guid: efbbe4f94d3d4ec4cb663719d9477fb9, type: 3}
+  resourceIcon: {fileID: 21300000, guid: 5e5de8a8133c50641817c1f58aee672e, type: 3}

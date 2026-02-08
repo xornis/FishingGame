@@ -17,6 +17,6 @@ MonoBehaviour:
   walkable: 1
   fishable: 0
   stepValueChange: 3
-  moveDurationScale: 0.85
+  moveSpeedMultiplier: 1.25
   stepSounds: {fileID: 11400000, guid: 3515b7403eae4914c83cc07e58565930, type: 2}
   campfireSound: {fileID: 11400000, guid: e5cc8ddd7cc5e5242984e7bbf9553c58, type: 2}

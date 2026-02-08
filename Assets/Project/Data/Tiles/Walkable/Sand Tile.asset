@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e30214beb40f4994e86b2b33f8711649, type: 3}
-  m_Name: Ground Tile
+  m_Name: Sand Tile
   m_EditorClassIdentifier: 
-  prefab: {fileID: 5268574295593296186, guid: 4d808a2624700ef4fa5039ff885ec33b, type: 3}
-  tileType: 0
+  prefab: {fileID: 5268574295593296186, guid: ab571a6b325fe7445b296cba7940cf02, type: 3}
+  tileType: 3
   walkable: 1
   fishable: 0
   stepValueChange: -1
-  moveDurationScale: 1
-  stepSounds: {fileID: 11400000, guid: 3515b7403eae4914c83cc07e58565930, type: 2}
+  moveSpeedMultiplier: 0.9
+  stepSounds: {fileID: 11400000, guid: 003220c5d541e81429ff5180f37ebed3, type: 2}

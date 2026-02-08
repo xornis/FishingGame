@@ -3,8 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "UpgradeTemplate", menuName = "Scriptable Objects/UpgradeTemplate")]
 public class UpgradeTemplate : ScriptableObject
 {
-    [Header("Stats")]
-    [SerializeField] private ResourceType resourceType;
+    [Header("Logic")]
+    [SerializeField] private UpgradeEffect upgradeEffect;
     [SerializeField] private int minBasePrice;
     [SerializeField] private int maxBasePrice;
     [SerializeField] private int minBonusAmount;
@@ -12,8 +12,6 @@ public class UpgradeTemplate : ScriptableObject
 
     [Header("Appearance")]
     [SerializeField] private Sprite resourceIcon;
-
-    public ResourceType ResourceType => resourceType;
 
     public UpgradeOffer GenerateOffer()
     {
@@ -26,7 +24,7 @@ public class UpgradeTemplate : ScriptableObject
 
         return new UpgradeOffer
         {
-            type = resourceType,
+            effect = upgradeEffect,
             price = price,
             bonusAmount = bonus,
             icon = resourceIcon
@@ -35,7 +33,7 @@ public class UpgradeTemplate : ScriptableObject
 
     public struct UpgradeOffer
     {
-        public ResourceType type;
+        public UpgradeEffect effect;
         public int price;
         public int bonusAmount;
         public Sprite icon;

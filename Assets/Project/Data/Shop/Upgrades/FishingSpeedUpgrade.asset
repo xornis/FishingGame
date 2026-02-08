@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51a0204246b76f1478603e4d54b71a0c, type: 3}
-  m_Name: UpgradeOption 2
+  m_Name: FishingSpeedUpgrade
   m_EditorClassIdentifier: 
-  resourceType: 1
-  minBasePrice: 20
-  maxBasePrice: 40
-  minBonusAmount: 2
-  maxBonusAmount: 4
-  resourceIcon: {fileID: 21300000, guid: 5e5de8a8133c50641817c1f58aee672e, type: 3}
+  upgradeEffect: {fileID: 11400000, guid: e0b3df2a640480e45af3c4f7b1c28b77, type: 2}
+  minBasePrice: 10
+  maxBasePrice: 100
+  minBonusAmount: 10
+  maxBonusAmount: 100
+  resourceIcon: {fileID: 0}

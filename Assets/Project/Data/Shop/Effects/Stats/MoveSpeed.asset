@@ -9,12 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 51a0204246b76f1478603e4d54b71a0c, type: 3}
-  m_Name: UpgradeOption 1
+  m_Script: {fileID: 11500000, guid: 0e53fe4284d9cf645a4c85f668dd28cf, type: 3}
+  m_Name: MoveSpeed
   m_EditorClassIdentifier: 
-  resourceType: 0
-  minBasePrice: 5
-  maxBasePrice: 15
-  minBonusAmount: 1
-  maxBonusAmount: 3
-  resourceIcon: {fileID: 21300000, guid: efbbe4f94d3d4ec4cb663719d9477fb9, type: 3}
+  statType: 0
+  baseValue: 200
