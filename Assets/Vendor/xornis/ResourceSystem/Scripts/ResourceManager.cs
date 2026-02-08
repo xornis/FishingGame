@@ -12,7 +12,7 @@ public class ResourceManager : MonoBehaviour
     {
         foreach (var resource in startingResources)
         {
-            int savedMax = SaveSystem.LoadMaxResource(resource.type, resource.maxValue);
+            int savedMax = SaveSystem.LoadMaxResource(resource.type, resource.initialValue);
             resources[resource.type] = new(savedMax, savedMax, 0);
         }
     }
@@ -22,11 +22,24 @@ public class ResourceManager : MonoBehaviour
             resourceEvents.CallResourceChanged(resource.Key, resource.Value);
     }
 
-    public void ChangeResource(ResourceType type, int amount)
+    public void ChangeResource(ResourceType resourceType, int amount)
+    {
+        ApplyChange(resourceType, amount, clampToMax: true); // hard clamp or hard cap
+    }
+
+    public void AddBonus(ResourceType resourceType, int amount)
+    {
+        ApplyChange(resourceType, amount, clampToMax: false); // overbuff
+    }
+
+    private void ApplyChange(ResourceType type, int amount, bool clampToMax)
     {
         if (resources.TryGetValue(type, out ResourceData data))
         {
             data.current += amount;
+            data.current = clampToMax && data.max > 0
+                ? Mathf.Clamp(data.current, 0, data.max)
+                : Mathf.Max(data.current, 0);
             data.delta = amount;
             resources[type] = data;
 
@@ -44,6 +57,6 @@ public class ResourceManager : MonoBehaviour
     private struct ResourceSetup
     {
         public ResourceType type;
-        public int maxValue;
+        public int initialValue;
     }
 }

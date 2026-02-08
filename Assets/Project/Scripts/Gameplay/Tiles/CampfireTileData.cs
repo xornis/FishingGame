@@ -19,6 +19,6 @@ public class CampfireTileData : WalkableTileData, IStepEffect
         state.isUsed = true;
 
         AudioManager.Instance.PlayTileSounds(campfireSound);
-        resourceManager.ChangeResource(ResourceType.Steps, stepValueChange);
+        resourceManager.AddBonus(ResourceType.Steps, stepValueChange);
     }
 }

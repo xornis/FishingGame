@@ -848,7 +848,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseData: {fileID: 11400000, guid: 1e53f286dd823364b9acd89987065caf, type: 2}
-  deleteSaves: 0
+  deletePlayerSaves: 0
 --- !u!4 &574536583
 Transform:
   m_ObjectHideFlags: 0
@@ -1964,11 +1964,11 @@ MonoBehaviour:
   resourceEvents: {fileID: 11400000, guid: 574bc81d8e71f5d498a9794a7f317333, type: 2}
   startingResources:
   - type: 0
-    maxValue: 10
+    initialValue: 10
   - type: 1
-    maxValue: 5
+    initialValue: 5
   - type: 2
-    maxValue: 0
+    initialValue: 0
 --- !u!4 &1119722683
 Transform:
   m_ObjectHideFlags: 0
