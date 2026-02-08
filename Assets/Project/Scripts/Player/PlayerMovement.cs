@@ -25,10 +25,7 @@ public class PlayerMovement : MonoBehaviour
 
         gameEvents.OnTileClicked += HandleMoveRequest;
 
-        gameEvents.OnDayEnded += () => {
-            SetMovementPermission(false);
-            ClearAvailableMoves();
-            };
+        gameEvents.OnDayEnded += HandleDayEnded;
     }
 
     private void OnDisable()
@@ -38,10 +35,13 @@ public class PlayerMovement : MonoBehaviour
 
         gameEvents.OnTileClicked -= HandleMoveRequest;
 
-        gameEvents.OnDayEnded -= () => {
-            SetMovementPermission(false);
-            ClearAvailableMoves();
-        };
+        gameEvents.OnDayEnded -= HandleDayEnded;
+    }
+
+    private void HandleDayEnded()
+    {
+        SetMovementPermission(false);
+        ClearAvailableMoves();
     }
 
     private void HandleMoveRequest(Tile tile)

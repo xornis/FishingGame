@@ -21,7 +21,7 @@ public class FishingInteraction : MonoBehaviour
         gameEvents.OnTileClicked += HandleFishingRequest;
         gameEvents.OnSetFishingPermission += SetFishingPermission;
 
-        gameEvents.OnDayEnded += () => SetFishingPermission(false);
+        gameEvents.OnDayEnded += HandleDayEnded;
     }
 
     private void OnDisable()
@@ -29,7 +29,12 @@ public class FishingInteraction : MonoBehaviour
         gameEvents.OnTileClicked -= HandleFishingRequest;
         gameEvents.OnSetFishingPermission -= SetFishingPermission;
 
-        gameEvents.OnDayEnded -= () => SetFishingPermission(false);
+        gameEvents.OnDayEnded -= HandleDayEnded;
+    }
+
+    private void HandleDayEnded()
+    {
+        SetFishingPermission(false);
     }
 
     private void HandleFishingRequest(Tile tile)
