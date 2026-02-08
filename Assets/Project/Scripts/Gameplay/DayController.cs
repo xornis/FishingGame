@@ -24,7 +24,7 @@ public class DayController : MonoBehaviour
     private void OnEnable()
     {
         gameEvents.OnStepEnded += HandleStep;
-        gameEvents.OnPlayerMoved += (tile) => currentPlayerPos = tile.coord;
+        gameEvents.OnPlayerMoved += HandlePlayerMoved;
         gameEvents.OnFishCaptured += HandleFishCaptured;
         gameEvents.OnFishingAttempted += HandleFishingAttempt;
     }
@@ -32,7 +32,7 @@ public class DayController : MonoBehaviour
     private void OnDisable()
     {
         gameEvents.OnStepEnded -= HandleStep;
-        gameEvents.OnPlayerMoved -= (tile) => currentPlayerPos = tile.coord;
+        gameEvents.OnPlayerMoved -= HandlePlayerMoved;
         gameEvents.OnFishCaptured -= HandleFishCaptured;
         gameEvents.OnFishingAttempted -= HandleFishingAttempt;
     }
@@ -46,6 +46,8 @@ public class DayController : MonoBehaviour
 
         CheckDayStatus();
     }
+
+    private void HandlePlayerMoved(Tile tile) => currentPlayerPos = tile.coord;
 
     private void HandleFishingAttempt()
     {

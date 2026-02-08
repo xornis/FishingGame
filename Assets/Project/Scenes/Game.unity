@@ -264,7 +264,7 @@ GameObject:
   - component: {fileID: 277655242}
   - component: {fileID: 277655243}
   m_Layer: 5
-  m_Name: 'Total Fish Captured Text '
+  m_Name: 'TotalFishCaptured Text '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -631,8 +631,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 7914b6262e0378247920d1ef10b9db76, type: 2}
   shopButtonPrefab: {fileID: 8454774715727075310, guid: ec29b017bdb1c2b45a6c5035db402d38, type: 3}
   shopButtonsContainer: {fileID: 1333403417}
-  initialCardsToSpawnNumber: 2
-  targetDayUntilMaxCards: 15
+  initialCards: 2
+  maxCards: 6
+  daysUntilMaxCards: 15
 --- !u!4 &452827039
 Transform:
   m_ObjectHideFlags: 0
@@ -1035,7 +1036,7 @@ GameObject:
   - component: {fileID: 654704056}
   - component: {fileID: 654704055}
   m_Layer: 5
-  m_Name: MainResult Text
+  m_Name: DayOver Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2187,10 +2188,14 @@ MonoBehaviour:
   dayController: {fileID: 775456354}
   resourceManager: {fileID: 1119722682}
   shopManager: {fileID: 452827038}
-  endRunPanel: {fileID: 1728529800}
-  endRunResultPanel: {fileID: 797810602}
+  endDayPanel: {fileID: 1728529800}
+  endDayResultPanel: {fileID: 797810602}
   totalFishCapturedText: {fileID: 277655243}
   dayOverText: {fileID: 654704055}
+  coinsPerFish: 10
+  fadeDuration: 2
+  scalePingDuration: 2
+  scalePingStrength: 1.1
 --- !u!114 &1298899555
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2982,7 +2987,7 @@ GameObject:
   - component: {fileID: 1728529802}
   - component: {fileID: 1728529804}
   m_Layer: 5
-  m_Name: End Run Panel
+  m_Name: End Day Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

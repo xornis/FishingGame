@@ -1,9 +1,8 @@
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
-public class RunSummaryUI : MonoBehaviour
+public class DaySummaryUI : MonoBehaviour
 {
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
@@ -13,15 +12,23 @@ public class RunSummaryUI : MonoBehaviour
     [SerializeField] private ResourceManager resourceManager;
     [SerializeField] private ShopManager shopManager;
 
-    [Header("Settings")]
-    [SerializeField] private GameObject endRunPanel;
-    [SerializeField] private GameObject endRunResultPanel;
+    [Header("UI")]
+    [SerializeField] private GameObject endDayPanel;
+    [SerializeField] private GameObject endDayResultPanel;
     [SerializeField] private TextMeshProUGUI totalFishCapturedText;
     [SerializeField] private TextMeshProUGUI dayOverText;
 
+    [Header("Coins")]
+    [SerializeField] private int coinsPerFish;
+
+    [Header("Animation")]
+    [SerializeField] private float fadeDuration = 2f;
+    [SerializeField] private float scalePingDuration = 2f;
+    [SerializeField] private float scalePingStrength = 1.1f;
+
     private void Start()
     {
-        ToggleGameObject(endRunPanel, false);
+        ToggleGameObject(endDayPanel, state: false);
         UpdateTotalFishCapturedText(0);
     }
 
@@ -56,15 +63,15 @@ public class RunSummaryUI : MonoBehaviour
 
     private void TurnOnEndDayPanel()
     {
-        ToggleGameObject(endRunPanel, true);
+        ToggleGameObject(endDayPanel, state: true);
 
-        StartCoroutine(FadeAnimation(endRunPanel, 2f));
-        StartCoroutine(ScalePingAnimation(endRunResultPanel.transform, 2f, 1.1f));
+        StartCoroutine(FadeAnimation(endDayPanel, fadeDuration));
+        StartCoroutine(ScalePingAnimation(endDayResultPanel.transform, scalePingDuration, scalePingStrength));
     }
 
     private void InitializeCoins()
     {
-        int earnedCoins = dayController.TotalFishCaptured * 10;
+        int earnedCoins = dayController.TotalFishCaptured * coinsPerFish;
         resourceManager.ChangeResource(ResourceType.Coins, earnedCoins);
         int totalCoins = resourceManager.GetResourceAmount(ResourceType.Coins);
         SaveSystem.SaveMaxResource(ResourceType.Coins, totalCoins);
