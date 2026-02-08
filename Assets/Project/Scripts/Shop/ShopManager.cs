@@ -15,6 +15,8 @@ public class ShopManager : MonoBehaviour
     {
         foreach (Transform child in shopButtonsContainer) Destroy(child.gameObject);
 
+        if (availableTemplates == null || availableTemplates.Count == 0) return;
+
         int currentDay = SaveSystem.LoadDay();
         float divisor = Mathf.Pow(daysUntilMaxCards, 2f) / (maxCards - initialCards);
 
