@@ -22,9 +22,7 @@ public class ShopButton : MonoBehaviour
         ResourceTypeInitialize(offer);
 
         priceText.text = "$" + offer.price.ToString();
-        bonusText.text = offer.effect is ResourceUpgradeEffect 
-            ? "+" + offer.bonusAmount.ToString() 
-            : "+" + (offer.bonusAmount / 10f).ToString() + "%";
+        bonusText.text = offer.effect.EffectFormat(offer.bonusAmount);
 
         purchaseButton.onClick.AddListener(OnPurchaseClick);
     }

@@ -15,4 +15,11 @@ public class StatUpgradeEffect : UpgradeEffect
 
         SaveSystem.SaveMaxStat(statType, newValue);
     }
+
+    public override string EffectFormat(int amount)
+    {
+        return statType == StatType.CatchChance
+            ? $"+{amount}%"
+            : $"+{amount / 10f}%";
+    }
 }

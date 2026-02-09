@@ -13,4 +13,6 @@ public class ResourceUpgradeEffect : UpgradeEffect
         int currentMax = SaveSystem.LoadMaxResource(resourceType, baseValue);
         SaveSystem.SaveMaxResource(resourceType, currentMax + amount);
     }
+
+    public override string EffectFormat(int amount) => $"+{amount}";
 }

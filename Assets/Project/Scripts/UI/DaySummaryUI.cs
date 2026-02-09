@@ -19,7 +19,7 @@ public class DaySummaryUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI dayOverText;
 
     [Header("Coins")]
-    [SerializeField] private int coinsPerFish;
+    [SerializeField] private int coinsPerFish = 10;
 
     [Header("Animation")]
     [SerializeField] private float fadeDuration = 2f;
@@ -72,7 +72,7 @@ public class DaySummaryUI : MonoBehaviour
     private void InitializeCoins()
     {
         int earnedCoins = dayController.TotalFishCaptured * coinsPerFish;
-        resourceManager.ChangeResource(ResourceType.Coins, earnedCoins);
+        resourceManager.AddBonus(ResourceType.Coins, earnedCoins);
         int totalCoins = resourceManager.GetResourceAmount(ResourceType.Coins);
         SaveSystem.SaveMaxResource(ResourceType.Coins, totalCoins);
     }

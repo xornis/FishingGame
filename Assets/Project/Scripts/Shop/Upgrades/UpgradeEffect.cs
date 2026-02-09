@@ -4,4 +4,5 @@ public abstract class UpgradeEffect : ScriptableObject
 {
     public abstract string GetEffectName();
     public abstract void ApplyEffect(int amount);
+    public abstract string EffectFormat(int amount);
 }
