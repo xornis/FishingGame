@@ -9,8 +9,6 @@ public class PlayerStats : MonoBehaviour
 
     private Dictionary<StatType, float> runtimeStats = new();
 
-    public event Action<StatType, float> OnStatChanged;
-
     // Stats Initialization from SO
     private void Awake()
     {
@@ -21,21 +19,6 @@ public class PlayerStats : MonoBehaviour
             float savedValue = SaveSystem.LoadMaxStat(stat.type, stat.value);
             SaveSystem.SaveMaxStat(stat.type, savedValue);
             runtimeStats[stat.type] = ValidateStat(stat.type, savedValue);
-        }
-    }
-
-    public float GetStat(StatType type) => runtimeStats.GetValueOrDefault(type, 1);
-
-    public void UpdateStat(StatType type, float value)
-    {
-        if (runtimeStats.ContainsKey(type))
-        {
-            float valueByKey = runtimeStats[type];
-            float newValue = valueByKey + value;
-            float validatedValue = ValidateStat(type, newValue);
-
-            runtimeStats[type] = validatedValue;
-            OnStatChanged?.Invoke(type, validatedValue);
         }
     }
 
@@ -50,6 +33,8 @@ public class PlayerStats : MonoBehaviour
             _ => value
         };
     }
+
+    public float GetStat(StatType type) => runtimeStats.GetValueOrDefault(type, 1);
 }
 
 [Serializable]
