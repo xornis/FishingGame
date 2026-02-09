@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerStats : MonoBehaviour
 {
-    [SerializeField] private PlayerStatsData baseData;
     [SerializeField] private bool deletePlayerSaves;
+    [SerializeField] private List<StatValue> initialStats;
 
     private Dictionary<StatType, float> runtimeStats = new();
 
@@ -16,7 +16,7 @@ public class PlayerStats : MonoBehaviour
     {
         if (deletePlayerSaves) PlayerPrefs.DeleteAll();
 
-        foreach (var stat in baseData.initialStats)
+        foreach (var stat in initialStats)
         {
             float savedValue = SaveSystem.LoadMaxStat(stat.type, stat.value);
             runtimeStats[stat.type] = ValidateStat(stat.type, savedValue);
@@ -49,4 +49,16 @@ public class PlayerStats : MonoBehaviour
             _ => value
         };
     }
+}
+
+[Serializable]
+public struct StatValue
+{
+    public StatType type;
+    public float value;
+}
+
+public enum StatType
+{
+    MoveSpeed, CatchChance, FishingSpeed
 }

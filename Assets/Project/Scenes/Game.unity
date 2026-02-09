@@ -848,8 +848,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0c1cb002e2d96142a297704c1376806, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseData: {fileID: 11400000, guid: 1e53f286dd823364b9acd89987065caf, type: 2}
+  statsEvents: {fileID: 11400000, guid: dadb3d1e0301aa54eb542cfd65f33b03, type: 2}
   deletePlayerSaves: 0
+  initialStats:
+  - type: 1
+    value: 20
+  - type: 0
+    value: 200
+  - type: 2
+    value: 50
 --- !u!4 &574536583
 Transform:
   m_ObjectHideFlags: 0
