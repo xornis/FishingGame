@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: FishingAttempts
   m_EditorClassIdentifier: 
   resourceType: 1
-  baseValue: 10
+  baseValue: 5

@@ -12,8 +12,16 @@ public class ResourceManager : MonoBehaviour
     {
         foreach (var resource in startingResources)
         {
-            int savedMax = SaveSystem.LoadMaxResource(resource.type, resource.initialValue);
-            resources[resource.type] = new(savedMax, savedMax, 0);
+            if (resource.hasCap)
+            {
+                int max = SaveSystem.LoadMaxResource(resource.type, resource.initialValue);
+                resources[resource.type] = new(max, max, 0);
+            }
+            else
+            {
+                int current = SaveSystem.LoadCurrentResource(resource.type, resource.initialValue);
+                resources[resource.type] = new(current, 0, 0);
+            }
         }
     }
     private void Start()
@@ -58,5 +66,6 @@ public class ResourceManager : MonoBehaviour
     {
         public ResourceType type;
         public int initialValue;
+        public bool hasCap;
     }
 }

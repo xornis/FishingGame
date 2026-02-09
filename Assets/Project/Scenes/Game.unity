@@ -1972,10 +1972,13 @@ MonoBehaviour:
   startingResources:
   - type: 0
     initialValue: 10
+    hasCap: 1
   - type: 1
     initialValue: 5
+    hasCap: 1
   - type: 2
     initialValue: 0
+    hasCap: 0
 --- !u!4 &1119722683
 Transform:
   m_ObjectHideFlags: 0

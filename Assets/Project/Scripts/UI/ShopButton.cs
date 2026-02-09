@@ -32,7 +32,7 @@ public class ShopButton : MonoBehaviour
         if (resourceManager.GetResourceAmount(ResourceType.Coins) < currentOffer.price) return;
 
         resourceManager.ChangeResource(ResourceType.Coins, -currentOffer.price);
-        SaveSystem.SaveMaxResource(ResourceType.Coins, resourceManager.GetResourceAmount(ResourceType.Coins));
+        SaveSystem.SaveCurrentResource(ResourceType.Coins, resourceManager.GetResourceAmount(ResourceType.Coins));
 
         currentOffer.effect.ApplyEffect(currentOffer.bonusAmount);
 

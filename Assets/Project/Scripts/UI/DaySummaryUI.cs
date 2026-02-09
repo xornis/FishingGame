@@ -72,9 +72,9 @@ public class DaySummaryUI : MonoBehaviour
     private void InitializeCoins()
     {
         int earnedCoins = dayController.TotalFishCaptured * coinsPerFish;
-        resourceManager.AddBonus(ResourceType.Coins, earnedCoins);
+        resourceManager.ChangeResource(ResourceType.Coins, earnedCoins);
         int totalCoins = resourceManager.GetResourceAmount(ResourceType.Coins);
-        SaveSystem.SaveMaxResource(ResourceType.Coins, totalCoins);
+        SaveSystem.SaveCurrentResource(ResourceType.Coins, totalCoins);
     }
     
     private IEnumerator ScalePingAnimation(Transform targetTransform, float duration, float animationStrength)
