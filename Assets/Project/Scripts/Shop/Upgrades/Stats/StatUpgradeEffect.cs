@@ -4,13 +4,12 @@ using UnityEngine;
 public class StatUpgradeEffect : UpgradeEffect
 {
     [SerializeField] private StatType statType;
-    [SerializeField] private float baseValue;
 
     public override string GetEffectName() => statType.ToString();
 
     public override void ApplyEffect(int amount)
     {
-        float currentMax = SaveSystem.LoadMaxStat(statType, baseValue);
+        float currentMax = SaveSystem.LoadMaxStat(statType, 0);
         float newValue = currentMax + amount;
 
         SaveSystem.SaveMaxStat(statType, newValue);

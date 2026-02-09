@@ -19,6 +19,7 @@ public class PlayerStats : MonoBehaviour
         foreach (var stat in initialStats)
         {
             float savedValue = SaveSystem.LoadMaxStat(stat.type, stat.value);
+            SaveSystem.SaveMaxStat(stat.type, savedValue);
             runtimeStats[stat.type] = ValidateStat(stat.type, savedValue);
         }
     }

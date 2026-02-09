@@ -4,13 +4,12 @@ using UnityEngine;
 public class ResourceUpgradeEffect : UpgradeEffect
 {
     [SerializeField] private ResourceType resourceType;
-    [SerializeField] private int baseValue = 10;
 
     public override string GetEffectName() => resourceType.ToString();
 
     public override void ApplyEffect(int amount)
     {
-        int currentMax = SaveSystem.LoadMaxResource(resourceType, baseValue);
+        int currentMax = SaveSystem.LoadMaxResource(resourceType, 0);
         SaveSystem.SaveMaxResource(resourceType, currentMax + amount);
     }
 

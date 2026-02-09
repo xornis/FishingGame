@@ -15,6 +15,7 @@ public class ResourceManager : MonoBehaviour
             if (resource.hasCap)
             {
                 int max = SaveSystem.LoadMaxResource(resource.type, resource.initialValue);
+                SaveSystem.SaveMaxResource(resource.type, max);
                 resources[resource.type] = new(max, max, 0);
             }
             else
