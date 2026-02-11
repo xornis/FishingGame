@@ -15,14 +15,17 @@ public class ShopManager : MonoBehaviour
     {
         foreach (Transform child in shopButtonsContainer) Destroy(child.gameObject);
 
-        if (availableTemplates == null || availableTemplates.Count == 0) return;
+        List<UpgradeTemplate> filteredAvailableTemplates = availableTemplates.FindAll(t => !t.IsMaxLevel);
+
+        if (filteredAvailableTemplates == null || filteredAvailableTemplates.Count == 0)
+            return;
 
         int currentDay = SaveSystem.LoadDay();
         float divisor = Mathf.Pow(daysUntilMaxCards, 2f) / (maxCards - initialCards);
 
         int cardsToSpawn = Mathf.Clamp(initialCards + Mathf.FloorToInt(Mathf.Pow(currentDay, 2f) / divisor), initialCards, maxCards);
 
-        List<UpgradeTemplate> selected = GetRandomTemplates(availableTemplates, cardsToSpawn);
+        List<UpgradeTemplate> selected = GetRandomTemplates(filteredAvailableTemplates, cardsToSpawn);
 
         foreach (var template in selected)
         {

@@ -3,6 +3,6 @@ using UnityEngine;
 public abstract class UpgradeEffect : ScriptableObject
 {
     public abstract string GetEffectName();
-    public abstract void ApplyEffect(int amount);
-    public abstract string EffectFormat(int amount);
+    public abstract void ApplyEffect(float amount);
+    public abstract string EffectFormat(float amount);
 }

@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Popup Settings
   m_EditorClassIdentifier: 
   popupPrefab: {fileID: 4384077217878960139, guid: 2f627a2de7a07344eb3d542d16b7b7f7, type: 3}
-  duration: 0.8
+  duration: 2
   speed: 40
   startScaleMultiplier: 1.25
-  endScaleDivider: 3
+  endScaleDivider: 2
   spawnRadius: 30
-  turn: 15
+  turn: 10
   resourceColorDatas:
   - type: 0
     positiveColor: {r: 0.4481132, g: 1, b: 0.45746815, a: 1}

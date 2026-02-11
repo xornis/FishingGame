@@ -7,11 +7,11 @@ public class ResourceUpgradeEffect : UpgradeEffect
 
     public override string GetEffectName() => resourceType.ToString();
 
-    public override void ApplyEffect(int amount)
+    public override void ApplyEffect(float amount)
     {
         int currentMax = SaveSystem.LoadMaxResource(resourceType, 0);
-        SaveSystem.SaveMaxResource(resourceType, currentMax + amount);
+        SaveSystem.SaveMaxResource(resourceType, currentMax + Mathf.RoundToInt(amount));
     }
 
-    public override string EffectFormat(int amount) => $"+{amount}";
+    public override string EffectFormat(float amount) => $"+{amount}";
 }

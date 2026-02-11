@@ -3,39 +3,43 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "UpgradeTemplate", menuName = "Scriptable Objects/UpgradeTemplate")]
 public class UpgradeTemplate : ScriptableObject
 {
-    [Header("Logic")]
     [SerializeField] private UpgradeEffect upgradeEffect;
-    [SerializeField] private int minBasePrice;
-    [SerializeField] private int maxBasePrice;
-    [SerializeField] private int minBonusAmount;
-    [SerializeField] private int maxBonusAmount;
 
     [Header("Appearance")]
     [SerializeField] private Sprite resourceIcon;
+    
+    [Header("Logic")]
+    [SerializeField] private int bonusPerLevel = 20;
+    [SerializeField] private int basePrice = 10;
+    [SerializeField] private float priceGrowth = 1.5f;
+    [SerializeField] private int maxLevel = 20;
+
+    private int CurrentLevel => SaveSystem.LoadUpgradeLevel(upgradeEffect.GetEffectName());
+    public bool IsMaxLevel => CurrentLevel >= maxLevel;
 
     public UpgradeOffer GenerateOffer()
     {
-        int bonus = Random.Range(minBonusAmount, maxBonusAmount + 1);
-
-        float quality = (maxBonusAmount == minBonusAmount) ? 1f :
-            (float)(bonus - minBonusAmount) / (maxBonusAmount - minBonusAmount);
-
-        int price = Mathf.RoundToInt(Mathf.Lerp(minBasePrice, maxBasePrice, quality));
+        int level = CurrentLevel;
+        int price = Mathf.RoundToInt(basePrice * Mathf.Pow(priceGrowth, level));
 
         return new UpgradeOffer
         {
             effect = upgradeEffect,
+            icon = resourceIcon,
             price = price,
-            bonusAmount = bonus,
-            icon = resourceIcon
+            bonusAmount = bonusPerLevel,
+            level = level,
+            maxLevel = maxLevel,
         };
     }
 
     public struct UpgradeOffer
     {
         public UpgradeEffect effect;
+        public Sprite icon;
         public int price;
         public int bonusAmount;
-        public Sprite icon;
+        public int level;
+        public int maxLevel;
     }
 }

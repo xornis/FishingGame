@@ -28,8 +28,8 @@ public class PlayerStats : MonoBehaviour
         {
             StatType.CatchChance => Mathf.Clamp(value, 1f, 100f),
 
-            StatType.MoveSpeed => Mathf.Clamp(value, 10f, 9999f),
-            StatType.FishingSpeed => Mathf.Clamp(value, 10f, 9999f),
+            StatType.MoveSpeed => Mathf.Clamp(value, 10f, 1000f),
+            StatType.FishingSpeed => Mathf.Clamp(value, 10f, 1000f),
             _ => value
         };
     }

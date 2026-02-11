@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 51a0204246b76f1478603e4d54b71a0c, type: 3}
-  m_Name: MoveSpeedUpgrade
+  m_Name: MaxFishingAttemptsUpgrade
   m_EditorClassIdentifier: 
-  upgradeEffect: {fileID: 11400000, guid: 09c329948714d13479fdaf783591bc14, type: 2}
-  minBasePrice: 10
-  maxBasePrice: 100
-  minBonusAmount: 10
-  maxBonusAmount: 100
-  resourceIcon: {fileID: 0}
+  upgradeEffect: {fileID: 11400000, guid: 7d87ef2691535c54684e80e40257ca22, type: 2}
+  resourceIcon: {fileID: 21300000, guid: 5e5de8a8133c50641817c1f58aee672e, type: 3}
+  bonusPerLevel: 2
+  basePrice: 5
+  priceGrowth: 1.5
+  maxLevel: 20

@@ -853,7 +853,7 @@ MonoBehaviour:
   - type: 1
     value: 20
   - type: 0
-    value: 200
+    value: 150
   - type: 2
     value: 50
 --- !u!4 &574536583
