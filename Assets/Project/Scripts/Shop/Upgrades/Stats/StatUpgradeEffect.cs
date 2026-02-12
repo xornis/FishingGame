@@ -13,10 +13,16 @@ public class StatUpgradeEffect : UpgradeEffect
 
         float bonus = statType == StatType.CatchChance
             ? amount 
-            : currentMax * (amount / 100f);
+            : currentMax / (-amount);
 
         SaveSystem.SaveMaxStat(statType, currentMax + bonus);
     }
 
-    public override string EffectFormat(float amount) => $"+{amount}%";
+    public override string EffectFormat(float amount)
+    {
+        if (statType == StatType.FishingSpeed || statType == StatType.MoveSpeed)
+            return $"-{amount}%";
+        else
+            return $"+{amount}%";
+    }    
 }

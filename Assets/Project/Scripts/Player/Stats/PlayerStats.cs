@@ -26,8 +26,8 @@ public class PlayerStats : MonoBehaviour
 
     private void Start()
     {
-        foreach (var stat in initialStats)
-            OnStatChanged?.Invoke(stat.type, GetStat(stat.type));
+        foreach (var stat in runtimeStats)
+            OnStatChanged?.Invoke(stat.Key, stat.Value);
     }
 
     private float ValidateStat(StatType type, float value)
@@ -35,11 +35,11 @@ public class PlayerStats : MonoBehaviour
         return type switch
         {
             StatType.CatchChance => Mathf.Clamp(value, 1f, 100f),
+            StatType.CoinsPerFish => Mathf.Clamp(value, 1f, 1000f),
 
-            StatType.MoveSpeed => Mathf.Clamp(value, 10f, 1000f),
-            StatType.FishingSpeed => Mathf.Clamp(value, 10f, 1000f),
+            StatType.MoveSpeed => Mathf.Clamp(value, 0.05f, 10f),
+            StatType.FishingSpeed => Mathf.Clamp(value, 0.05f, 10f),
 
-            StatType.CoinsPerFish => Mathf.Clamp(value, 1f, 100f),
             _ => value
         };
     }

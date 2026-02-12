@@ -11,7 +11,7 @@ public class FishingInteraction : MonoBehaviour
     [SerializeField] private GameEvents gameEvents;
 
     private float CatchChance => playerStats.GetStat(StatType.CatchChance) / 100f;
-    private float FishingSpeed => 1f / (playerStats.GetStat(StatType.FishingSpeed) / 100f);
+    private float FishingSpeed => playerStats.GetStat(StatType.FishingSpeed);
 
     public bool CanFish { get; private set; } = true;
     private bool isFishing;
@@ -63,6 +63,9 @@ public class FishingInteraction : MonoBehaviour
         if (isFishing) return;
         
         StartCoroutine(WaitForFishAndCatch(tile));
+
+        print($"CatchChanceStat: {playerStats.GetStat(StatType.CatchChance)}, CatchChance: {CatchChance}");
+        print($"FishingSpeedStat: {playerStats.GetStat(StatType.FishingSpeed)}, FishingSpeed: {FishingSpeed}");
     }
 
     private IEnumerator WaitForFishAndCatch(Tile tile)

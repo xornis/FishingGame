@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewResourceUpgradeEffect", menuName = "Scriptable Objects/Shop/Effects/Resource")]

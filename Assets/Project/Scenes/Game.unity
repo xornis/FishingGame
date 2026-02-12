@@ -851,12 +851,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   deletePlayerSaves: 0
   initialStats:
+  - type: 0
+    value: 0.5
+  - type: 2
+    value: 1
   - type: 1
     value: 20
-  - type: 0
-    value: 150
-  - type: 2
-    value: 50
   - type: 3
     value: 10
 --- !u!4 &574536583
@@ -1980,7 +1980,7 @@ MonoBehaviour:
     initialValue: 5
     hasCap: 1
   - type: 2
-    initialValue: 0
+    initialValue: 100
     hasCap: 0
 --- !u!4 &1119722683
 Transform:

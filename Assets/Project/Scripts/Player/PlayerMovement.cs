@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
     
-    private float MoveSpeed => 1f / (playerStats.GetStat(StatType.MoveSpeed) / 100f);
+    private float MoveSpeed => playerStats.GetStat(StatType.MoveSpeed);
 
     public bool CanMove { get; private set; } = true;
     private bool isMoving;
@@ -67,6 +67,8 @@ public class PlayerMovement : MonoBehaviour
         tile.view.PlayPulse(0.9f, 0.15f);
         gameEvents.CallStepEnded(tile);
         StartCoroutine(MoveTo(tile));
+
+        print($"MoveSpeedStat: {playerStats.GetStat(StatType.MoveSpeed)}, MoveSpeed: {MoveSpeed}");
     }
 
     private void OnIslandReady()
