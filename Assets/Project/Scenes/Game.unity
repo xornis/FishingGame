@@ -629,6 +629,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 607decf8c274cfb49999a7795c789b16, type: 2}
   - {fileID: 11400000, guid: 5af979f47d1d2ba47b837ab78d6d92cd, type: 2}
   - {fileID: 11400000, guid: 7914b6262e0378247920d1ef10b9db76, type: 2}
+  - {fileID: 11400000, guid: 0ba54ac6df94bf54190ebbfffc83e1f5, type: 2}
   shopButtonPrefab: {fileID: 8454774715727075310, guid: ec29b017bdb1c2b45a6c5035db402d38, type: 3}
   shopButtonsContainer: {fileID: 1333403417}
   initialCards: 2
@@ -856,6 +857,8 @@ MonoBehaviour:
     value: 150
   - type: 2
     value: 50
+  - type: 3
+    value: 10
 --- !u!4 &574536583
 Transform:
   m_ObjectHideFlags: 0
@@ -2197,11 +2200,11 @@ MonoBehaviour:
   dayController: {fileID: 775456354}
   resourceManager: {fileID: 1119722682}
   shopManager: {fileID: 452827038}
+  playerStats: {fileID: 574536582}
   endDayPanel: {fileID: 1728529800}
   endDayResultPanel: {fileID: 797810602}
   totalFishCapturedText: {fileID: 277655243}
   dayOverText: {fileID: 654704055}
-  coinsPerFish: 10
   fadeDuration: 2
   scalePingDuration: 2
   scalePingStrength: 1.1

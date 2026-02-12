@@ -30,6 +30,8 @@ public class PlayerStats : MonoBehaviour
 
             StatType.MoveSpeed => Mathf.Clamp(value, 10f, 1000f),
             StatType.FishingSpeed => Mathf.Clamp(value, 10f, 1000f),
+
+            StatType.CoinsPerFish => Mathf.Clamp(value, 1f, 100f),
             _ => value
         };
     }
@@ -46,5 +48,5 @@ public struct StatValue
 
 public enum StatType
 {
-    MoveSpeed, CatchChance, FishingSpeed
+    MoveSpeed, CatchChance, FishingSpeed, CoinsPerFish
 }
