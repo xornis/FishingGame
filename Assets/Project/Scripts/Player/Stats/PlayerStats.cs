@@ -9,6 +9,8 @@ public class PlayerStats : MonoBehaviour
 
     private Dictionary<StatType, float> runtimeStats = new();
 
+    public event Action<StatType, float> OnStatChanged;
+
     // Stats Initialization from SO
     private void Awake()
     {
@@ -20,6 +22,12 @@ public class PlayerStats : MonoBehaviour
             SaveSystem.SaveMaxStat(stat.type, savedValue);
             runtimeStats[stat.type] = ValidateStat(stat.type, savedValue);
         }
+    }
+
+    private void Start()
+    {
+        foreach (var stat in initialStats)
+            OnStatChanged?.Invoke(stat.type, GetStat(stat.type));
     }
 
     private float ValidateStat(StatType type, float value)

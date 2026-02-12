@@ -22,22 +22,27 @@ public class PlayerMovement : MonoBehaviour
     {
         gameEvents.OnIslandReady += OnIslandReady;
         gameEvents.OnSetMovementPermission += SetMovementPermission;
-
         gameEvents.OnTileClicked += HandleMoveRequest;
-
         gameEvents.OnDayEnded += HandleDayEnded;
+
+        playerStats.OnStatChanged += HandleStatChanged;
     }
 
     private void OnDisable()
     {
         gameEvents.OnIslandReady -= OnIslandReady;
         gameEvents.OnSetMovementPermission -= SetMovementPermission;
-
         gameEvents.OnTileClicked -= HandleMoveRequest;
-
         gameEvents.OnDayEnded -= HandleDayEnded;
+
+        playerStats.OnStatChanged -= HandleStatChanged;
     }
 
+    private void HandleStatChanged(StatType type, float value)
+    {
+        if (type == StatType.MoveSpeed)
+            print($"MoveSpeedStat: {value}, MoveSpeed: {MoveSpeed}");
+    }
     private void HandleDayEnded()
     {
         SetMovementPermission(false);
@@ -100,8 +105,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         transform.position = end;
-
-        print($"ms: {MoveSpeed}, ms*: {duration}, stat: {playerStats.GetStat(StatType.MoveSpeed)}");
     }
 
     private void ShowAvailableMoves()

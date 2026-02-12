@@ -37,7 +37,7 @@ public class ShopButton : MonoBehaviour
         currentOffer.effect.ApplyEffect(currentOffer.bonusAmount);
 
         string id = currentOffer.effect.GetEffectName();
-        SaveSystem.SaveUpgradeLevel(id, currentOffer.level + 1);
+        SaveSystem.SaveUpgradeLevel(id, currentOffer.upgradeLevel + 1);
 
         gameObject.SetActive(false);
     }

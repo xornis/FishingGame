@@ -20,16 +20,26 @@ public class FishingInteraction : MonoBehaviour
     {
         gameEvents.OnTileClicked += HandleFishingRequest;
         gameEvents.OnSetFishingPermission += SetFishingPermission;
-
         gameEvents.OnDayEnded += HandleDayEnded;
+
+        playerStats.OnStatChanged += HandleStatChanged;
     }
 
     private void OnDisable()
     {
         gameEvents.OnTileClicked -= HandleFishingRequest;
         gameEvents.OnSetFishingPermission -= SetFishingPermission;
-
         gameEvents.OnDayEnded -= HandleDayEnded;
+
+        playerStats.OnStatChanged -= HandleStatChanged;
+    }
+
+    private void HandleStatChanged(StatType type, float value)
+    {
+        if (type == StatType.CatchChance)
+            print($"CatchChanceStat: {value}, CatchChance: {CatchChance}");
+        if (type == StatType.FishingSpeed)
+            print($"FishingSpeedStat: {value}, FishingSpeed: {FishingSpeed}");
     }
 
     private void HandleDayEnded()
@@ -91,10 +101,6 @@ public class FishingInteraction : MonoBehaviour
         }
 
         isFishing = false;
-
-        print($"cc: {CatchChance}, cc*: {chance}, ccStat: {playerStats.GetStat(StatType.CatchChance)} " +
-            $"|" +
-            $" fs: {FishingSpeed}, fs*: {waitTime}, fsStat: {playerStats.GetStat(StatType.FishingSpeed)}");
     }
 
     private float GetChanceMultiplier(FishableTileData.FishTileQuality quality)

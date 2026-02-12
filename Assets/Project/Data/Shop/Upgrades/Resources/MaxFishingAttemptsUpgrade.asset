@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   upgradeEffect: {fileID: 11400000, guid: 7d87ef2691535c54684e80e40257ca22, type: 2}
   resourceIcon: {fileID: 21300000, guid: 5e5de8a8133c50641817c1f58aee672e, type: 3}
-  bonusPerLevel: 2
+  bonusPerUpgradeLevel: 2
   basePrice: 5
   priceGrowth: 1.5
-  maxLevel: 20
+  maxUpgradeLevel: 20

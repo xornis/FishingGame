@@ -15,7 +15,7 @@ public class ShopManager : MonoBehaviour
     {
         foreach (Transform child in shopButtonsContainer) Destroy(child.gameObject);
 
-        List<UpgradeTemplate> filteredAvailableTemplates = availableTemplates.FindAll(t => !t.IsMaxLevel);
+        List<UpgradeTemplate> filteredAvailableTemplates = availableTemplates.FindAll(t => !t.IsMaxUpgradeLevel);
 
         if (filteredAvailableTemplates == null || filteredAvailableTemplates.Count == 0)
             return;
