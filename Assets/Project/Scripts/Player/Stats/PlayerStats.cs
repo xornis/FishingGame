@@ -11,11 +11,15 @@ public class PlayerStats : MonoBehaviour
 
     public event Action<StatType, float> OnStatChanged;
 
+
+    private void OnValidate()
+    {
+        if (deletePlayerSaves) PlayerPrefs.DeleteAll();
+    }
+
     // Stats Initialization from SO
     private void Awake()
     {
-        if (deletePlayerSaves) PlayerPrefs.DeleteAll();
-
         foreach (var stat in initialStats)
         {
             float savedValue = SaveSystem.LoadMaxStat(stat.type, stat.value);
