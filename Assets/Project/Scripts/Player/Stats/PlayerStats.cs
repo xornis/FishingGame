@@ -1,0 +1,64 @@
+using System;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class PlayerStats : MonoBehaviour
+{
+    [SerializeField] private bool deletePlayerSaves;
+    [SerializeField] private List<StatValue> initialStats;
+
+    private Dictionary<StatType, float> runtimeStats = new();
+
+    public event Action<StatType, float> OnStatChanged;
+
+
+    private void OnValidate()
+    {
+        if (deletePlayerSaves) PlayerPrefs.DeleteAll();
+    }
+
+    // Stats Initialization from SO
+    private void Awake()
+    {
+        foreach (var stat in initialStats)
+        {
+            float savedValue = SaveSystem.LoadMaxStat(stat.type, stat.value);
+            SaveSystem.SaveMaxStat(stat.type, savedValue);
+            runtimeStats[stat.type] = ValidateStat(stat.type, savedValue);
+        }
+    }
+
+    private void Start()
+    {
+        foreach (var stat in runtimeStats)
+            OnStatChanged?.Invoke(stat.Key, stat.Value);
+    }
+
+    private float ValidateStat(StatType type, float value)
+    {
+        return type switch
+        {
+            StatType.CatchChance => Mathf.Clamp(value, 1f, 100f),
+            StatType.CoinsPerFish => Mathf.Clamp(value, 1f, 1000f),
+
+            StatType.MoveSpeed => Mathf.Clamp(value, 0.05f, 10f),
+            StatType.FishingSpeed => Mathf.Clamp(value, 0.05f, 10f),
+
+            _ => value
+        };
+    }
+
+    public float GetStat(StatType type) => runtimeStats.GetValueOrDefault(type, 1);
+}
+
+[Serializable]
+public struct StatValue
+{
+    public StatType type;
+    public float value;
+}
+
+public enum StatType
+{
+    MoveSpeed, CatchChance, FishingSpeed, CoinsPerFish
+}

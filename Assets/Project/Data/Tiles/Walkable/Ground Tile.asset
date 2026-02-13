@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e30214beb40f4994e86b2b33f8711649, type: 3}
+  m_Name: Ground Tile
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 5268574295593296186, guid: 4d808a2624700ef4fa5039ff885ec33b, type: 3}
+  tileType: 0
+  walkable: 1
+  fishable: 0
+  stepValueChange: -1
+  moveSpeedMultiplier: 1
+  stepSounds: {fileID: 11400000, guid: 3515b7403eae4914c83cc07e58565930, type: 2}

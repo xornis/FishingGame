@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9b63561cfa5c0846bdaed5b05e971af, type: 3}
+  m_Name: Popup Settings
+  m_EditorClassIdentifier: 
+  popupPrefab: {fileID: 4384077217878960139, guid: 2f627a2de7a07344eb3d542d16b7b7f7, type: 3}
+  duration: 2
+  speed: 40
+  startScaleMultiplier: 1.25
+  endScaleDivider: 2
+  spawnRadius: 30
+  turn: 10
+  resourceColorDatas:
+  - type: 0
+    positiveColor: {r: 0.4481132, g: 1, b: 0.45746815, a: 1}
+    negativeColor: {r: 0.8773585, g: 0.27727836, b: 0.27727836, a: 1}
+  - type: 1
+    positiveColor: {r: 0.24056602, g: 0.28416422, b: 1, a: 1}
+    negativeColor: {r: 0.35292807, g: 0.7921834, b: 0.9716981, a: 1}
+  - type: 2
+    positiveColor: {r: 0.92453253, g: 1, b: 0.23921567, a: 1}
+    negativeColor: {r: 0.8235294, g: 0.6603774, b: 0.05918475, a: 1}

@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70540f770e787f149bea956ed6316dc6, type: 3}
+  m_Name: Campfire Tile
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 5268574295593296186, guid: 46e1892fa42f5d245baeced9cf9427e5, type: 3}
+  tileType: 5
+  walkable: 1
+  fishable: 0
+  stepValueChange: 3
+  moveSpeedMultiplier: 1.25
+  stepSounds: {fileID: 11400000, guid: 3515b7403eae4914c83cc07e58565930, type: 2}
+  campfireSound: {fileID: 11400000, guid: e5cc8ddd7cc5e5242984e7bbf9553c58, type: 2}
