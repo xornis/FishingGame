@@ -78,7 +78,7 @@ public class FishingInteraction : MonoBehaviour
         if (tile.state is FishTileState fishState1)
             waitTime *= GetTimeMultiplier(fishState1.fishQuality);
 
-        float count = 4;
+        float count = 2;
         float regularWaitTime = waitTime / count;
 
         for (int i = 0; i < count; i++)
@@ -94,12 +94,12 @@ public class FishingInteraction : MonoBehaviour
         if (Random.value <= chance)
         {
             gameEvents.CallFishCaptured();
-            tile.view.PlayPulse(1.2f, regularWaitTime / 2);
+            tile.view.PlayPulse(1.3f, regularWaitTime / 2);
             yield return new WaitForSeconds(regularWaitTime / 2);
         }
         else
         {
-            tile.view.PlayPulse(0.9f, regularWaitTime / 2);
+            tile.view.PlayPulse(0.8f, regularWaitTime / 2);
             yield return new WaitForSeconds(regularWaitTime / 2);
         }
 

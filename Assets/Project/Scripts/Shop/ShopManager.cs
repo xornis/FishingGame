@@ -15,9 +15,7 @@ public class ShopManager : MonoBehaviour
     {
         foreach (Transform child in shopButtonsContainer) Destroy(child.gameObject);
 
-        List<UpgradeTemplate> filteredAvailableTemplates = availableTemplates.FindAll(t => !t.IsMaxUpgradeLevel);
-
-        if (filteredAvailableTemplates == null || filteredAvailableTemplates.Count == 0)
+        if (availableTemplates == null || availableTemplates.Count == 0)
             return;
 
         int currentDay = SaveSystem.LoadDay();
@@ -25,7 +23,7 @@ public class ShopManager : MonoBehaviour
 
         int cardsToSpawn = Mathf.Clamp(initialCards + Mathf.FloorToInt(Mathf.Pow(currentDay, 2f) / divisor), initialCards, maxCards);
 
-        List<UpgradeTemplate> selected = GetRandomTemplates(filteredAvailableTemplates, cardsToSpawn);
+        List<UpgradeTemplate> selected = GetRandomTemplates(availableTemplates, cardsToSpawn);
 
         foreach (var template in selected)
         {
