@@ -11,7 +11,6 @@ public class PlayerStats : MonoBehaviour
 
     public event Action<StatType, float> OnStatChanged;
 
-
     private void OnValidate()
     {
         if (deletePlayerSaves) PlayerPrefs.DeleteAll();

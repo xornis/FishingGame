@@ -24,8 +24,6 @@ public class PlayerMovement : MonoBehaviour
         gameEvents.OnSetMovementPermission += SetMovementPermission;
         gameEvents.OnTileClicked += HandleMoveRequest;
         gameEvents.OnDayEnded += HandleDayEnded;
-
-        playerStats.OnStatChanged += HandleStatChanged;
     }
 
     private void OnDisable()
@@ -34,15 +32,8 @@ public class PlayerMovement : MonoBehaviour
         gameEvents.OnSetMovementPermission -= SetMovementPermission;
         gameEvents.OnTileClicked -= HandleMoveRequest;
         gameEvents.OnDayEnded -= HandleDayEnded;
-
-        playerStats.OnStatChanged -= HandleStatChanged;
     }
 
-    private void HandleStatChanged(StatType type, float value)
-    {
-        if (type == StatType.MoveSpeed)
-            print($"MoveSpeedStat: {value}, MoveSpeed: {MoveSpeed}");
-    }
     private void HandleDayEnded()
     {
         SetMovementPermission(false);
@@ -67,8 +58,6 @@ public class PlayerMovement : MonoBehaviour
         tile.view.PlayPulse(0.9f, 0.15f);
         gameEvents.CallStepEnded(tile);
         StartCoroutine(MoveTo(tile));
-
-        print($"MoveSpeedStat: {playerStats.GetStat(StatType.MoveSpeed)}, MoveSpeed: {MoveSpeed}");
     }
 
     private void OnIslandReady()

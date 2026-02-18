@@ -21,8 +21,6 @@ public class FishingInteraction : MonoBehaviour
         gameEvents.OnTileClicked += HandleFishingRequest;
         gameEvents.OnSetFishingPermission += SetFishingPermission;
         gameEvents.OnDayEnded += HandleDayEnded;
-
-        playerStats.OnStatChanged += HandleStatChanged;
     }
 
     private void OnDisable()
@@ -30,16 +28,6 @@ public class FishingInteraction : MonoBehaviour
         gameEvents.OnTileClicked -= HandleFishingRequest;
         gameEvents.OnSetFishingPermission -= SetFishingPermission;
         gameEvents.OnDayEnded -= HandleDayEnded;
-
-        playerStats.OnStatChanged -= HandleStatChanged;
-    }
-
-    private void HandleStatChanged(StatType type, float value)
-    {
-        if (type == StatType.CatchChance)
-            print($"CatchChanceStat: {value}, CatchChance: {CatchChance}");
-        if (type == StatType.FishingSpeed)
-            print($"FishingSpeedStat: {value}, FishingSpeed: {FishingSpeed}");
     }
 
     private void HandleDayEnded()
@@ -63,9 +51,6 @@ public class FishingInteraction : MonoBehaviour
         if (isFishing) return;
         
         StartCoroutine(WaitForFishAndCatch(tile));
-
-        print($"CatchChanceStat: {playerStats.GetStat(StatType.CatchChance)}, CatchChance: {CatchChance}");
-        print($"FishingSpeedStat: {playerStats.GetStat(StatType.FishingSpeed)}, FishingSpeed: {FishingSpeed}");
     }
 
     private IEnumerator WaitForFishAndCatch(Tile tile)
