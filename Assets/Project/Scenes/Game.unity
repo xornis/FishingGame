@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 11526607}
   - component: {fileID: 11526606}
   - component: {fileID: 11526608}
+  - component: {fileID: 11526609}
   m_Layer: 0
   m_Name: Game Menu Canvas
   m_TagString: Untagged
@@ -290,7 +291,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 11526607}
   canvas: {fileID: 11526604}
-  statsPanel: {fileID: 257377270}
+  statsPanel: {fileID: 257377265}
+  statsManager: {fileID: 574536582}
+--- !u!114 &11526609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 11526599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30649d3a9faa99c48a7b1166b86bf2a0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 3
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 0
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &17155087
 GameObject:
   m_ObjectHideFlags: 0
@@ -302,6 +330,7 @@ GameObject:
   - component: {fileID: 17155088}
   - component: {fileID: 17155090}
   - component: {fileID: 17155089}
+  - component: {fileID: 17155091}
   m_Layer: 0
   m_Name: FishingSpeed Text
   m_TagString: Untagged
@@ -427,6 +456,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 17155087}
   m_CullTransparentMesh: 1
+--- !u!114 &17155091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17155087}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1707734d29e308d4f8a945e5115dcda2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsManager: {fileID: 574536582}
+  statType: 1
+  label: Fishing Speed
+  suffix: s
+  format: F2
 --- !u!1 &257377265
 GameObject:
   m_ObjectHideFlags: 0
@@ -463,9 +509,9 @@ RectTransform:
   - {fileID: 1290313421}
   m_Father: {fileID: 11526600}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: -539.8483}
   m_SizeDelta: {x: 400, y: 1080}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &257377267
@@ -541,14 +587,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 257377265}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6670b9006296bcb4f95e02b9ca9990ea, type: 3}
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerStats: {fileID: 574536582}
-  moveSpeedText: {fileID: 796244622}
-  fishingSpeedText: {fileID: 17155089}
-  catchChanceText: {fileID: 464696718}
-  coinsPerFishText: {fileID: 749835887}
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: 400
+  m_PreferredHeight: 1080
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &267517421
 GameObject:
   m_ObjectHideFlags: 0
@@ -785,9 +834,9 @@ MonoBehaviour:
   availableTemplates:
   - {fileID: 11400000, guid: ab73d6108781a11469919e38c5f996a6, type: 2}
   - {fileID: 11400000, guid: 744e9ae73eca4c549ba25696e722e7b2, type: 2}
-  - {fileID: 11400000, guid: 607decf8c274cfb49999a7795c789b16, type: 2}
-  - {fileID: 11400000, guid: 5af979f47d1d2ba47b837ab78d6d92cd, type: 2}
   - {fileID: 11400000, guid: 7914b6262e0378247920d1ef10b9db76, type: 2}
+  - {fileID: 11400000, guid: 5af979f47d1d2ba47b837ab78d6d92cd, type: 2}
+  - {fileID: 11400000, guid: 607decf8c274cfb49999a7795c789b16, type: 2}
   - {fileID: 11400000, guid: 0ba54ac6df94bf54190ebbfffc83e1f5, type: 2}
   shopButtonPrefab: {fileID: 8454774715727075310, guid: ec29b017bdb1c2b45a6c5035db402d38, type: 3}
   shopButtonsContainer: {fileID: 267517422}
@@ -820,6 +869,7 @@ GameObject:
   - component: {fileID: 464696717}
   - component: {fileID: 464696719}
   - component: {fileID: 464696718}
+  - component: {fileID: 464696720}
   m_Layer: 0
   m_Name: CatchChance Text
   m_TagString: Untagged
@@ -945,6 +995,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 464696716}
   m_CullTransparentMesh: 1
+--- !u!114 &464696720
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 464696716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1707734d29e308d4f8a945e5115dcda2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsManager: {fileID: 574536582}
+  statType: 2
+  label: Catch Chance
+  suffix: '%'
+  format: F1
 --- !u!1 &494812728
 GameObject:
   m_ObjectHideFlags: 0
@@ -1395,7 +1462,7 @@ GameObject:
   - component: {fileID: 574536583}
   - component: {fileID: 574536582}
   m_Layer: 0
-  m_Name: PlayerStatsManager
+  m_Name: StatsManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1410,19 +1477,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 574536581}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0c1cb002e2d96142a297704c1376806, type: 3}
+  m_Script: {fileID: 11500000, guid: c333b408c342bb0499baec9acb79d536, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   deletePlayerSaves: 0
   initialStats:
   - type: 0
     value: 0.5
-  - type: 2
-    value: 1.5
   - type: 1
+    value: 1.5
+  - type: 2
     value: 20
   - type: 3
-    value: 10
+    value: 100
 --- !u!4 &574536583
 Transform:
   m_ObjectHideFlags: 0
@@ -1669,6 +1736,7 @@ GameObject:
   - component: {fileID: 749835886}
   - component: {fileID: 749835888}
   - component: {fileID: 749835887}
+  - component: {fileID: 749835889}
   m_Layer: 0
   m_Name: CoinsPerFish Text
   m_TagString: Untagged
@@ -1794,6 +1862,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 749835885}
   m_CullTransparentMesh: 1
+--- !u!114 &749835889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 749835885}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1707734d29e308d4f8a945e5115dcda2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsManager: {fileID: 574536582}
+  statType: 3
+  label: Coins Per Fish
+  suffix: 
+  format: F0
 --- !u!1 &775456353
 GameObject:
   m_ObjectHideFlags: 0
@@ -1825,7 +1910,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   islandManager: {fileID: 1253531103}
   resourceManager: {fileID: 1119722682}
-  playerStats: {fileID: 574536582}
+  statsManager: {fileID: 574536582}
   shopManager: {fileID: 452827038}
   UIManager: {fileID: 1998112210}
   gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
@@ -2083,6 +2168,7 @@ GameObject:
   - component: {fileID: 796244621}
   - component: {fileID: 796244623}
   - component: {fileID: 796244622}
+  - component: {fileID: 796244624}
   m_Layer: 0
   m_Name: MoveSpeed Text
   m_TagString: Untagged
@@ -2208,6 +2294,23 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 796244620}
   m_CullTransparentMesh: 1
+--- !u!114 &796244624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796244620}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1707734d29e308d4f8a945e5115dcda2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  statsManager: {fileID: 574536582}
+  statType: 0
+  label: Move Speed
+  suffix: s
+  format: F2
 --- !u!1 &838501090
 GameObject:
   m_ObjectHideFlags: 0
@@ -2318,9 +2421,9 @@ RectTransform:
   - {fileID: 683814652}
   m_Father: {fileID: 11526600}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 1}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -25, y: -25}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 1285.2698, y: -494.84833}
   m_SizeDelta: {x: 250, y: 90}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &895371125
@@ -2708,7 +2811,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 1253531103}
-  playerStats: {fileID: 574536582}
+  statsManager: {fileID: 574536582}
   gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
 --- !u!114 &1076604563
 MonoBehaviour:
@@ -2824,7 +2927,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   manager: {fileID: 1253531103}
-  playerStats: {fileID: 574536582}
+  statsManager: {fileID: 574536582}
   gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
 --- !u!114 &1076604567
 MonoBehaviour:
@@ -3884,8 +3987,6 @@ MonoBehaviour:
   canvas: {fileID: 1351470934}
   dayOverText: {fileID: 571841358}
   totalFishCapturedText: {fileID: 1599767840}
-  coinsText: {fileID: 789891463}
-  shopButtonsContainer: {fileID: 267517422}
   shopResultPanel: {fileID: 1351470928}
   fadeDuration: 2
   scalePingDuration: 2

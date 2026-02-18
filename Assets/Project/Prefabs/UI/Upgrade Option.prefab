@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7636724342329058807}
   - component: {fileID: 1462022502352921288}
   m_Layer: 5
-  m_Name: Resource Type Text
+  m_Name: Upgrade Type Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -326,7 +326,7 @@ GameObject:
   - component: {fileID: 9019357538503133346}
   - component: {fileID: 71424570016117032}
   m_Layer: 5
-  m_Name: Resource Stats
+  m_Name: Upgrade Data
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 5529040839773683963}
   - component: {fileID: 7982329061253962746}
   m_Layer: 5
-  m_Name: Resource Type Icon
+  m_Name: Upgrade Type Icon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -507,7 +507,7 @@ GameObject:
   - component: {fileID: 7647926904770497569}
   - component: {fileID: 1901952622642893221}
   m_Layer: 5
-  m_Name: Resource Type
+  m_Name: Upgrade Type
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -911,8 +911,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9251b80ef7fc47e459d924393f40a291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourceTypeIcon: {fileID: 5529040839773683963}
-  resourceTypeText: {fileID: 7636724342329058807}
+  upgradeTypeIcon: {fileID: 5529040839773683963}
+  upgradeTypeText: {fileID: 7636724342329058807}
   priceText: {fileID: 8729458126652900990}
   bonusText: {fileID: 1262119500113259063}
   purchaseButton: {fileID: 406245150120048482}

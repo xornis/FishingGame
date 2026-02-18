@@ -6,12 +6,12 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private IslandManager manager;
-    [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private StatsManager statsManager;
 
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
     
-    private float MoveSpeed => playerStats.GetStat(StatType.MoveSpeed);
+    private float MoveSpeed => statsManager.GetStat(StatType.MoveSpeed);
 
     public bool CanMove { get; private set; } = true;
     private bool isMoving;

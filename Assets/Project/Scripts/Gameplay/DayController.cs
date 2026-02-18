@@ -6,7 +6,7 @@ public class DayController : MonoBehaviour
 {
     [SerializeField] private IslandManager islandManager;
     [SerializeField] private ResourceManager resourceManager;
-    [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private StatsManager statsManager;
     [SerializeField] private ShopManager shopManager;
     [SerializeField] private UIManager UIManager;
 
@@ -79,7 +79,7 @@ public class DayController : MonoBehaviour
 
     private int CalculateCoins()
     {
-        int coinsPerFish = Mathf.RoundToInt(playerStats.GetStat(StatType.CoinsPerFish));
+        int coinsPerFish = Mathf.RoundToInt(statsManager.GetStat(StatType.CoinsPerFish));
         int earnedCoins = TotalFishCaptured * coinsPerFish;
 
         resourceManager.ChangeResource(ResourceType.Coins, earnedCoins);
@@ -113,6 +113,6 @@ public class DayController : MonoBehaviour
 
         int earnedCoins = CalculateCoins();
         shopManager.GenerateShopButtons(resourceManager);
-        UIManager.ShowShop(currentDay, TotalFishCaptured, earnedCoins);
+        UIManager.ShowShop(currentDay, TotalFishCaptured);
     }
 }

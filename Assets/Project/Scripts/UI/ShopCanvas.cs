@@ -5,8 +5,6 @@ public class ShopCanvas : UICanvas
 {
     [SerializeField] private TextMeshProUGUI dayOverText;
     [SerializeField] private TextMeshProUGUI totalFishCapturedText;
-    [SerializeField] private TextMeshProUGUI coinsText;
-    [SerializeField] private Transform shopButtonsContainer;
     [SerializeField] private GameObject shopResultPanel;
 
     [Header("Animation Settings")]
@@ -30,7 +28,7 @@ public class ShopCanvas : UICanvas
         }
     }
 
-    public void SetupShop(int dayNumber, int fishCaptured, int coinsEarned)
+    public void SetupShop(int dayNumber, int fishCaptured)
     {
         dayOverText.text = $"Day {dayNumber} is over...";
         totalFishCapturedText.text = $"Total Fish Captured: {fishCaptured}";
@@ -41,17 +39,9 @@ public class ShopCanvas : UICanvas
         totalFishCapturedText.text = $"Total Fish Captured: {fishCount}";
     }
 
-    public Transform GetShopButtonsContainer() => shopButtonsContainer;
-
     public override void Show()
     {
         base.Show();
         PlayShowAnimations();
-    }
-
-    public void ClearShopButtons()
-    {
-        foreach (Transform child in shopButtonsContainer)
-            Destroy(child.gameObject);
     }
 }

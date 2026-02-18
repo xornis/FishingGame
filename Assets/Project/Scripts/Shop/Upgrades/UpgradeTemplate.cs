@@ -15,8 +15,22 @@ public class UpgradeTemplate : ScriptableObject
 
     private int CurrentUpgradeLevel => SaveSystem.LoadUpgradeLevel(upgradeEffect.GetEffectName());
 
+    private void OnValidate()
+    {
+        if (upgradeEffect == null)
+        {
+            Debug.LogWarning($"[{name}] UpgradeEffect is not assigned!");
+        }
+    }
+
     public UpgradeOffer GenerateOffer()
     {
+        if (upgradeEffect == null)
+        {
+            Debug.LogError($"[{name}] Cannot generate offer: UpgradeEffect is null!");
+            return default;
+        }
+
         int upgradeLevel = CurrentUpgradeLevel;
         int price = Mathf.RoundToInt(basePrice * Mathf.Pow(priceGrowth, upgradeLevel));
 

@@ -54,18 +54,11 @@ public class UIManager : MonoBehaviour
             gameMenuCanvas.Show();
     }
 
-    public void ShowShop(int dayNumber, int totalFishCaptured, int earnedCoins)
+    public void ShowShop(int dayNumber, int totalFishCaptured)
     {
         gameMenuCanvas.Hide();
 
-        shopCanvas.SetupShop(dayNumber, totalFishCaptured, earnedCoins);
+        shopCanvas.SetupShop(dayNumber, totalFishCaptured);
         shopCanvas.Show();
     }
-
-    public void CloseShop()
-    {
-        shopCanvas.Hide();
-    }
-
-    public ShopCanvas GetShopCanvas() => shopCanvas;
 }

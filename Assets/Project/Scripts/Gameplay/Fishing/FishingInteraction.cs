@@ -5,13 +5,13 @@ using UnityEngine;
 public class FishingInteraction : MonoBehaviour
 {
     [SerializeField] private IslandManager manager;
-    [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private StatsManager statsManager;
 
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
 
-    private float CatchChance => playerStats.GetStat(StatType.CatchChance) / 100f;
-    private float FishingSpeed => playerStats.GetStat(StatType.FishingSpeed);
+    private float CatchChance => statsManager.GetStat(StatType.CatchChance) / 100f;
+    private float FishingSpeed => statsManager.GetStat(StatType.FishingSpeed);
 
     public bool CanFish { get; private set; } = true;
     private bool isFishing;
