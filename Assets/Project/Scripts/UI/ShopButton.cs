@@ -4,22 +4,31 @@ using UnityEngine.UI;
 
 public class ShopButton : MonoBehaviour
 {
-    [Header("UI Elements")]
-    [SerializeField] private Image resourceTypeIcon;
-    [SerializeField] private TextMeshProUGUI resourceTypeText;
+    [SerializeField] private Button purchaseButton;
+
+    [Header("Upgrade Type")]
+    [SerializeField] private Image upgradeTypeIcon;
+    [SerializeField] private TextMeshProUGUI upgradeTypeText;
+
+    [Header("Upgrade Data")]
     [SerializeField] private TextMeshProUGUI priceText;
     [SerializeField] private TextMeshProUGUI bonusText;
-    [SerializeField] private Button purchaseButton;
 
     private UpgradeTemplate.UpgradeOffer currentOffer;
     private ResourceManager resourceManager;
 
-    public void Initialize(UpgradeTemplate.UpgradeOffer offer, ResourceManager manager)
+    private void Awake()
+    {
+        if (purchaseButton == null)
+            purchaseButton = GetComponent<Button>();
+    }
+
+    public void Initialize(UpgradeTemplate.UpgradeOffer offer, ResourceManager resourceManager)
     {
         currentOffer = offer;
-        resourceManager = manager;
+        this.resourceManager = resourceManager;
 
-        ResourceTypeInitialize(offer);
+        UpgradeTypeInitialize(offer);
 
         priceText.text = "$" + offer.price.ToString();
         bonusText.text = offer.effect.EffectFormat(offer.bonusAmount);
@@ -42,19 +51,19 @@ public class ShopButton : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    private void ResourceTypeInitialize(UpgradeTemplate.UpgradeOffer offer)
+    private void UpgradeTypeInitialize(UpgradeTemplate.UpgradeOffer offer)
     {
         if (offer.icon != null)
         {
-            resourceTypeIcon.sprite = offer.icon;
-            resourceTypeIcon.gameObject.SetActive(true);
-            resourceTypeText.gameObject.SetActive(false);
+            upgradeTypeIcon.sprite = offer.icon;
+            upgradeTypeIcon.gameObject.SetActive(true);
+            upgradeTypeText.gameObject.SetActive(false);
         }
         else
         {
-            resourceTypeText.text = offer.effect.GetEffectName();
-            resourceTypeText.gameObject.SetActive(true);
-            resourceTypeIcon.gameObject.SetActive(false);
+            upgradeTypeText.text = offer.effect.GetEffectName();
+            upgradeTypeText.gameObject.SetActive(true);
+            upgradeTypeIcon.gameObject.SetActive(false);
         }
     }
 }

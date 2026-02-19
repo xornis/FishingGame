@@ -6,12 +6,12 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [SerializeField] private IslandManager manager;
-    [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private StatsManager statsManager;
 
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
     
-    private float MoveSpeed => playerStats.GetStat(StatType.MoveSpeed);
+    private float MoveSpeed => statsManager.GetStat(StatType.MoveSpeed);
 
     public bool CanMove { get; private set; } = true;
     private bool isMoving;
@@ -23,9 +23,6 @@ public class PlayerMovement : MonoBehaviour
         gameEvents.OnIslandReady += OnIslandReady;
         gameEvents.OnSetMovementPermission += SetMovementPermission;
         gameEvents.OnTileClicked += HandleMoveRequest;
-        gameEvents.OnDayEnded += HandleDayEnded;
-
-        playerStats.OnStatChanged += HandleStatChanged;
     }
 
     private void OnDisable()
@@ -33,20 +30,6 @@ public class PlayerMovement : MonoBehaviour
         gameEvents.OnIslandReady -= OnIslandReady;
         gameEvents.OnSetMovementPermission -= SetMovementPermission;
         gameEvents.OnTileClicked -= HandleMoveRequest;
-        gameEvents.OnDayEnded -= HandleDayEnded;
-
-        playerStats.OnStatChanged -= HandleStatChanged;
-    }
-
-    private void HandleStatChanged(StatType type, float value)
-    {
-        if (type == StatType.MoveSpeed)
-            print($"MoveSpeedStat: {value}, MoveSpeed: {MoveSpeed}");
-    }
-    private void HandleDayEnded()
-    {
-        SetMovementPermission(false);
-        ClearAvailableMoves();
     }
 
     private void HandleMoveRequest(Tile tile)
@@ -67,8 +50,6 @@ public class PlayerMovement : MonoBehaviour
         tile.view.PlayPulse(0.9f, 0.15f);
         gameEvents.CallStepEnded(tile);
         StartCoroutine(MoveTo(tile));
-
-        print($"MoveSpeedStat: {playerStats.GetStat(StatType.MoveSpeed)}, MoveSpeed: {MoveSpeed}");
     }
 
     private void OnIslandReady()
@@ -149,5 +130,9 @@ public class PlayerMovement : MonoBehaviour
         transform.position = worldCoordPos;
     }
 
-    private void SetMovementPermission(bool state) => CanMove = state;
+    private void SetMovementPermission(bool state)
+    { 
+        CanMove = state;
+        if (!state) ClearAvailableMoves();
+    }
 }

@@ -5,13 +5,13 @@ using UnityEngine;
 public class FishingInteraction : MonoBehaviour
 {
     [SerializeField] private IslandManager manager;
-    [SerializeField] private PlayerStats playerStats;
+    [SerializeField] private StatsManager statsManager;
 
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
 
-    private float CatchChance => playerStats.GetStat(StatType.CatchChance) / 100f;
-    private float FishingSpeed => playerStats.GetStat(StatType.FishingSpeed);
+    private float CatchChance => statsManager.GetStat(StatType.CatchChance) / 100f;
+    private float FishingSpeed => statsManager.GetStat(StatType.FishingSpeed);
 
     public bool CanFish { get; private set; } = true;
     private bool isFishing;
@@ -20,31 +20,12 @@ public class FishingInteraction : MonoBehaviour
     {
         gameEvents.OnTileClicked += HandleFishingRequest;
         gameEvents.OnSetFishingPermission += SetFishingPermission;
-        gameEvents.OnDayEnded += HandleDayEnded;
-
-        playerStats.OnStatChanged += HandleStatChanged;
     }
 
     private void OnDisable()
     {
         gameEvents.OnTileClicked -= HandleFishingRequest;
         gameEvents.OnSetFishingPermission -= SetFishingPermission;
-        gameEvents.OnDayEnded -= HandleDayEnded;
-
-        playerStats.OnStatChanged -= HandleStatChanged;
-    }
-
-    private void HandleStatChanged(StatType type, float value)
-    {
-        if (type == StatType.CatchChance)
-            print($"CatchChanceStat: {value}, CatchChance: {CatchChance}");
-        if (type == StatType.FishingSpeed)
-            print($"FishingSpeedStat: {value}, FishingSpeed: {FishingSpeed}");
-    }
-
-    private void HandleDayEnded()
-    {
-        SetFishingPermission(false);
     }
 
     private void HandleFishingRequest(Tile tile)
@@ -63,9 +44,6 @@ public class FishingInteraction : MonoBehaviour
         if (isFishing) return;
         
         StartCoroutine(WaitForFishAndCatch(tile));
-
-        print($"CatchChanceStat: {playerStats.GetStat(StatType.CatchChance)}, CatchChance: {CatchChance}");
-        print($"FishingSpeedStat: {playerStats.GetStat(StatType.FishingSpeed)}, FishingSpeed: {FishingSpeed}");
     }
 
     private IEnumerator WaitForFishAndCatch(Tile tile)

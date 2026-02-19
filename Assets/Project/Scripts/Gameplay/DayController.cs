@@ -6,6 +6,9 @@ public class DayController : MonoBehaviour
 {
     [SerializeField] private IslandManager islandManager;
     [SerializeField] private ResourceManager resourceManager;
+    [SerializeField] private StatsManager statsManager;
+    [SerializeField] private ShopManager shopManager;
+    [SerializeField] private UIManager UIManager;
 
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
@@ -40,7 +43,6 @@ public class DayController : MonoBehaviour
     private void HandleStep(Tile tile)
     {
         currentPlayerPos = tile.coord;
-
         if (tile.data is IStepEffect stepEffect)
             stepEffect.Execute(resourceManager, tile);
 
@@ -64,7 +66,7 @@ public class DayController : MonoBehaviour
         int fishingAttemptsLeft = resourceManager.GetResourceAmount(ResourceType.FishingAttempts);
 
         bool canMove = stepsLeft > 0;
-        bool canFish = fishingAttemptsLeft > 0 && HasReachableFishTile();
+        bool canFish = fishingAttemptsLeft > 0 && islandManager.HasReachableFishTile(currentPlayerPos);
 
         if (canMove || canFish)
         {
@@ -74,21 +76,20 @@ public class DayController : MonoBehaviour
         else EndDay();
     }
 
-    private bool HasReachableFishTile()
-    {
-        foreach (var dir in HexDirectionExtensions.hexDirections)
-        {
-            HexCoord neighbor = currentPlayerPos.Neighbor(dir);
-
-            if (!islandManager.tileByCoord.TryGetValue(neighbor, out var tile))
-                continue;
-            if (tile.data.fishable)
-                return true;
-        }
-        return false;
-    }
-
     private void HandleFishCaptured() => AddFishCapturedUI(1);
+
+    private int CalculateCoins()
+    {
+        int coinsPerFish = Mathf.RoundToInt(statsManager.GetStat(StatType.CoinsPerFish));
+        int earnedCoins = TotalFishCaptured * coinsPerFish;
+
+        resourceManager.ChangeResource(ResourceType.Coins, earnedCoins);
+
+        int totalCoins = resourceManager.GetResourceAmount(ResourceType.Coins);
+        SaveSystem.SaveCurrentResource(ResourceType.Coins, totalCoins);
+
+        return earnedCoins;
+    }
 
     public void AddFishCapturedUI(int amount)
     {
@@ -97,6 +98,7 @@ public class DayController : MonoBehaviour
     }
 
     public void RestartDay() => SceneManager.LoadScene(0);
+
     public void EndDay()
     {
         if (!dayActive) return;
@@ -106,8 +108,10 @@ public class DayController : MonoBehaviour
         int currentDay = SaveSystem.LoadDay();
         SaveSystem.SaveDay(currentDay+1);
 
-        gameEvents.SendMovementPermission(false);
-        gameEvents.SendFishingPermission(false);
         gameEvents.SendDayEnded();
+
+        int earnedCoins = CalculateCoins();
+        shopManager.GenerateShopButtons(resourceManager);
+        UIManager.EnterShop(currentDay, TotalFishCaptured);
     }
 }

@@ -109,4 +109,18 @@ public class IslandManager : MonoBehaviour
 
         return groundTiles[Random.Range(0, groundTiles.Count)];
     }
+
+    public bool HasReachableFishTile(HexCoord position)
+    {
+        foreach (var dir in HexDirectionExtensions.hexDirections)
+        {
+            HexCoord neighbor = position.Neighbor(dir);
+
+            if (!tileByCoord.TryGetValue(neighbor, out var tile))
+                continue;
+            if (tile.data.fishable)
+                return true;
+        }
+        return false;
+    }
 }

@@ -12,15 +12,44 @@ public class InputController : MonoBehaviour
     [Header("Events")]
     [SerializeField] private GameEvents gameEvents;
 
+    private bool gameplayAllowed = true;
+
     private InputAction clickAction;
     private TileView lastHovered;
 
     private void Awake() => clickAction = playerInput.actions["Attack"];
-    private void OnEnable() => clickAction.performed += OnMouseClickPerformed;
-    private void OnDisable() => clickAction.performed -= OnMouseClickPerformed;
+
+    private void OnEnable()
+    {
+        clickAction.performed += OnMouseClickPerformed;
+        gameEvents.OnSetGameplayPermission += SetGameplayPermission;
+    }
+
+    private void OnDisable()
+    {
+        clickAction.performed -= OnMouseClickPerformed;
+        gameEvents.OnSetGameplayPermission -= SetGameplayPermission;
+    }
+
+    private void Update()
+    {
+        if (!gameplayAllowed) return;
+
+        Tile currentTile = GetTileOnClick();
+        TileView currentView = currentTile?.view;
+
+        if (currentView != lastHovered)
+        {
+            lastHovered?.SetHover(false);
+            currentView?.SetHover(true);
+            lastHovered = currentView;
+        }
+    }
 
     private void OnMouseClickPerformed(InputAction.CallbackContext ctx)
     {
+        if (!gameplayAllowed) return;
+
         Tile currentTile = GetTileOnClick();
 
         if (currentTile == null) return;
@@ -33,19 +62,6 @@ public class InputController : MonoBehaviour
             currentTile.view.PlayErrorEffect();
         else
             gameEvents.CallTileClicked(currentTile);
-    }
-
-    private void Update()
-    {
-        Tile currentTile = GetTileOnClick();
-        TileView currentView = currentTile?.view;
-
-        if (currentView != lastHovered)
-        {
-            lastHovered?.SetHover(false);
-            currentView?.SetHover(true);
-            lastHovered = currentView;
-        }
     }
 
     private Tile GetTileOnClick()
@@ -70,5 +86,16 @@ public class InputController : MonoBehaviour
 
         HexCoord directCoord = islandManager.Layout.WorldToHex(worldMousePos);
         return islandManager.tileByCoord.TryGetValue(directCoord, out var fallbackTile) ? fallbackTile : null;
+    }
+
+    private void SetGameplayPermission(bool state)
+    {
+        gameplayAllowed = state;
+
+        if (!gameplayAllowed)
+        {
+            lastHovered?.SetHover(false);
+            lastHovered = null;
+        }
     }
 }
