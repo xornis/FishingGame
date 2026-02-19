@@ -42,6 +42,7 @@ public class DayController : MonoBehaviour
 
     private void HandleStep(Tile tile)
     {
+        currentPlayerPos = tile.coord;
         if (tile.data is IStepEffect stepEffect)
             stepEffect.Execute(resourceManager, tile);
 
