@@ -126,8 +126,10 @@ public class PlayerMovement : MonoBehaviour
         HexCoord randomCoord = manager.GetRandomGroundTileCoord();
         Vector3 worldCoordPos = manager.Layout.HexToWorld(randomCoord);
         worldCoordPos.z = transform.position.z;
-
         transform.position = worldCoordPos;
+
+        Tile spawnTile = manager.tileByCoord[randomCoord];
+        gameEvents.CallPlayerMoved(spawnTile);
     }
 
     private void SetMovementPermission(bool state)
