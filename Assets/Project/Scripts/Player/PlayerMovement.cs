@@ -23,7 +23,6 @@ public class PlayerMovement : MonoBehaviour
         gameEvents.OnIslandReady += OnIslandReady;
         gameEvents.OnSetMovementPermission += SetMovementPermission;
         gameEvents.OnTileClicked += HandleMoveRequest;
-        gameEvents.OnDayEnded += HandleDayEnded;
     }
 
     private void OnDisable()
@@ -31,13 +30,6 @@ public class PlayerMovement : MonoBehaviour
         gameEvents.OnIslandReady -= OnIslandReady;
         gameEvents.OnSetMovementPermission -= SetMovementPermission;
         gameEvents.OnTileClicked -= HandleMoveRequest;
-        gameEvents.OnDayEnded -= HandleDayEnded;
-    }
-
-    private void HandleDayEnded()
-    {
-        SetMovementPermission(false);
-        ClearAvailableMoves();
     }
 
     private void HandleMoveRequest(Tile tile)
@@ -138,5 +130,9 @@ public class PlayerMovement : MonoBehaviour
         transform.position = worldCoordPos;
     }
 
-    private void SetMovementPermission(bool state) => CanMove = state;
+    private void SetMovementPermission(bool state)
+    { 
+        CanMove = state;
+        if (!state) ClearAvailableMoves();
+    }
 }

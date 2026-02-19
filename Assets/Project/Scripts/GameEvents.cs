@@ -18,6 +18,7 @@ public class GameEvents : ScriptableObject
     #endregion UI
 
     // Event-Commands
+    public event Action<bool> OnSetGameplayPermission;
     public event Action<bool> OnSetMovementPermission;
     public event Action<bool> OnSetFishingPermission;
     public event Action OnDayEnded;
@@ -32,6 +33,7 @@ public class GameEvents : ScriptableObject
 
     public void CallTotalFishCapturedChanged(int value) => OnTotalFishCapturedChanged?.Invoke(value);
 
+    public void SendGameplayPermission(bool state) => OnSetGameplayPermission?.Invoke(state);
     public void SendMovementPermission(bool state) => OnSetMovementPermission?.Invoke(state);
     public void SendFishingPermission(bool state) => OnSetFishingPermission?.Invoke(state);
     public void SendDayEnded() => OnDayEnded?.Invoke();

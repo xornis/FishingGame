@@ -4,12 +4,15 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] float panSpeed = 7f;
+    [SerializeField] private float panSpeed = 7f;
+    [SerializeField] private float resetDuration = 0.35f;
+    [SerializeField] private GameEvents gameEvents;
+
+    private bool gameplayAllowed = true;
 
     private PlayerInput playerInput;
     private InputAction moveAction;
     private InputAction resetCameraAction;
-    [SerializeField] float resetDuration = 0.35f;
     private Coroutine resetRoutine;
 
     private void Awake()
@@ -19,12 +22,22 @@ public class CameraController : MonoBehaviour
         resetCameraAction = playerInput.actions["Reset Camera"];
     }
 
-    private void OnEnable() => resetCameraAction.performed += ResetCameraToPlayer;
+    private void OnEnable()
+    {
+        resetCameraAction.performed += ResetCameraToPlayer;
+        gameEvents.OnSetGameplayPermission += SetGameplayPermission;
+    }
 
-    private void OnDisable() => resetCameraAction.performed -= ResetCameraToPlayer;
+    private void OnDisable()
+    {
+        resetCameraAction.performed -= ResetCameraToPlayer;
+        gameEvents.OnSetGameplayPermission -= SetGameplayPermission;
+    }
 
     private void Update()
     {
+        if (!gameplayAllowed) return;
+
         Vector2 move = moveAction.ReadValue<Vector2>();
 
         if (move != Vector2.zero && resetRoutine != null)
@@ -37,8 +50,12 @@ public class CameraController : MonoBehaviour
         transform.position += moving;
     }
 
+    private void SetGameplayPermission(bool state) => gameplayAllowed = state;
+
     private void ResetCameraToPlayer(InputAction.CallbackContext ctx)
     {
+        if (!gameplayAllowed) return;
+
         if (resetRoutine != null)
             StopCoroutine(resetRoutine);
 

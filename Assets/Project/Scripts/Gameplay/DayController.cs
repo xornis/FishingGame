@@ -107,12 +107,10 @@ public class DayController : MonoBehaviour
         int currentDay = SaveSystem.LoadDay();
         SaveSystem.SaveDay(currentDay+1);
 
-        gameEvents.SendMovementPermission(false);
-        gameEvents.SendFishingPermission(false);
         gameEvents.SendDayEnded();
 
         int earnedCoins = CalculateCoins();
         shopManager.GenerateShopButtons(resourceManager);
-        UIManager.ShowShop(currentDay, TotalFishCaptured);
+        UIManager.EnterShop(currentDay, TotalFishCaptured);
     }
 }

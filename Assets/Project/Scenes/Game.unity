@@ -1489,7 +1489,7 @@ MonoBehaviour:
   - type: 2
     value: 20
   - type: 3
-    value: 100
+    value: 10
 --- !u!4 &574536583
 Transform:
   m_ObjectHideFlags: 0
@@ -4782,6 +4782,7 @@ MonoBehaviour:
   gameMenuCanvas: {fileID: 11526608}
   shopCanvas: {fileID: 1351470939}
   playerInput: {fileID: 1076604563}
+  gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
 --- !u!1 &2003998645
 GameObject:
   m_ObjectHideFlags: 0
@@ -4828,6 +4829,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panSpeed: 10
   resetDuration: 0.4
+  gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

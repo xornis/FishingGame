@@ -9,6 +9,9 @@ public class UIManager : MonoBehaviour
 
     [Header("Input")]
     [SerializeField] private PlayerInput playerInput;
+
+    [Header("References")]
+    [SerializeField] private GameEvents gameEvents;
     
     private InputAction escapeAction;
 
@@ -29,36 +32,39 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        InitializeCanvases();
+        EnterGameplay();
     }
 
     private void OnEscapeButtonPressed(InputAction.CallbackContext ctx)
     {
         if (shopCanvas.IsVisible) return;
-        ToggleGameMenu();
+
+        if (gameMenuCanvas.IsVisible)
+            EnterGameplay();
+        else
+            EnterGameMenu();
     }
 
-    private void InitializeCanvases()
+    private void EnterGameplay()
     {
         HUDCanvas.Show();
-
         gameMenuCanvas.Hide();
         shopCanvas.Hide();
+        gameEvents.SendGameplayPermission(true);
     }
 
-    public void ToggleGameMenu()
+    private void EnterGameMenu()
     {
-        if (gameMenuCanvas.IsVisible)
-            gameMenuCanvas.Hide();
-        else
-            gameMenuCanvas.Show();
+        gameMenuCanvas.Show();
+        gameEvents.SendGameplayPermission(false);
     }
 
-    public void ShowShop(int dayNumber, int totalFishCaptured)
+    public void EnterShop(int dayNumber, int totalFishCaptured)
     {
+        HUDCanvas.Hide();
         gameMenuCanvas.Hide();
-
         shopCanvas.SetupShop(dayNumber, totalFishCaptured);
         shopCanvas.Show();
+        gameEvents.SendGameplayPermission(false);
     }
 }
