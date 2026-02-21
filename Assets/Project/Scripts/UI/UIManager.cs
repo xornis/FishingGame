@@ -42,7 +42,10 @@ public class UIManager : MonoBehaviour
         if (gameMenuCanvas.IsVisible)
             EnterGameplay();
         else
+        {
             EnterGameMenu();
+            HUDCanvas.CloseGameMenuHint();
+        }
     }
 
     private void EnterGameplay()
