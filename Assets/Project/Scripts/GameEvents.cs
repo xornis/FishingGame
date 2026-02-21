@@ -10,6 +10,7 @@ public class GameEvents : ScriptableObject
     public event Action OnFishCaptured;
     public event Action OnIslandReady;
     public event Action<Tile> OnPlayerMoved;
+    public event Action<Tile> OnPlayerSpawned;
 
     public event Action<Tile> OnTileClicked;
 
@@ -28,6 +29,7 @@ public class GameEvents : ScriptableObject
     public void CallFishCaptured() => OnFishCaptured?.Invoke();
     public void CallIslandReady() => OnIslandReady?.Invoke();
     public void CallPlayerMoved(Tile tile) => OnPlayerMoved?.Invoke(tile);
+    public void CallPlayerSpawned(Tile tile) => OnPlayerSpawned?.Invoke(tile);
 
     public void CallTileClicked(Tile tile) => OnTileClicked?.Invoke(tile);
 

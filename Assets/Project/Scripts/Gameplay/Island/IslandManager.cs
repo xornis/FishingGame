@@ -60,7 +60,7 @@ public class IslandManager : MonoBehaviour
         go.transform.localScale = Vector3.one * HexScale;
 
         tile.view = go.GetComponent<TileView>();
-        if (tile.data is FishableTileData) SetFishTileColor(go.GetComponent<SpriteRenderer>(), tile);
+        if (tile.data is FishableTileData) SetFishTileColor(tile.view, tile);
     }
 
     private void ComputeFishTileQuality(HexCoord coord, Tile tile)
@@ -85,17 +85,18 @@ public class IslandManager : MonoBehaviour
         tile.state = fishState;
     }
 
-    private void SetFishTileColor(SpriteRenderer sr, Tile tile)
+    private void SetFishTileColor(TileView view, Tile tile)
     {
         if (tile.state is FishTileState fishState)
         {
-            sr.color = fishState.fishQuality switch
+            Color color = fishState.fishQuality switch
             {
                 FishableTileData.FishTileQuality.Poor => new Color(0.95f, 0.95f, 0.9f),
                 FishableTileData.FishTileQuality.Normal => new Color(0.9f, 0.95f, 1f),
                 FishableTileData.FishTileQuality.Rich => new Color(0.8f, 0.9f, 1f),
                 _ => Color.white
             };
+            view.SetBaseColor(color);
         }
     }
 
