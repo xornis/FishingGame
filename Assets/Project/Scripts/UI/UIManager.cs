@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private GameEvents gameEvents;
+    [SerializeField] private ResourceManager resourceManager;
     
     private InputAction escapeAction;
 
@@ -68,6 +69,7 @@ public class UIManager : MonoBehaviour
         gameMenuCanvas.Hide();
         shopCanvas.SetupShop(dayNumber, totalFishCaptured);
         shopCanvas.Show();
+        resourceManager.BroadcastAll();
         gameEvents.SendGameplayPermission(false);
     }
 }

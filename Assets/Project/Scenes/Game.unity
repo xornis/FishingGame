@@ -4788,6 +4788,7 @@ MonoBehaviour:
   shopCanvas: {fileID: 1351470939}
   playerInput: {fileID: 1076604563}
   gameEvents: {fileID: 11400000, guid: 7c492f5c835d90a47a3047da4dba6623, type: 2}
+  resourceManager: {fileID: 1119722682}
 --- !u!1 &2003998645
 GameObject:
   m_ObjectHideFlags: 0
