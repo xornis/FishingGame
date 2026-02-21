@@ -842,7 +842,7 @@ MonoBehaviour:
   shopButtonsContainer: {fileID: 267517422}
   initialCards: 2
   maxCards: 6
-  daysUntilMaxCards: 15
+  daysUntilMaxCards: 20
 --- !u!4 &452827039
 Transform:
   m_ObjectHideFlags: 0
@@ -3029,7 +3029,7 @@ MonoBehaviour:
     initialValue: 5
     hasCap: 1
   - type: 2
-    initialValue: 100
+    initialValue: 0
     hasCap: 0
 --- !u!4 &1119722683
 Transform:
