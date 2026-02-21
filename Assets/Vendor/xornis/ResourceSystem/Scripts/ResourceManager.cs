@@ -62,6 +62,12 @@ public class ResourceManager : MonoBehaviour
         return 0;
     }
 
+    public void BroadcastAll()
+    {
+        foreach (var resource in resources)
+            resourceEvents.CallResourceChanged(resource.Key, resource.Value);
+    }
+
     [System.Serializable]
     private struct ResourceSetup
     {

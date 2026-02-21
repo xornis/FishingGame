@@ -91,9 +91,9 @@ public class IslandManager : MonoBehaviour
         {
             Color color = fishState.fishQuality switch
             {
-                FishableTileData.FishTileQuality.Poor => new Color(0.95f, 0.95f, 0.9f),
-                FishableTileData.FishTileQuality.Normal => new Color(0.9f, 0.95f, 1f),
-                FishableTileData.FishTileQuality.Rich => new Color(0.8f, 0.9f, 1f),
+                FishableTileData.FishTileQuality.Poor => new Color(0.70f, 0.75f, 0.75f),
+                FishableTileData.FishTileQuality.Normal => new Color(0.55f, 0.75f, 0.85f),
+                FishableTileData.FishTileQuality.Rich => new Color(0.40f, 0.65f, 0.85f),
                 _ => Color.white
             };
             view.SetBaseColor(color);

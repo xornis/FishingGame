@@ -34,11 +34,6 @@ public class ShopCanvas : UICanvas
         totalFishCapturedText.text = $"Total Fish Captured: {fishCaptured}";
     }
 
-    public void UpdateFishCount(int fishCount)
-    {
-        totalFishCapturedText.text = $"Total Fish Captured: {fishCount}";
-    }
-
     public override void Show()
     {
         base.Show();
