@@ -13,6 +13,7 @@ public class TileView : MonoBehaviour
     
     private Coroutine scaleCoroutine;
     private Coroutine errorCoroutine;
+    private Coroutine shakeCoroutine;
 
     private Vector3 baseScale;
     private Color baseColor;
@@ -21,6 +22,7 @@ public class TileView : MonoBehaviour
 
     private bool initialized;
     private bool pulsing;
+    private bool shaking;
 
     private bool hoveredState;
 
@@ -74,6 +76,46 @@ public class TileView : MonoBehaviour
     }
 
     private Vector3 GetTargetScale() => hoveredState ? baseScale * hoverScaleMultiplier : baseScale;
+
+    public void PlayShake(float speed, float angle, float duration)
+    {
+        EnsureInitialized();
+        if (shakeCoroutine != null && !shaking) StopCoroutine(shakeCoroutine);
+        shakeCoroutine = StartCoroutine(ShakeRoutine(speed, angle, duration));
+    }
+
+    private IEnumerator ShakeRoutine(float speed, float angle, float duration)
+    {
+        shaking = true;
+        Quaternion startRotation = transform.localRotation;
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            float randomAngle = Random.Range(-angle, angle);
+            Quaternion targetRotation = startRotation * Quaternion.Euler(0, 0, randomAngle);
+
+            float moveTime = 0f;
+            float segmentDuration = 0.1f;
+
+            while (moveTime < segmentDuration)
+            {
+                moveTime += Time.deltaTime;
+                timer += Time.deltaTime;
+                transform.localRotation = Quaternion.Lerp(transform.localRotation, targetRotation, moveTime / segmentDuration);
+                yield return null;
+            }
+        }
+
+        float resetTime = 0;
+        while (resetTime < 1f)
+        {
+            resetTime += Time.deltaTime * 10f;
+            transform.localRotation = Quaternion.Lerp(transform.localRotation, startRotation, resetTime);
+            yield return null;
+        }
+        shaking = false;
+    }
 
     public void PlayPulse(float strength, float duration)
     {
