@@ -142,4 +142,10 @@ public class TileView : MonoBehaviour
         if (sr != null)
             sr.color = value ? Color.Lerp(baseColor, Color.black, 0.2f) : baseColor;
     }
-}
+
+    public void SetBaseColor(Color color)
+    {
+        baseColor = color;
+        sr.color = color;
+    }
+} 
